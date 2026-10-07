@@ -357,3 +357,46 @@ export const prices: PriceTier[] = [
     term: "от 5 дней",
   },
 ];
+
+export type Testimonial = {
+  name: string;
+  role: string;
+  quote: string;
+  initials: string;
+  gradient: string; // tailwind gradient classes for avatar
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    name: "Дмитрий Соколов",
+    role: "Директор, Modern Citi Group",
+    quote:
+      "Владимир сделал сайт с калькулятором и админкой за три недели. Заявки пошли в первый же день после запуска, конверсия — почти 5%. Всё чётко по срокам.",
+    initials: "ДС",
+    gradient: "from-fuchsia-500 to-purple-600",
+  },
+  {
+    name: "Анна Ковалёва",
+    role: "Владелица студии маникюра",
+    quote:
+      "Я в этом ничего не понимаю, но мне всё сделали «под ключ»: придумали структуру, написали тексты, научили менять прайс. Онлайн-запись теперь приходит сама.",
+    initials: "АК",
+    gradient: "from-pink-500 to-rose-500",
+  },
+  {
+    name: "Игорь Мельник",
+    role: "Основатель CraftOut",
+    quote:
+      "12 000 игроков в первый месяц и ни одного падения сервера. Realtime-матчи, магазин, античит-логи — всё работает как часы. Рекомендую как фуллстека.",
+    initials: "ИМ",
+    gradient: "from-purple-500 to-indigo-600",
+  },
+  {
+    name: "Ольга Пришвина",
+    role: "Маркетолог, ГранЛайн",
+    quote:
+      "Сезонная кампания с новым сайтом дала x2 к заявкам. Отдельное спасибо за квиз подбора освещения — клиенты приходят уже с готовым решением.",
+    initials: "ОП",
+    gradient: "from-amber-500 to-orange-600",
+  },
+];

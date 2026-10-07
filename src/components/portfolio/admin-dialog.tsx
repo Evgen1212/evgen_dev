@@ -11,8 +11,10 @@ import {
   Lock,
   LogOut,
   RefreshCw,
+  Search,
   Sparkles,
   Trash2,
+  X,
 } from "lucide-react";
 import {
   Dialog,
@@ -104,6 +106,7 @@ export default function AdminDialog() {
   const [rows, setRows] = useState<RequestRow[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
   const [filter, setFilter] = useState<StatusFilter>("all");
+  const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<RequestRow | null>(null);
@@ -142,6 +145,8 @@ export default function AdminDialog() {
     if (open) {
       setLoginError(null);
       setPassword("");
+      setQuery("");
+      setFilter("all");
       loadRequests();
     }
   }, [open, loadRequests]);
@@ -267,10 +272,23 @@ export default function AdminDialog() {
       );
   }
 
-  const visibleRows = useMemo(
-    () => (filter === "all" ? rows : rows.filter((r) => r.status === filter)),
-    [rows, filter]
-  );
+  const visibleRows = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return rows.filter((r) => {
+      if (filter !== "all" && r.status !== filter) return false;
+      if (!q) return true;
+      const haystack = [
+        r.name,
+        r.contact,
+        r.message,
+        taskTypeLabels[r.taskType] ?? r.taskType,
+        statusLabels[r.status] ?? r.status,
+      ]
+        .join(" ")
+        .toLowerCase();
+      return haystack.includes(q);
+    });
+  }, [rows, filter, query]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -416,12 +434,12 @@ export default function AdminDialog() {
               ))}
             </div>
 
-            {/* Фильтр */}
-            <div className="mt-4 flex items-center gap-2">
+            {/* Фильтр + поиск */}
+            <div className="mt-4 flex flex-wrap items-center gap-2">
               <Select value={filter} onValueChange={(v) => setFilter(v as StatusFilter)}>
                 <SelectTrigger
                   aria-label="Фильтр по статусу"
-                  className={cn("h-9 w-44 rounded-xl text-sm", fieldClass)}
+                  className={cn("h-9 w-44 shrink-0 rounded-xl text-sm", fieldClass)}
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -440,7 +458,33 @@ export default function AdminDialog() {
                   </SelectItem>
                 </SelectContent>
               </Select>
-              <span className="text-xs text-zinc-500">
+
+              <div className="relative min-w-0 flex-1">
+                <Search
+                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500"
+                  aria-hidden="true"
+                />
+                <Input
+                  type="search"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Поиск: имя, контакт, текст…"
+                  aria-label="Поиск по заявкам"
+                  className={cn(fieldClass, "h-9 rounded-xl pl-9 pr-8 text-sm")}
+                />
+                {query && (
+                  <button
+                    type="button"
+                    onClick={() => setQuery("")}
+                    aria-label="Очистить поиск"
+                    className="absolute right-2 top-1/2 grid size-6 -translate-y-1/2 place-items-center rounded-md text-zinc-500 transition-colors hover:bg-white/10 hover:text-white"
+                  >
+                    <X className="size-3.5" aria-hidden="true" />
+                  </button>
+                )}
+              </div>
+
+              <span className="shrink-0 text-xs text-zinc-500">
                 {visibleRows.length} из {rows.length}
               </span>
             </div>
@@ -453,7 +497,9 @@ export default function AdminDialog() {
                   <p className="text-sm text-zinc-500">
                     {rows.length === 0
                       ? "Заявок пока нет — они появятся здесь после отправки формы"
-                      : "В этом статусе заявок нет"}
+                      : query.trim()
+                        ? `По запросу «${query.trim()}» ничего не найдено`
+                        : "В этом статусе заявок нет"}
                   </p>
                 </div>
               ) : (

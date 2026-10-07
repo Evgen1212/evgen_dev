@@ -8,6 +8,7 @@ const footerNav = [
   { label: "Этапы", href: "#process" },
   { label: "Цены", href: "#prices" },
   { label: "FAQ", href: "#faq" },
+  { label: "Отзывы", href: "#reviews" },
   { label: "Контакты", href: "#contact" },
 ];
 
@@ -50,7 +51,7 @@ export default function Footer() {
             <a
               key={l.href}
               href={l.href}
-              className="text-zinc-500 transition-colors hover:text-white"
+              className="link-underline text-zinc-500 transition-colors hover:text-white"
             >
               {l.label}
             </a>

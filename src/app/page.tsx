@@ -7,6 +7,7 @@ import Tech from "@/components/portfolio/tech";
 import Process from "@/components/portfolio/process";
 import Prices from "@/components/portfolio/prices";
 import Faq from "@/components/portfolio/faq";
+import Testimonials from "@/components/portfolio/testimonials";
 import Contact from "@/components/portfolio/contact";
 import Footer from "@/components/portfolio/footer";
 import ScrollReveal from "@/components/portfolio/scroll-reveal";
@@ -31,6 +32,7 @@ export default function Home() {
         <Process />
         <Prices />
         <Faq />
+        <Testimonials />
         <Contact />
       </main>
       <Footer />
