@@ -629,6 +629,9 @@ summary:focus-visible {
   .intro-bar > span {
     animation: none !important;
   }
+  .ken-burns {
+    animation: none;
+  }
 }
 
 /* ---------- Section hairline divider ----------
@@ -661,4 +664,39 @@ summary:focus-visible {
   transform: translate(-50%, -50%) rotate(45deg);
   background: linear-gradient(135deg, #d946ef, #8b5cf6);
   box-shadow: 0 0 14px rgba(217, 70, 239, 0.55);
+}
+
+/* ---------- Ken Burns (медленный зум арта в кейс-модалке) ---------- */
+@keyframes ken-burns {
+  from {
+    transform: scale(1) translateX(0);
+  }
+  to {
+    transform: scale(1.07) translateX(-1.5%);
+  }
+}
+
+.ken-burns {
+  animation: ken-burns 16s ease-in-out infinite alternate;
+  transform-origin: 62% 38%;
+}
+
+/* ---------- Кольцо прогресса на кнопке «наверх» ----------
+   SVG-круг с stroke-dashoffset, управляемым --scroll-progress
+   (0..1 на <html>) — без ре-рендеров. */
+.back-top-ring {
+  position: absolute;
+  inset: 1px;
+  transform: rotate(-90deg);
+  pointer-events: none;
+}
+
+.back-top-ring circle {
+  fill: none;
+  stroke: url(#backtop-gradient);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 113.1; /* 2π·r, r = 18 */
+  stroke-dashoffset: calc((1 - var(--scroll-progress, 0)) * 113.1);
+  transition: stroke-dashoffset 0.15s linear;
 }

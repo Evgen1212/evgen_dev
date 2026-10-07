@@ -48,7 +48,22 @@ export default function ScrollWidgets() {
         }
         className="back-top fixed bottom-5 right-5 z-50 grid size-11 place-items-center rounded-full border border-white/15 bg-white/10 text-white shadow-xl shadow-black/40 backdrop-blur-md transition-colors hover:bg-white hover:text-black sm:bottom-7 sm:right-7"
       >
-        <ArrowUp className="size-5" aria-hidden="true" />
+        {/* кольцо прогресса чтения вокруг кнопки (чистый CSS, без ре-рендеров) */}
+        <svg
+          className="back-top-ring"
+          viewBox="0 0 44 44"
+          aria-hidden="true"
+          focusable="false"
+        >
+          <defs>
+            <linearGradient id="backtop-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#d946ef" />
+              <stop offset="100%" stopColor="#8b5cf6" />
+            </linearGradient>
+          </defs>
+          <circle cx="22" cy="22" r="18" />
+        </svg>
+        <ArrowUp className="relative size-5" aria-hidden="true" />
       </button>
     </>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, Link2, SlidersHorizontal, Sparkles, UserRound } from "lucide-react";
+import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, Link2, Share2, SlidersHorizontal, Sparkles, UserRound } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -80,7 +80,9 @@ function CaseCell({
       className={cn("cursor-pointer text-left", className, eager && "filter-in")}
     >
       <span className="card-shine group relative block h-full w-full overflow-hidden rounded-3xl border border-white/10 shadow-lg shadow-black/40 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60">
-        <Art />
+        <span className="block h-full w-full transition-transform duration-700 ease-out group-hover:scale-[1.06]">
+          <Art />
+        </span>
         {/* hover overlay */}
         <span className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/85 via-black/20 to-transparent p-5 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
           <span className="translate-y-3 transition-transform duration-500 group-hover:translate-y-0">
@@ -102,8 +104,17 @@ export default function CaseGrid() {
   const { toast } = useToast();
   const [active, setActive] = useState<CaseDetail | null>(null);
   const [filter, setFilter] = useState<CaseCategory | "all">("all");
+  // navigator.share доступен только на клиентах с системным шитом (мобилки)
+  const [canShare, setCanShare] = useState(false);
   const ActiveArt = active ? caseArt[active.id] : null;
   const touchStart = useRef<{ x: number; y: number } | null>(null);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() =>
+      setCanShare(typeof navigator !== "undefined" && "share" in navigator)
+    );
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   // Порядок кейсов для навигации «предыдущий / следующий»
   const order = allItems.map((i) => i.id);
@@ -134,6 +145,21 @@ export default function CaseGrid() {
           description: link,
         })
       );
+  }
+
+  /** Системный шит (Web Share API); при отмене — тихо, при ошибке — копируем ссылку */
+  async function shareCase(d: CaseDetail) {
+    const link = `${window.location.origin}/?case=${d.id}`;
+    try {
+      await navigator.share({
+        title: `${d.title} — Erriour`,
+        text: `${d.tag} — кейс веб-разработчика Erriour`,
+        url: link,
+      });
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      copyCaseLink(d.id);
+    }
   }
 
   // Deep-link на первом рендере: /?case=<id> открывает модалку этого кейса
@@ -290,7 +316,11 @@ export default function CaseGrid() {
               </DialogDescription>
 
               <div className="group relative aspect-[16/9] w-full overflow-hidden">
-                {ActiveArt && <ActiveArt />}
+                {ActiveArt && (
+                  <div className="ken-burns h-full w-full">
+                    <ActiveArt />
+                  </div>
+                )}
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#141416] to-transparent p-5 pt-14">
                   <span className="rounded-full border border-fuchsia-400/30 bg-fuchsia-500/15 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.18em] text-fuchsia-300">
                     {active.tag}
@@ -325,6 +355,18 @@ export default function CaseGrid() {
                       <Link2 className="size-3.5 transition-transform group-hover/link:-rotate-45" aria-hidden="true" />
                       Ссылка
                     </button>
+                    {canShare && (
+                      <button
+                        type="button"
+                        onClick={() => void shareCase(active)}
+                        title="Поделиться кейсом"
+                        aria-label="Поделиться кейсом"
+                        className="group/share inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-semibold text-zinc-400 transition-all hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-fuchsia-300 active:scale-95"
+                      >
+                        <Share2 className="size-3.5 transition-transform group-hover/share:translate-x-0.5 group-hover/share:-translate-y-0.5" aria-hidden="true" />
+                        Поделиться
+                      </button>
+                    )}
                   </div>
                 </div>
 

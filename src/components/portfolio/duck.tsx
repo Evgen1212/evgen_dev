@@ -14,6 +14,44 @@ const quackPhrases = [
 
 const QUACK_MILESTONE = 10;
 
+/** Синтезированный «кряк» через WebAudio (без аудиофайлов) — короткий пилообразный
+ *  сигнал с падающей частотой и lowpass-фильтром. Громкость деликатная. */
+function playQuackSound() {
+  try {
+    const Ctx =
+      window.AudioContext ??
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+    if (!Ctx) return;
+    const ctx = new Ctx();
+    if (ctx.state === "suspended") void ctx.resume();
+
+    const t = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const filter = ctx.createBiquadFilter();
+    const gain = ctx.createGain();
+
+    osc.type = "sawtooth";
+    osc.frequency.setValueAtTime(520, t);
+    osc.frequency.exponentialRampToValueAtTime(180, t + 0.14);
+
+    filter.type = "lowpass";
+    filter.frequency.setValueAtTime(1400, t);
+    filter.Q.value = 4;
+
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.12, t + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.16);
+
+    osc.connect(filter).connect(gain).connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.18);
+    osc.onended = () => void ctx.close();
+  } catch {
+    /* звук не критичен — молча пропускаем */
+  }
+}
+
 /**
  * Утка-маскот с пасхалкой: по клику крякает (тост со случайной фразой),
  * подпрыгивает и ведёт счёт кряканья в localStorage.
@@ -25,6 +63,7 @@ export default function DuckMascot() {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   function quack() {
+    playQuackSound();
     setBouncing(true);
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setBouncing(false), 750);

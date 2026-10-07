@@ -90,6 +90,9 @@ const statusBadge: Record<string, string> = {
   done: "border-emerald-400/30 bg-emerald-500/15 text-emerald-300",
 };
 
+/** Пагинация списка заявок: сколько строк показывать за раз */
+const PAGE_SIZE = 10;
+
 const fieldClass =
   "rounded-xl border-white/10 bg-white/[0.05] text-white placeholder:text-zinc-500";
 
@@ -122,6 +125,7 @@ export default function AdminDialog() {
   const [filter, setFilter] = useState<StatusFilter>("all");
   const [query, setQuery] = useState("");
   const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
+  const [shown, setShown] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<RequestRow | null>(null);
@@ -163,6 +167,7 @@ export default function AdminDialog() {
       setQuery("");
       setFilter("all");
       setSortDir("desc");
+      setShown(PAGE_SIZE);
       loadRequests();
     }
   }, [open, loadRequests]);
@@ -541,7 +546,10 @@ export default function AdminDialog() {
 
             {/* Фильтр + поиск */}
             <div className="mt-4 flex flex-wrap items-center gap-2">
-              <Select value={filter} onValueChange={(v) => setFilter(v as StatusFilter)}>
+              <Select value={filter} onValueChange={(v) => {
+                setFilter(v as StatusFilter);
+                setShown(PAGE_SIZE);
+              }}>
                 <SelectTrigger
                   aria-label="Фильтр по статусу"
                   className={cn("h-9 w-44 shrink-0 rounded-xl text-sm", fieldClass)}
@@ -591,7 +599,10 @@ export default function AdminDialog() {
                 <Input
                   type="search"
                   value={query}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    setShown(PAGE_SIZE);
+                  }}
                   placeholder="Поиск: имя, контакт, текст…"
                   aria-label="Поиск по заявкам"
                   className={cn(fieldClass, "h-9 rounded-xl pl-9 pr-8 text-sm")}
@@ -599,7 +610,10 @@ export default function AdminDialog() {
                 {query && (
                   <button
                     type="button"
-                    onClick={() => setQuery("")}
+                    onClick={() => {
+                      setQuery("");
+                      setShown(PAGE_SIZE);
+                    }}
                     aria-label="Очистить поиск"
                     className="absolute right-2 top-1/2 grid size-6 -translate-y-1/2 place-items-center rounded-md text-zinc-500 transition-colors hover:bg-white/10 hover:text-white"
                   >
@@ -627,7 +641,7 @@ export default function AdminDialog() {
                   </p>
                 </div>
               ) : (
-                visibleRows.map((r) => (
+                visibleRows.slice(0, shown).map((r) => (
                   <article
                     key={r.id}
                     className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20"
@@ -714,6 +728,19 @@ export default function AdminDialog() {
                 ))
               )}
             </div>
+
+            {/* «Показать ещё» — пагинация длинного списка */}
+            {visibleRows.length > shown && (
+              <button
+                type="button"
+                onClick={() => setShown((s) => s + PAGE_SIZE)}
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] py-2.5 text-sm font-semibold text-zinc-300 transition-all hover:border-white/25 hover:bg-white/10 hover:text-white active:scale-[0.98]"
+              >
+                <Inbox className="size-4 text-zinc-500" aria-hidden="true" />
+                Показать ещё {Math.min(PAGE_SIZE, visibleRows.length - shown)} — всего
+                скрыто {visibleRows.length - shown}
+              </button>
+            )}
           </div>
         )}
       </DialogContent>
