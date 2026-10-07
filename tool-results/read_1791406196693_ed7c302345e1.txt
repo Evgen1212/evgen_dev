@@ -1,0 +1,773 @@
+     1→"use client";
+     2→
+     3→import { useCallback, useEffect, useMemo, useState } from "react";
+     4→import {
+     5→  ArrowDownWideNarrow,
+     6→  ArrowUpNarrowWide,
+     7→  CalendarDays,
+     8→  CheckCircle2,
+     9→  ClipboardCopy,
+    10→  Clock3,
+    11→  Download,
+    12→  Inbox,
+    13→  Loader2,
+    14→  Lock,
+    15→  LogOut,
+    16→  RefreshCw,
+    17→  Search,
+    18→  Sparkles,
+    19→  Trash2,
+    20→  TrendingUp,
+    21→  X,
+    22→} from "lucide-react";
+    23→import {
+    24→  Dialog,
+    25→  DialogContent,
+    26→  DialogDescription,
+    27→  DialogHeader,
+    28→  DialogTitle,
+    29→  DialogTrigger,
+    30→} from "@/components/ui/dialog";
+    31→import {
+    32→  Select,
+    33→  SelectContent,
+    34→  SelectItem,
+    35→  SelectTrigger,
+    36→  SelectValue,
+    37→} from "@/components/ui/select";
+    38→import {
+    39→  AlertDialog,
+    40→  AlertDialogAction,
+    41→  AlertDialogCancel,
+    42→  AlertDialogContent,
+    43→  AlertDialogDescription,
+    44→  AlertDialogFooter,
+    45→  AlertDialogHeader,
+    46→  AlertDialogTitle,
+    47→} from "@/components/ui/alert-dialog";
+    48→import { Input } from "@/components/ui/input";
+    49→import { Label } from "@/components/ui/label";
+    50→import { Button } from "@/components/ui/button";
+    51→import { useToast } from "@/hooks/use-toast";
+    52→import { cn } from "@/lib/utils";
+    53→
+    54→type RequestRow = {
+    55→  id: string;
+    56→  name: string;
+    57→  contact: string;
+    58→  taskType: string;
+    59→  message: string;
+    60→  status: string;
+    61→  createdAt: string;
+    62→};
+    63→
+    64→type Stats = {
+    65→  total: number;
+    66→  new: number;
+    67→  in_progress: number;
+    68→  done: number;
+    69→};
+    70→
+    71→type StatusFilter = "all" | "new" | "in_progress" | "done";
+    72→
+    73→const taskTypeLabels: Record<string, string> = {
+    74→  landing: "Лендинг",
+    75→  multipage: "Многостраничный сайт",
+    76→  webapp: "Веб-сервис / SPA",
+    77→  bot: "Бот или автоматизация",
+    78→  other: "Другое",
+    79→};
+    80→
+    81→const statusLabels: Record<string, string> = {
+    82→  new: "Новая",
+    83→  in_progress: "В работе",
+    84→  done: "Выполнено",
+    85→};
+    86→
+    87→const statusBadge: Record<string, string> = {
+    88→  new: "border-fuchsia-400/30 bg-fuchsia-500/15 text-fuchsia-300",
+    89→  in_progress: "border-amber-400/30 bg-amber-500/15 text-amber-300",
+    90→  done: "border-emerald-400/30 bg-emerald-500/15 text-emerald-300",
+    91→};
+    92→
+    93→/** Пагинация списка заявок: сколько строк показывать за раз */
+    94→const PAGE_SIZE = 10;
+    95→
+    96→const fieldClass =
+    97→  "rounded-xl border-white/10 bg-white/[0.05] text-white placeholder:text-zinc-500";
+    98→
+    99→/** Русская плюрализация: 1 заявка / 2 заявки / 5 заявок */
+   100→function pluralRequests(n: number) {
+   101→  const mod10 = n % 10;
+   102→  const mod100 = n % 100;
+   103→  if (mod10 === 1 && mod100 !== 11) return `${n} заявка`;
+   104→  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
+   105→    return `${n} заявки`;
+   106→  return `${n} заявок`;
+   107→}
+   108→
+   109→const dateFmt = new Intl.DateTimeFormat("ru-RU", {
+   110→  day: "numeric",
+   111→  month: "short",
+   112→  hour: "2-digit",
+   113→  minute: "2-digit",
+   114→});
+   115→
+   116→export default function AdminDialog() {
+   117→  const { toast } = useToast();
+   118→  const [open, setOpen] = useState(false);
+   119→  const [authed, setAuthed] = useState<boolean | null>(null);
+   120→  const [password, setPassword] = useState("");
+   121→  const [loginError, setLoginError] = useState<string | null>(null);
+   122→  const [loggingIn, setLoggingIn] = useState(false);
+   123→  const [rows, setRows] = useState<RequestRow[]>([]);
+   124→  const [stats, setStats] = useState<Stats | null>(null);
+   125→  const [filter, setFilter] = useState<StatusFilter>("all");
+   126→  const [query, setQuery] = useState("");
+   127→  const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
+   128→  const [shown, setShown] = useState(PAGE_SIZE);
+   129→  const [loading, setLoading] = useState(false);
+   130→  const [busyId, setBusyId] = useState<string | null>(null);
+   131→  const [deleteTarget, setDeleteTarget] = useState<RequestRow | null>(null);
+   132→
+   133→  const loadRequests = useCallback(async () => {
+   134→    setLoading(true);
+   135→    try {
+   136→      const res = await fetch("/api/admin/requests", { cache: "no-store" });
+   137→      if (res.status === 401) {
+   138→        setAuthed(false);
+   139→        return;
+   140→      }
+   141→      const data = (await res.json().catch(() => null)) as
+   142→        | { ok: boolean; stats: Stats; requests: RequestRow[] }
+   143→        | null;
+   144→      if (res.ok && data?.ok) {
+   145→        setAuthed(true);
+   146→        setStats(data.stats);
+   147→        setRows(data.requests);
+   148→      } else {
+   149→        setAuthed(false);
+   150→      }
+   151→    } catch {
+   152→      toast({
+   153→        title: "Ошибка сети",
+   154→        description: "Не удалось загрузить заявки.",
+   155→        variant: "destructive",
+   156→      });
+   157→    } finally {
+   158→      setLoading(false);
+   159→    }
+   160→  }, [toast]);
+   161→
+   162→  // При каждом открытии диалога проверяем авторизацию и тянем данные
+   163→  useEffect(() => {
+   164→    if (open) {
+   165→      setLoginError(null);
+   166→      setPassword("");
+   167→      setQuery("");
+   168→      setFilter("all");
+   169→      setSortDir("desc");
+   170→      setShown(PAGE_SIZE);
+   171→      loadRequests();
+   172→    }
+   173→  }, [open, loadRequests]);
+   174→
+   175→  async function handleLogin(e: React.FormEvent) {
+   176→    e.preventDefault();
+   177→    setLoggingIn(true);
+   178→    setLoginError(null);
+   179→    try {
+   180→      const res = await fetch("/api/admin/login", {
+   181→        method: "POST",
+   182→        headers: { "Content-Type": "application/json" },
+   183→        body: JSON.stringify({ password }),
+   184→      });
+   185→      const data = (await res.json().catch(() => null)) as
+   186→        | { ok: boolean; error?: string }
+   187→        | null;
+   188→      if (res.ok && data?.ok) {
+   189→        setPassword("");
+   190→        await loadRequests();
+   191→      } else {
+   192→        setLoginError(data?.error ?? "Неверный пароль");
+   193→      }
+   194→    } catch {
+   195→      setLoginError("Ошибка сети, попробуйте ещё раз");
+   196→    } finally {
+   197→      setLoggingIn(false);
+   198→    }
+   199→  }
+   200→
+   201→  async function handleLogout() {
+   202→    await fetch("/api/admin/logout", { method: "POST" }).catch(() => null);
+   203→    setAuthed(false);
+   204→    setRows([]);
+   205→    setStats(null);
+   206→    toast({ title: "Вы вышли из админ-панели" });
+   207→  }
+   208→
+   209→  async function handleStatusChange(id: string, status: string) {
+   210→    setBusyId(id);
+   211→    const prev = rows;
+   212→    // оптимистично обновляем UI
+   213→    setRows((r) => r.map((x) => (x.id === id ? { ...x, status } : x)));
+   214→    try {
+   215→      const res = await fetch("/api/admin/requests", {
+   216→        method: "PATCH",
+   217→        headers: { "Content-Type": "application/json" },
+   218→        body: JSON.stringify({ id, status }),
+   219→      });
+   220→      if (!res.ok) throw new Error();
+   221→      // перезагружаем список и статистику
+   222→      await loadRequests();
+   223→    } catch {
+   224→      setRows(prev);
+   225→      toast({
+   226→        title: "Не удалось изменить статус",
+   227→        variant: "destructive",
+   228→      });
+   229→    } finally {
+   230→      setBusyId(null);
+   231→    }
+   232→  }
+   233→
+   234→  async function handleDelete() {
+   235→    if (!deleteTarget) return;
+   236→    const target = deleteTarget;
+   237→    setDeleteTarget(null);
+   238→    setBusyId(target.id);
+   239→    try {
+   240→      const res = await fetch(`/api/admin/requests?id=${encodeURIComponent(target.id)}`, {
+   241→        method: "DELETE",
+   242→      });
+   243→      if (!res.ok) throw new Error();
+   244→      setRows((r) => r.filter((x) => x.id !== target.id));
+   245→      toast({ title: "Заявка удалена" });
+   246→      await loadRequests();
+   247→    } catch {
+   248→      toast({ title: "Не удалось удалить заявку", variant: "destructive" });
+   249→    } finally {
+   250→      setBusyId(null);
+   251→    }
+   252→  }
+   253→
+   254→  /** Экспорт всех заявок в CSV (BOM + «;» — дружелюбно к Excel/Numbers) */
+   255→  function exportCsv() {
+   256→    if (rows.length === 0) return;
+   257→    const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+   258→    const head = ["Дата", "Имя", "Контакт", "Тип задачи", "Статус", "Сообщение"]
+   259→      .map(esc)
+   260→      .join(";");
+   261→    const lines = rows.map((r) =>
+   262→      [
+   263→        new Date(r.createdAt).toLocaleString("ru-RU"),
+   264→        r.name,
+   265→        r.contact,
+   266→        taskTypeLabels[r.taskType] ?? r.taskType,
+   267→        statusLabels[r.status] ?? r.status,
+   268→        r.message,
+   269→      ]
+   270→        .map(esc)
+   271→        .join(";")
+   272→    );
+   273→    const csv = "\uFEFF" + [head, ...lines].join("\r\n");
+   274→    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+   275→    const url = URL.createObjectURL(blob);
+   276→    const a = document.createElement("a");
+   277→    a.href = url;
+   278→    a.download = `erriour-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+   279→    a.click();
+   280→    URL.revokeObjectURL(url);
+   281→    toast({
+   282→      title: "CSV выгружен",
+   283→      description: `В файле ${rows.length} заявок`,
+   284→    });
+   285→  }
+   286→
+   287→  function copyContact(text: string) {
+   288→    navigator.clipboard
+   289→      .writeText(text)
+   290→      .then(() => toast({ title: "Контакт скопирован", description: text }))
+   291→      .catch(() =>
+   292→        toast({ title: "Не удалось скопировать", variant: "destructive" })
+   293→      );
+   294→  }
+   295→
+   296→  const todayCount = useMemo(() => {
+   297→    const start = new Date();
+   298→    start.setHours(0, 0, 0, 0);
+   299→    return rows.filter((r) => new Date(r.createdAt) >= start).length;
+   300→  }, [rows]);
+   301→
+   302→  /** Последние 14 дней: количество заявок по дням (для мини-графика) */
+   303→  const chart = useMemo(() => {
+   304→    const start = new Date();
+   305→    start.setHours(0, 0, 0, 0);
+   306→    const days: { date: Date; count: number }[] = [];
+   307→    for (let i = 13; i >= 0; i--) {
+   308→      const d = new Date(start);
+   309→      d.setDate(d.getDate() - i);
+   310→      days.push({ date: d, count: 0 });
+   311→    }
+   312→    for (const r of rows) {
+   313→      const created = new Date(r.createdAt);
+   314→      created.setHours(0, 0, 0, 0);
+   315→      const idx = days.findIndex((d) => d.date.getTime() === created.getTime());
+   316→      if (idx !== -1) days[idx].count++;
+   317→    }
+   318→    return days;
+   319→  }, [rows]);
+   320→  const chartMax = Math.max(1, ...chart.map((d) => d.count));
+   321→  const chartDayFmt = new Intl.DateTimeFormat("ru-RU", {
+   322→    day: "numeric",
+   323→    month: "short",
+   324→  });
+   325→  const chartTitleFmt = new Intl.DateTimeFormat("ru-RU", {
+   326→    day: "numeric",
+   327→    month: "long",
+   328→  });
+   329→
+   330→  const visibleRows = useMemo(() => {
+   331→    const q = query.trim().toLowerCase();
+   332→    const filtered = rows.filter((r) => {
+   333→      if (filter !== "all" && r.status !== filter) return false;
+   334→      if (!q) return true;
+   335→      const haystack = [
+   336→        r.name,
+   337→        r.contact,
+   338→        r.message,
+   339→        taskTypeLabels[r.taskType] ?? r.taskType,
+   340→        statusLabels[r.status] ?? r.status,
+   341→      ]
+   342→        .join(" ")
+   343→        .toLowerCase();
+   344→      return haystack.includes(q);
+   345→    });
+   346→    return filtered.sort((a, b) =>
+   347→      sortDir === "desc"
+   348→        ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+   349→        : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+   350→    );
+   351→  }, [rows, filter, query, sortDir]);
+   352→
+   353→  return (
+   354→    <Dialog open={open} onOpenChange={setOpen}>
+   355→      <DialogTrigger asChild>
+   356→        <button
+   357→          type="button"
+   358→          aria-label="Админ-панель"
+   359→          title="Админ-панель"
+   360→          className="grid size-8 place-items-center rounded-lg border border-white/10 text-zinc-500 transition-colors hover:border-white/25 hover:text-zinc-200"
+   361→        >
+   362→          <Lock className="size-3.5" aria-hidden="true" />
+   363→        </button>
+   364→      </DialogTrigger>
+   365→
+   366→      <DialogContent className="max-h-[85vh] overflow-y-auto rounded-2xl border-white/10 bg-[#111113] text-zinc-50 sm:max-w-2xl">
+   367→        {authed === null || (loading && !authed) ? (
+   368→          <div className="grid place-items-center py-16">
+   369→            {/* sr-only заголовок — требование доступности DialogContent */}
+   370→            <DialogTitle className="sr-only">Админ-панель</DialogTitle>
+   371→            <DialogDescription className="sr-only">
+   372→              Загрузка заявок
+   373→            </DialogDescription>
+   374→            <Loader2 className="size-7 animate-spin text-fuchsia-400" aria-hidden="true" />
+   375→          </div>
+   376→        ) : !authed ? (
+   377→          /* ---------- Логин ---------- */
+   378→          <div>
+   379→            <DialogHeader>
+   380→              <DialogTitle className="flex items-center gap-2 font-display text-xl">
+   381→                <Lock className="size-4 text-fuchsia-400" aria-hidden="true" />
+   382→                Админ-панель
+   383→              </DialogTitle>
+   384→              <DialogDescription className="text-zinc-400">
+   385→                Введите пароль, чтобы посмотреть заявки с формы
+   386→              </DialogDescription>
+   387→            </DialogHeader>
+   388→            <form onSubmit={handleLogin} className="mt-6 grid gap-4">
+   389→              <div className="grid gap-2">
+   390→                <Label htmlFor="admin-pass" className="text-zinc-300">
+   391→                  Пароль
+   392→                </Label>
+   393→                <Input
+   394→                  id="admin-pass"
+   395→                  type="password"
+   396→                  autoFocus
+   397→                  value={password}
+   398→                  onChange={(e) => setPassword(e.target.value)}
+   399→                  placeholder="••••••••"
+   400→                  className={fieldClass}
+   401→                  autoComplete="current-password"
+   402→                />
+   403→                {loginError && (
+   404→                  <p className="text-xs text-red-400" role="alert">
+   405→                    {loginError}
+   406→                  </p>
+   407→                )}
+   408→              </div>
+   409→              <Button
+   410→                type="submit"
+   411→                disabled={loggingIn || password.length === 0}
+   412→                className="h-11 rounded-xl bg-white font-bold text-black transition-all hover:bg-white active:scale-95 disabled:opacity-60"
+   413→              >
+   414→                {loggingIn ? (
+   415→                  <>
+   416→                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+   417→                    Проверяю…
+   418→                  </>
+   419→                ) : (
+   420→                  "Войти"
+   421→                )}
+   422→              </Button>
+   423→            </form>
+   424→          </div>
+   425→        ) : (
+   426→          /* ---------- Дашборд ---------- */
+   427→          <div>
+   428→            <DialogHeader>
+   429→              <DialogTitle className="flex items-center justify-between gap-3 font-display text-xl">
+   430→                <span className="flex items-center gap-2">
+   431→                  <Inbox className="size-5 text-fuchsia-400" aria-hidden="true" />
+   432→                  Заявки
+   433→                </span>
+   434→                <span className="flex items-center gap-1.5">
+   435→                  <Button
+   436→                    variant="ghost"
+   437→                    size="icon"
+   438→                    aria-label="Экспорт в CSV"
+   439→                    title="Экспорт в CSV"
+   440→                    onClick={exportCsv}
+   441→                    disabled={rows.length === 0}
+   442→                    className="size-8 rounded-lg text-zinc-400 hover:bg-white/10 hover:text-white disabled:opacity-40"
+   443→                  >
+   444→                    <Download className="size-4" aria-hidden="true" />
+   445→                  </Button>
+   446→                  <Button
+   447→                    variant="ghost"
+   448→                    size="icon"
+   449→                    aria-label="Обновить"
+   450→                    title="Обновить"
+   451→                    onClick={loadRequests}
+   452→                    className="size-8 rounded-lg text-zinc-400 hover:bg-white/10 hover:text-white"
+   453→                  >
+   454→                    <RefreshCw
+   455→                      className={cn("size-4", loading && "animate-spin")}
+   456→                      aria-hidden="true"
+   457→                    />
+   458→                  </Button>
+   459→                  <Button
+   460→                    variant="ghost"
+   461→                    size="icon"
+   462→                    aria-label="Выйти"
+   463→                    title="Выйти"
+   464→                    onClick={handleLogout}
+   465→                    className="size-8 rounded-lg text-zinc-400 hover:bg-white/10 hover:text-white"
+   466→                  >
+   467→                    <LogOut className="size-4" aria-hidden="true" />
+   468→                  </Button>
+   469→                </span>
+   470→              </DialogTitle>
+   471→              <DialogDescription className="text-zinc-400">
+   472→                Заявки с формы «Обсудить задачу»
+   473→              </DialogDescription>
+   474→            </DialogHeader>
+   475→
+   476→            {/* Статистика */}
+   477→            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
+   478→              {[
+   479→                { label: "Всего", value: stats?.total ?? 0, icon: Inbox, tint: "text-zinc-300" },
+   480→                { label: "Новые", value: stats?.new ?? 0, icon: Sparkles, tint: "text-fuchsia-300" },
+   481→                { label: "В работе", value: stats?.in_progress ?? 0, icon: Clock3, tint: "text-amber-300" },
+   482→                { label: "Выполнено", value: stats?.done ?? 0, icon: CheckCircle2, tint: "text-emerald-300" },
+   483→                { label: "Сегодня", value: todayCount, icon: CalendarDays, tint: "text-sky-300" },
+   484→              ].map((s) => (
+   485→                <div
+   486→                  key={s.label}
+   487→                  className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
+   488→                >
+   489→                  <div className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+   490→                    <s.icon className={cn("size-3.5", s.tint)} aria-hidden="true" />
+   491→                    {s.label}
+   492→                  </div>
+   493→                  <div className="mt-1 font-display text-2xl font-bold">{s.value}</div>
+   494→                </div>
+   495→              ))}
+   496→            </div>
+   497→
+   498→            {/* Мини-график заявок за 14 дней */}
+   499→            {rows.length > 0 && (
+   500→              <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-3.5">
+   501→                <div className="mb-2.5 flex items-center justify-between gap-2">
+   502→                  <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+   503→                    <TrendingUp className="size-3.5 text-fuchsia-400" aria-hidden="true" />
+   504→                    Заявки за 14 дней
+   505→                  </span>
+   506→                  <span className="text-[11px] text-zinc-600">
+   507→                    максимум {chartMax} в день
+   508→                  </span>
+   509→                </div>
+   510→                <div className="flex h-16 items-end gap-[3px]">
+   511→                  {chart.map((d) => {
+   512→                    const isToday =
+   513→                      d.date.getTime() === chart[chart.length - 1].date.getTime();
+   514→                    return (
+   515→                      <div
+   516→                        key={d.date.toISOString()}
+   517→                        className="group flex h-full min-w-0 flex-1 flex-col justify-end"
+   518→                        title={`${chartTitleFmt.format(d.date)} — ${pluralRequests(d.count)}`}
+   519→                      >
+   520→                        <div
+   521→                          className={cn(
+   522→                            "w-full rounded-t-sm transition-all duration-300 group-hover:opacity-100",
+   523→                            d.count === 0
+   524→                              ? "h-[3px] bg-white/10"
+   525→                              : isToday
+   526→                                ? "bg-gradient-to-t from-fuchsia-500 to-purple-300 opacity-100"
+   527→                                : "bg-gradient-to-t from-fuchsia-600/70 to-purple-400/90 opacity-80 group-hover:from-fuchsia-500 group-hover:to-purple-300"
+   528→                          )}
+   529→                          style={
+   530→                            d.count === 0
+   531→                              ? undefined
+   532→                              : { height: `${Math.max(12, (d.count / chartMax) * 100)}%` }
+   533→                          }
+   534→                        />
+   535→                      </div>
+   536→                    );
+   537→                  })}
+   538→                </div>
+   539→                <div className="mt-1.5 flex justify-between text-[9px] font-medium text-zinc-600">
+   540→                  <span>{chartDayFmt.format(chart[0].date)}</span>
+   541→                  <span className="text-fuchsia-400/80">сегодня</span>
+   542→                  <span>{chartDayFmt.format(chart[chart.length - 1].date)}</span>
+   543→                </div>
+   544→              </div>
+   545→            )}
+   546→
+   547→            {/* Фильтр + поиск */}
+   548→            <div className="mt-4 flex flex-wrap items-center gap-2">
+   549→              <Select value={filter} onValueChange={(v) => {
+   550→                setFilter(v as StatusFilter);
+   551→                setShown(PAGE_SIZE);
+   552→              }}>
+   553→                <SelectTrigger
+   554→                  aria-label="Фильтр по статусу"
+   555→                  className={cn("h-9 w-44 shrink-0 rounded-xl text-sm", fieldClass)}
+   556→                >
+   557→                  <SelectValue />
+   558→                </SelectTrigger>
+   559→                <SelectContent className="rounded-xl border-white/10 bg-[#141416] text-white">
+   560→                  <SelectItem value="all" className="rounded-lg focus:bg-white/10">
+   561→                    Все заявки
+   562→                  </SelectItem>
+   563→                  <SelectItem value="new" className="rounded-lg focus:bg-white/10">
+   564→                    Только новые
+   565→                  </SelectItem>
+   566→                  <SelectItem value="in_progress" className="rounded-lg focus:bg-white/10">
+   567→                    В работе
+   568→                  </SelectItem>
+   569→                  <SelectItem value="done" className="rounded-lg focus:bg-white/10">
+   570→                    Выполненные
+   571→                  </SelectItem>
+   572→                </SelectContent>
+   573→              </Select>
+   574→
+   575→              <Button
+   576→                variant="ghost"
+   577→                size="icon"
+   578→                onClick={() => setSortDir((d) => (d === "desc" ? "asc" : "desc"))}
+   579→                aria-label={
+   580→                  sortDir === "desc"
+   581→                    ? "Сортировка: сначала новые — переключить на старые"
+   582→                    : "Сортировка: сначала старые — переключить на новые"
+   583→                }
+   584→                title={sortDir === "desc" ? "Сначала новые" : "Сначала старые"}
+   585→                className="size-9 shrink-0 rounded-xl text-zinc-400 hover:bg-white/10 hover:text-white"
+   586→              >
+   587→                {sortDir === "desc" ? (
+   588→                  <ArrowDownWideNarrow className="size-4" aria-hidden="true" />
+   589→                ) : (
+   590→                  <ArrowUpNarrowWide className="size-4" aria-hidden="true" />
+   591→                )}
+   592→              </Button>
+   593→
+   594→              <div className="relative min-w-0 flex-1">
+   595→                <Search
+   596→                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-zinc-500"
+   597→                  aria-hidden="true"
+   598→                />
+   599→                <Input
+   600→                  type="search"
+   601→                  value={query}
+   602→                  onChange={(e) => {
+   603→                    setQuery(e.target.value);
+   604→                    setShown(PAGE_SIZE);
+   605→                  }}
+   606→                  placeholder="Поиск: имя, контакт, текст…"
+   607→                  aria-label="Поиск по заявкам"
+   608→                  className={cn(fieldClass, "h-9 rounded-xl pl-9 pr-8 text-sm")}
+   609→                />
+   610→                {query && (
+   611→                  <button
+   612→                    type="button"
+   613→                    onClick={() => {
+   614→                      setQuery("");
+   615→                      setShown(PAGE_SIZE);
+   616→                    }}
+   617→                    aria-label="Очистить поиск"
+   618→                    className="absolute right-2 top-1/2 grid size-6 -translate-y-1/2 place-items-center rounded-md text-zinc-500 transition-colors hover:bg-white/10 hover:text-white"
+   619→                  >
+   620→                    <X className="size-3.5" aria-hidden="true" />
+   621→                  </button>
+   622→                )}
+   623→              </div>
+   624→
+   625→              <span className="shrink-0 text-xs text-zinc-500">
+   626→                {visibleRows.length} из {rows.length}
+   627→              </span>
+   628→            </div>
+   629→
+   630→            {/* Список заявок */}
+   631→            <div className="mt-4 max-h-[46vh] space-y-3 overflow-y-auto pr-1">
+   632→              {visibleRows.length === 0 ? (
+   633→                <div className="grid place-items-center gap-2 rounded-2xl border border-dashed border-white/10 py-12 text-center">
+   634→                  <Inbox className="size-8 text-zinc-600" aria-hidden="true" />
+   635→                  <p className="text-sm text-zinc-500">
+   636→                    {rows.length === 0
+   637→                      ? "Заявок пока нет — они появятся здесь после отправки формы"
+   638→                      : query.trim()
+   639→                        ? `По запросу «${query.trim()}» ничего не найдено`
+   640→                        : "В этом статусе заявок нет"}
+   641→                  </p>
+   642→                </div>
+   643→              ) : (
+   644→                visibleRows.slice(0, shown).map((r) => (
+   645→                  <article
+   646→                    key={r.id}
+   647→                    className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20"
+   648→                  >
+   649→                    <div className="flex flex-wrap items-center justify-between gap-2">
+   650→                      <div className="flex items-center gap-2.5">
+   651→                        <span className="font-display text-base font-bold">{r.name}</span>
+   652→                        <span
+   653→                          className={cn(
+   654→                            "rounded-full border px-2.5 py-0.5 text-[11px] font-semibold",
+   655→                            statusBadge[r.status] ?? statusBadge.new
+   656→                          )}
+   657→                        >
+   658→                          {statusLabels[r.status] ?? r.status}
+   659→                        </span>
+   660→                      </div>
+   661→                      <time
+   662→                        dateTime={r.createdAt}
+   663→                        className="text-xs text-zinc-500"
+   664→                      >
+   665→                        {dateFmt.format(new Date(r.createdAt))}
+   666→                      </time>
+   667→                    </div>
+   668→
+   669→                    <div className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+   670→                      <button
+   671→                        type="button"
+   672→                        onClick={() => copyContact(r.contact)}
+   673→                        title="Скопировать контакт"
+   674→                        className="inline-flex items-center gap-1.5 rounded-lg bg-white/[0.06] px-2.5 py-1 font-medium text-zinc-200 transition-colors hover:bg-white/15"
+   675→                      >
+   676→                        <ClipboardCopy className="size-3.5" aria-hidden="true" />
+   677→                        {r.contact}
+   678→                      </button>
+   679→                      <span className="rounded-lg border border-white/10 px-2.5 py-1 text-xs text-zinc-400">
+   680→                        {taskTypeLabels[r.taskType] ?? r.taskType}
+   681→                      </span>
+   682→                    </div>
+   683→
+   684→                    <p className="mt-2.5 whitespace-pre-line text-sm leading-relaxed text-zinc-300">
+   685→                      {r.message}
+   686→                    </p>
+   687→
+   688→                    <div className="mt-3 flex items-center justify-between border-t border-white/5 pt-3">
+   689→                      <Select
+   690→                        value={r.status}
+   691→                        onValueChange={(v) => handleStatusChange(r.id, v)}
+   692→                      >
+   693→                        <SelectTrigger
+   694→                          aria-label="Статус заявки"
+   695→                          className={cn("h-8 w-40 rounded-lg text-xs", fieldClass)}
+   696→                        >
+   697→                          <SelectValue />
+   698→                        </SelectTrigger>
+   699→                        <SelectContent className="rounded-xl border-white/10 bg-[#141416] text-white">
+   700→                          <SelectItem value="new" className="rounded-lg focus:bg-white/10">
+   701→                            Новая
+   702→                          </SelectItem>
+   703→                          <SelectItem value="in_progress" className="rounded-lg focus:bg-white/10">
+   704→                            В работе
+   705→                          </SelectItem>
+   706→                          <SelectItem value="done" className="rounded-lg focus:bg-white/10">
+   707→                            Выполнено
+   708→                          </SelectItem>
+   709→                        </SelectContent>
+   710→                      </Select>
+   711→
+   712→                      <Button
+   713→                        variant="ghost"
+   714→                        size="sm"
+   715→                        disabled={busyId === r.id}
+   716→                        onClick={() => setDeleteTarget(r)}
+   717→                        className="rounded-lg text-zinc-500 hover:bg-red-500/10 hover:text-red-400"
+   718→                      >
+   719→                        {busyId === r.id ? (
+   720→                          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+   721→                        ) : (
+   722→                          <Trash2 className="size-4" aria-hidden="true" />
+   723→                        )}
+   724→                        Удалить
+   725→                      </Button>
+   726→                    </div>
+   727→                  </article>
+   728→                ))
+   729→              )}
+   730→            </div>
+   731→
+   732→            {/* «Показать ещё» — пагинация длинного списка */}
+   733→            {visibleRows.length > shown && (
+   734→              <button
+   735→                type="button"
+   736→                onClick={() => setShown((s) => s + PAGE_SIZE)}
+   737→                className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] py-2.5 text-sm font-semibold text-zinc-300 transition-all hover:border-white/25 hover:bg-white/10 hover:text-white active:scale-[0.98]"
+   738→              >
+   739→                <Inbox className="size-4 text-zinc-500" aria-hidden="true" />
+   740→                Показать ещё {Math.min(PAGE_SIZE, visibleRows.length - shown)} — всего
+   741→                скрыто {visibleRows.length - shown}
+   742→              </button>
+   743→            )}
+   744→          </div>
+   745→        )}
+   746→      </DialogContent>
+   747→
+   748→      {/* Подтверждение удаления */}
+   749→      <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
+   750→        <AlertDialogContent className="rounded-2xl border-white/10 bg-[#141416] text-zinc-50">
+   751→          <AlertDialogHeader>
+   752→            <AlertDialogTitle>Удалить заявку?</AlertDialogTitle>
+   753→            <AlertDialogDescription className="text-zinc-400">
+   754→              Заявка от {deleteTarget?.name} будет удалена безвозвратно.
+   755→            </AlertDialogDescription>
+   756→          </AlertDialogHeader>
+   757→          <AlertDialogFooter>
+   758→            <AlertDialogCancel className="rounded-xl border-white/10 bg-transparent text-zinc-300 hover:bg-white/10 hover:text-white">
+   759→              Отмена
+   760→            </AlertDialogCancel>
+   761→            <AlertDialogAction
+   762→              onClick={handleDelete}
+   763→              className="rounded-xl bg-red-500 text-white hover:bg-red-600"
+   764→            >
+   765→              Удалить
+   766→            </AlertDialogAction>
+   767→          </AlertDialogFooter>
+   768→        </AlertDialogContent>
+   769→      </AlertDialog>
+   770→    </Dialog>
+   771→  );
+   772→}
+   773→

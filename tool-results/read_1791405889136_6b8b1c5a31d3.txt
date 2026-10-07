@@ -1,0 +1,622 @@
+    36→    36→              Беру на себя как разработку с нуля, так и доработку существующих
+    37→    37→              проектов — от лендингов до сложных многостраничных сайтов. Если
+    38→    38→              вам нужен сайт, который будет не просто «чтобы был», а
+    39→    39→              действительно поможет вашему делу — вы по адресу.
+    40→    40→            </p>
+    41→    41→          </div>
+    42→    42→
+    43→    43→          {/* Counters */}
+    44→    44→          <dl className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+    45→    45→            {stats.map((s) => (
+    46→    46→              <div
+    47→    47→                key={s.label}
+    48→    48→                className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20"
+    49→    49→              >
+    50→    50→                <dd className="font-display text-3xl font-bold tracking-tight">
+    51→    51→                  <Counter
+    52→    52→                    value={s.value}
+    53→    53→                    suffix={s.suffix}
+    54→    54→                    className="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
+    55→    55→                  />
+    56→    56→                </dd>
+    57→    57→                <dt className="mt-1.5 text-xs leading-snug text-zinc-500">
+    58→    58→                  {s.label}
+    59→    59→                </dt>
+    60→    60→              </div>
+    61→    61→            ))}
+    62→    62→          </dl>
+    63→    63→        </div>
+    64→    64→
+    65→    65→        {/* Polaroid photo */}
+    66→    66→        <div
+    67→    67→          className="relative mx-auto w-full max-w-sm"
+    68→    68→          data-reveal
+    69→    69→          style={{ "--reveal-delay": "150ms" } as React.CSSProperties}
+    70→    70→        >
+    71→    71→          <p className="mb-3 flex items-center justify-end gap-1.5 pr-4 text-sm text-zinc-300">
+    72→    72→            Это я
+    73→    73→            <ArrowDownRight className="size-4" aria-hidden="true" />
+    74→    74→          </p>
+    75→    75→          <div className="group relative rotate-[4deg] rounded-2xl bg-white p-3 pb-16 shadow-2xl shadow-black/60 transition-transform duration-500 hover:rotate-1">
+    76→    76→            {/* скотч-полоски */}
+    77→    77→            <span
+    78→    78→              aria-hidden="true"
+    79→    79→              className="absolute -top-3 left-7 z-10 h-7 w-24 -rotate-6 rounded-[2px] bg-white/30 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
+    80→    80→            />
+    81→    81→            <span
+    82→    82→              aria-hidden="true"
+    83→    83→              className="absolute -top-2 right-9 z-10 h-7 w-20 rotate-[5deg] rounded-[2px] bg-white/25 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
+    84→    84→            />
+    85→    85→            <div className="overflow-hidden rounded-xl bg-zinc-800">
+    86→    86→              <img
+    87→    87→                src="/images/me.png"
+    88→    88→                alt="Владимир (Erriour) — фотография"
+    89→    89→                className="aspect-[4/5] w-full scale-[1.04] object-cover blur-[2px] transition-all duration-700 group-hover:blur-0"
+    90→    90→                loading="lazy"
+    91→    91→              />
+    92→    92→            </div>
+    93→    93→            <p className="absolute inset-x-0 bottom-4 text-center font-display text-base font-medium text-zinc-500">
+    94→    94→              Владимир · веб-разработчик
+    95→    95→            </p>
+    96→    96→          </div>
+    97→    97→        </div>
+    98→    98→      </div>
+    99→    99→    </section>
+   100→   100→  );
+   101→   101→}
+   102→   102→
+   103→   103→===== tech.tsx =====
+   104→   104→import { techRows } from "./data";
+   105→   105→import { Marquee, MarqueeDot } from "./marquee";
+   106→   106→import { SectionKicker } from "./section-heading";
+   107→   107→import { cn } from "@/lib/utils";
+   108→   108→
+   109→   109→function TechRow({
+   110→   110→  items,
+   111→   111→  duration,
+   112→   112→  reverse = false,
+   113→   113→  className,
+   114→   114→}: {
+   115→   115→  items: { label: string; icon?: string; emoji?: string }[];
+   116→   116→  duration: number;
+   117→   117→  reverse?: boolean;
+   118→   118→  className?: string;
+   119→   119→}) {
+   120→   120→  return (
+   121→   121→    <Marquee duration={duration} reverse={reverse} pauseOnHover className={className}>
+   122→   122→      {items.map((item) => (
+   123→   123→        <span key={item.label} className="flex items-center">
+   124→   124→          <span className="flex items-center gap-3 whitespace-nowrap">
+   125→   125→            {item.icon ? (
+   126→   126→               
+   127→   127→              <img
+   128→   128→                src={`/icons/tech/${item.icon}.svg`}
+   129→   129→                alt=""
+   130→   130→                width={26}
+   131→   131→                height={26}
+   132→   132→                className="size-6 sm:size-7 shrink-0"
+   133→   133→                loading="lazy"
+   134→   134→              />
+   135→   135→            ) : (
+   136→   136→              <span aria-hidden="true" className="text-xl sm:text-2xl leading-none">
+   137→   137→                {item.emoji}
+   138→   138→              </span>
+   139→   139→            )}
+   140→   140→            <span className="text-lg sm:text-2xl font-medium text-white/85">
+   141→   141→              {item.label}
+   142→   142→            </span>
+   143→   143→          </span>
+   144→   144→          <MarqueeDot />
+   145→   145→        </span>
+   146→   146→      ))}
+   147→   147→    </Marquee>
+   148→   148→  );
+   149→   149→}
+   150→   150→
+   151→   151→export default function Tech() {
+   152→   152→  return (
+   153→   153→    <section id="tech" className="relative scroll-mt-24 py-24 sm:py-32">
+   154→   154→      <div
+   155→   155→        aria-hidden="true"
+   156→   156→        className="pointer-events-none absolute left-1/2 top-1/3 h-80 w-[50rem] max-w-full -translate-x-1/2 rounded-full bg-fuchsia-900/10 blur-3xl"
+   157→   157→      />
+   158→   158→      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+   159→   159→        <div data-reveal className="mb-12 text-center sm:mb-16">
+   160→   160→          <SectionKicker>Стек</SectionKicker>
+   161→   161→          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+   162→   162→            Технологии
+   163→   163→          </h2>
+   164→   164→          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+   165→   165→            которые я знаю и использую в проектах
+   166→   166→          </p>
+   167→   167→        </div>
+   168→   168→      </div>
+   169→   169→
+   170→   170→      <div data-reveal className="relative space-y-7 sm:space-y-9">
+   171→   171→        <TechRow items={techRows[0]} duration={52} />
+   172→   172→        <TechRow items={techRows[1]} duration={58} reverse />
+   173→   173→        <TechRow items={techRows[2]} duration={55} />
+   174→   174→      </div>
+   175→   175→    </section>
+   176→   176→  );
+   177→   177→}
+   178→   178→
+   179→   179→===== contact.tsx =====
+   180→   180→import { ArrowUpRight } from "lucide-react";
+   181→   181→import { socials } from "./data";
+   182→   182→import { SectionKicker } from "./section-heading";
+   183→   183→import ContactForm from "./contact-form";
+   184→   184→import CopyEmailButton from "./copy-email-button";
+   185→   185→import LocalTime from "./local-time";
+   186→   186→
+   187→   187→const primaryNames = ["Telegram", "Discord", "VK", "GitHub"];
+   188→   188→
+   189→   189→const descriptions: Record<string, string> = {
+   190→   190→  Telegram: "Отвечаю в течение часа",
+   191→   191→  Discord: "Для быстрых вопросов",
+   192→   192→  VK: "Пишите в личные сообщения",
+   193→   193→  GitHub: "Мой код и open-source",
+   194→   194→};
+   195→   195→
+   196→   196→export default function Contact() {
+   197→   197→  const primary = primaryNames
+   198→   198→    .map((n) => socials.find((s) => s.name === n))
+   199→   199→    .filter(Boolean) as typeof socials;
+   200→   200→  const secondary = socials.filter((s) => !primaryNames.includes(s.name));
+   201→   201→
+   202→   202→  return (
+   203→   203→    <section id="contact" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
+   204→   204→      {/* aurora glow at bottom */}
+   205→   205→      <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+   206→   206→        <div className="aurora-layer aurora-b opacity-70" />
+   207→   207→        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(10,10,11,0.82)_100%)]" />
+   208→   208→      </div>
+   209→   209→
+   210→   210→      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+   211→   211→        <div data-reveal className="mb-12 text-center sm:mb-16">
+   212→   212→          <SectionKicker>Контакты</SectionKicker>
+   213→   213→          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+   214→   214→            Обсудить задачу
+   215→   215→          </h2>
+   216→   216→          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+   217→   217→            напишите мне в мессенджерах или соц.сетях
+   218→   218→          </p>
+   219→   219→          <LocalTime className="mt-6" />
+   220→   220→        </div>
+   221→   221→
+   222→   222→        <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+   223→   223→          {primary.map((s, i) => (
+   224→   224→            <a
+   225→   225→              key={s.name}
+   226→   226→              href={s.href}
+   227→   227→              target="_blank"
+   228→   228→              rel="noopener noreferrer"
+   229→   229→              data-reveal
+   230→   230→              style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}
+   231→   231→              className="card-shine group flex items-center gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.07] sm:p-6"
+   232→   232→            >
+   233→   233→              <span
+   234→   234→                className="grid size-14 shrink-0 place-items-center rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110"
+   235→   235→                style={{ backgroundColor: `#${s.color}22`, border: `1px solid #${s.color}55` }}
+   236→   236→              >
+   237→   237→                
+   238→   238→                <img
+   239→   239→                  src={`/icons/social/${s.icon}.svg`}
+   240→   240→                  alt=""
+   241→   241→                  width={26}
+   242→   242→                  height={26}
+   243→   243→                  className="size-[26px]"
+   244→   244→                  loading="lazy"
+   245→   245→                />
+   246→   246→              </span>
+   247→   247→              <span className="min-w-0 flex-1">
+   248→   248→                <span className="block font-display text-lg font-bold text-white">{s.name}</span>
+   249→   249→                <span className="block truncate text-sm text-zinc-400">{descriptions[s.name] ?? s.handle}</span>
+   250→   250→              </span>
+   251→   251→              <ArrowUpRight
+   252→   252→                className="size-5 shrink-0 text-zinc-500 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+   253→   253→                aria-hidden="true"
+   254→   254→              />
+   255→   255→            </a>
+   256→   256→          ))}
+   257→   257→        </div>
+   258→   258→
+   259→   259→        <div data-reveal className="mt-8 flex flex-wrap items-center justify-center gap-2">
+   260→   260→          {secondary.map((s) => (
+   261→   261→            <a
+   262→   262→              key={s.name}
+   263→   263→              href={s.href}
+   264→   264→              target="_blank"
+   265→   265→              rel="noopener noreferrer"
+   266→   266→              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:border-white/25 hover:bg-white/10 hover:text-white"
+   267→   267→            >
+   268→   268→              
+   269→   269→              <img
+   270→   270→                src={`/icons/social/${s.icon}.svg`}
+   271→   271→                alt=""
+   272→   272→                width={15}
+   273→   273→                height={15}
+   274→   274→                className="size-[15px] opacity-80"
+   275→   275→                loading="lazy"
+   276→   276→              />
+   277→   277→              {s.name}
+   278→   278→            </a>
+   279→   279→          ))}
+   280→   280→          <CopyEmailButton />
+   281→   281→        </div>
+   282→   282→
+   283→   283→        <ContactForm />
+   284→   284→      </div>
+   285→   285→    </section>
+   286→   286→  );
+   287→   287→}
+   288→   288→
+   289→   289→===== own-projects.tsx =====
+   290→   290→import { ArrowUpRight } from "lucide-react";
+   291→   291→import { UnderBornArt, HostFeedArt } from "./case-art";
+   292→   292→import { SectionKicker } from "./section-heading";
+   293→   293→
+   294→   294→function ProjectCard({
+   295→   295→  title,
+   296→   296→  art,
+   297→   297→  status,
+   298→   298→  href,
+   299→   299→}: {
+   300→   300→  title: string;
+   301→   301→  art: React.ReactNode;
+   302→   302→  status: string;
+   303→   303→  href: string;
+   304→   304→}) {
+   305→   305→  return (
+   306→   306→    <div data-reveal>
+   307→   307→      <a
+   308→   308→        href={href}
+   309→   309→        target="_blank"
+   310→   310→        rel="noopener noreferrer"
+   311→   311→        aria-label={`${title} — перейти на сайт`}
+   312→   312→        className="card-shine group relative block aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 shadow-xl shadow-black/40 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-2xl"
+   313→   313→      >
+   314→   314→        {art}
+   315→   315→      </a>
+   316→   316→      <div className="mt-4 flex items-center justify-between px-1">
+   317→   317→        <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-black">
+   318→   318→          <span className="animate-pulse-dot size-1.5 rounded-full bg-black/70" aria-hidden="true" />
+   319→   319→          {status}
+   320→   320→        </span>
+   321→   321→        <a
+   322→   322→          href={href}
+   323→   323→          target="_blank"
+   324→   324→          rel="noopener noreferrer"
+   325→   325→          className="group inline-flex items-center gap-1.5 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+   326→   326→        >
+   327→   327→          Перейти на сайт
+   328→   328→          <ArrowUpRight
+   329→   329→            className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+   330→   330→            aria-hidden="true"
+   331→   331→          />
+   332→   332→        </a>
+   333→   333→      </div>
+   334→   334→    </div>
+   335→   335→  );
+   336→   336→}
+   337→   337→
+   338→   338→export default function OwnProjects() {
+   339→   339→  return (
+   340→   340→    <section id="projects" className="relative scroll-mt-24 py-24 sm:py-32">
+   341→   341→      {/* soft glow */}
+   342→   342→      <div
+   343→   343→        aria-hidden="true"
+   344→   344→        className="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-purple-800/15 blur-3xl"
+   345→   345→      />
+   346→   346→      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+   347→   347→        <div data-reveal className="mb-12 text-center sm:mb-16">
+   348→   348→          <SectionKicker>Pet-проекты</SectionKicker>
+   349→   349→          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+   350→   350→            Собственные проекты
+   351→   351→          </h2>
+   352→   352→          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+   353→   353→            проекты, которые я разрабатываю в свободное время
+   354→   354→          </p>
+   355→   355→        </div>
+   356→   356→
+   357→   357→        <div className="grid gap-8 md:grid-cols-2 md:gap-6">
+   358→   358→          <ProjectCard
+   359→   359→            title="UnderBorn"
+   360→   360→            art={<UnderBornArt />}
+   361→   361→            status="В разработке"
+   362→   362→            href="https://underborn.ru"
+   363→   363→          />
+   364→   364→          <ProjectCard
+   365→   365→            title="HostFeed"
+   366→   366→            art={<HostFeedArt />}
+   367→   367→            status="В разработке"
+   368→   368→            href="https://hostfeed.ru"
+   369→   369→          />
+   370→   370→        </div>
+   371→   371→
+   372→   372→        <div data-reveal className="mt-14 text-center">
+   373→   373→          <a
+   374→   374→            href="#cases"
+   375→   375→            className="inline-flex items-center gap-2 rounded-2xl bg-white px-9 py-4 text-base font-bold text-black shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.04] active:scale-95"
+   376→   376→          >
+   377→   377→            Посмотреть портфолио
+   378→   378→          </a>
+   379→   379→        </div>
+   380→   380→      </div>
+   381→   381→    </section>
+   382→   382→  );
+   383→   383→}
+   384→   384→
+   385→   385→===== testimonials.tsx =====
+   386→   386→import { Quote, Star } from "lucide-react";
+   387→   387→import { testimonials } from "./data";
+   388→   388→import { SectionKicker } from "./section-heading";
+   389→   389→
+   390→   390→export default function Testimonials() {
+   391→   391→  return (
+   392→   392→    <section id="reviews" className="relative scroll-mt-24 py-24 sm:py-32">
+   393→   393→      <div
+   394→   394→        aria-hidden="true"
+   395→   395→        className="pointer-events-none absolute right-1/4 top-16 size-96 rounded-full bg-fuchsia-900/10 blur-3xl"
+   396→   396→      />
+   397→   397→      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+   398→   398→        <div data-reveal className="mb-12 text-center sm:mb-16">
+   399→   399→          <SectionKicker>Отзывы</SectionKicker>
+   400→   400→          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+   401→   401→            Что говорят клиенты
+   402→   402→          </h2>
+   403→   403→          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+   404→   404→            несколько слов от тех, с кем я уже работал
+   405→   405→          </p>
+   406→   406→        </div>
+   407→   407→
+   408→   408→        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+   409→   409→          {testimonials.map((t, i) => (
+   410→   410→            <figure
+   411→   411→              key={t.name}
+   412→   412→              data-reveal
+   413→   413→              style={{ "--reveal-delay": `${i * 100}ms` } as React.CSSProperties}
+   414→   414→              className="card-shine group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.05]"
+   415→   415→            >
+   416→   416→              <Quote
+   417→   417→                aria-hidden="true"
+   418→   418→                className="absolute right-5 top-5 size-8 text-white/[0.06] transition-colors duration-500 group-hover:text-fuchsia-400/25"
+   419→   419→              />
+   420→   420→
+   421→   421→              {/* звёзды */}
+   422→   422→              <div
+   423→   423→                className="flex gap-0.5"
+   424→   424→                role="img"
+   425→   425→                aria-label="Оценка 5 из 5"
+   426→   426→              >
+   427→   427→                {Array.from({ length: 5 }).map((_, s) => (
+   428→   428→                  <Star
+   429→   429→                    key={s}
+   430→   430→                    aria-hidden="true"
+   431→   431→                    className="size-3.5 fill-amber-400 text-amber-400"
+   432→   432→                  />
+   433→   433→                ))}
+   434→   434→              </div>
+   435→   435→
+   436→   436→              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-zinc-300">
+   437→   437→                {t.quote}
+   438→   438→              </blockquote>
+   439→   439→
+   440→   440→              <figcaption className="mt-6 flex items-center gap-3 border-t border-white/5 pt-4">
+   441→   441→                {/* градиентное кольцо вокруг аватара */}
+   442→   442→                <span
+   443→   443→                  aria-hidden="true"
+   444→   444→                  className="grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-fuchsia-500/60 via-purple-500/30 to-white/10 p-[2px] transition-all duration-500 group-hover:from-fuchsia-400/90 group-hover:via-purple-400/60"
+   445→   445→                >
+   446→   446→                  <span className="grid size-full place-items-center rounded-full bg-[#141416] p-[3px]">
+   447→   447→                    <span
+   448→   448→                      className={`grid size-full place-items-center rounded-full bg-gradient-to-br ${t.gradient} font-display text-xs font-bold text-white shadow-lg`}
+   449→   449→                    >
+   450→   450→                      {t.initials}
+   451→   451→                    </span>
+   452→   452→                  </span>
+   453→   453→                </span>
+   454→   454→                <span className="min-w-0">
+   455→   455→                  <span className="block truncate font-display text-sm font-bold text-white">
+   456→   456→                    {t.name}
+   457→   457→                  </span>
+   458→   458→                  <span className="block truncate text-xs text-zinc-500">
+   459→   459→                    {t.role}
+   460→   460→                  </span>
+   461→   461→                </span>
+   462→   462→              </figcaption>
+   463→   463→            </figure>
+   464→   464→          ))}
+   465→   465→        </div>
+   466→   466→      </div>
+   467→   467→    </section>
+   468→   468→  );
+   469→   469→}
+   470→   470→
+   471→   471→===== process.tsx =====
+   472→   472→import {
+   473→   473→  ChevronRight,
+   474→   474→  MessagesSquare,
+   475→   475→  PenTool,
+   476→   476→  Code2,
+   477→   477→  Rocket,
+   478→   478→} from "lucide-react";
+   479→   479→import { SectionKicker } from "./section-heading";
+   480→   480→
+   481→   481→const steps = [
+   482→   482→  {
+   483→   483→    num: "01",
+   484→   484→    icon: MessagesSquare,
+   485→   485→    title: "Знакомство и ТЗ",
+   486→   486→    text: "Обсуждаем задачу в мессенджере или созвоне. Собираю требования, предлагаю решения, фиксирую смету и сроки.",
+   487→   487→  },
+   488→   488→  {
+   489→   489→    num: "02",
+   490→   490→    icon: PenTool,
+   491→   491→    title: "Дизайн-концепт",
+   492→   492→    text: "Рисую макет ключевых экранов. Стиль согласуем до полного «да» — вносим правки, пока не понравится.",
+   493→   493→  },
+   494→   494→  {
+   495→   495→    num: "03",
+   496→   496→    icon: Code2,
+   497→   497→    title: "Разработка",
+   498→   498→    text: "Верстаю и программирую, показываю промежуточные версии, тестирую на всех устройствах и браузерах.",
+   499→   499→  },
+   500→   500→  {
+   501→   501→    num: "04",
+   502→   502→    icon: Rocket,
+   503→   503→    title: "Запуск и поддержка",
+   504→   504→    text: "Деплой, SEO-база, аналитика и обучение по админке. Две недели бесплатных правок после релиза.",
+   505→   505→  },
+   506→   506→];
+   507→   507→
+   508→   508→export default function Process() {
+   509→   509→  return (
+   510→   510→    <section id="process" className="relative scroll-mt-24 py-24 sm:py-32">
+   511→   511→      {/* точечная сетка + мягкое свечение */}
+   512→   512→      <div
+   513→   513→        aria-hidden="true"
+   514→   514→        className="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
+   515→   515→      />
+   516→   516→      <div
+   517→   517→        aria-hidden="true"
+   518→   518→        className="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"
+   519→   519→      />
+   520→   520→      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+   521→   521→        <div data-reveal className="mb-12 text-center sm:mb-16">
+   522→   522→          <SectionKicker>Этапы работы</SectionKicker>
+   523→   523→          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+   524→   524→            Как я работаю
+   525→   525→          </h2>
+   526→   526→          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+   527→   527→            прозрачный процесс — вы видите результат на каждом шаге
+   528→   528→          </p>
+   529→   529→        </div>
+   530→   530→
+   531→   531→        <div className="relative">
+   532→   532→          {/* соединительная линия и стрелки между шагами (только xl) */}
+   533→   533→          <div
+   534→   534→            aria-hidden="true"
+   535→   535→            className="pointer-events-none absolute inset-x-8 top-[52px] hidden xl:block"
+   536→   536→          >
+   537→   537→            <div className="h-px w-full bg-gradient-to-r from-fuchsia-500/10 via-fuchsia-400/30 to-fuchsia-500/10" />
+   538→   538→            <ChevronRight className="absolute -top-[9px] left-1/4 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+   539→   539→            <ChevronRight className="absolute -top-[9px] left-1/2 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+   540→   540→            <ChevronRight className="absolute -top-[9px] left-3/4 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+   541→   541→          </div>
+   542→   542→
+   543→   543→          <ol className="relative grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+   544→   544→          {steps.map((step, i) => (
+   545→   545→            <li
+   546→   546→              key={step.num}
+   547→   547→              data-reveal
+   548→   548→              style={{ "--reveal-delay": `${i * 110}ms` } as React.CSSProperties}
+   549→   549→            >
+   550→   550→              <article className="card-shine group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.05] sm:p-7">
+   551→   551→                {/* большая номерная подложка */}
+   552→   552→                <span
+   553→   553→                  aria-hidden="true"
+   554→   554→                  className="pointer-events-none absolute -right-3 -top-7 select-none font-display text-[7rem] font-bold leading-none text-white/[0.045] transition-colors duration-500 group-hover:text-white/[0.08]"
+   555→   555→                >
+   556→   556→                  {step.num}
+   557→   557→                </span>
+   558→   558→
+   559→   559→                <span className="relative grid size-12 place-items-center rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/20 via-purple-500/15 to-transparent">
+   560→   560→                  <step.icon
+   561→   561→                    className="size-5 text-fuchsia-300 transition-transform duration-500 group-hover:scale-110"
+   562→   562→                    aria-hidden="true"
+   563→   563→                  />
+   564→   564→                </span>
+   565→   565→
+   566→   566→                <p className="relative mt-5 text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300/80">
+   567→   567→                  Шаг {step.num}
+   568→   568→                </p>
+   569→   569→                <h3 className="relative mt-2 font-display text-xl font-bold">
+   570→   570→                  {step.title}
+   571→   571→                </h3>
+   572→   572→                <p className="relative mt-3 text-sm leading-relaxed text-zinc-400">
+   573→   573→                  {step.text}
+   574→   574→                </p>
+   575→   575→              </article>
+   576→   576→            </li>
+   577→   577→          ))}
+   578→   578→          </ol>
+   579→   579→        </div>
+   580→   580→      </div>
+   581→   581→    </section>
+   582→   582→  );
+   583→   583→}
+   584→   584→
+   585→   585→===== prices.tsx =====
+   586→   586→import { Check, Flame } from "lucide-react";
+   587→   587→import { prices } from "./data";
+   588→   588→import { SectionKicker } from "./section-heading";
+   589→   589→import PriceCalculator from "./price-calculator";
+   590→   590→import { cn } from "@/lib/utils";
+   591→   591→
+   592→   592→export default function Prices() {
+   593→   593→  return (
+   594→   594→    <section id="prices" className="relative scroll-mt-24 py-24 sm:py-32">
+   595→   595→      <div
+   596→   596→        aria-hidden="true"
+   597→   597→        className="pointer-events-none absolute right-0 top-24 size-96 rounded-full bg-blue-900/10 blur-3xl"
+   598→   598→      />
+   599→   599→      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+   600→   600→        <div data-reveal className="mb-12 text-center sm:mb-16">
+   601→   601→          <SectionKicker>Тарифы</SectionKicker>
+   602→   602→          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+   603→   603→            Цены
+   604→   604→          </h2>
+   605→   605→          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+   606→   606→            прозрачные условия — вы платите за результат, без скрытых платежей
+   607→   607→          </p>
+   608→   608→        </div>
+   609→   609→
+   610→   610→        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+   611→   611→          {prices.map((tier, i) => (
+   612→   612→            <div
+   613→   613→              key={tier.name}
+   614→   614→              data-reveal
+   615→   615→              style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}
+   616→   616→              className="relative"
+   617→   617→            >
+   618→   618→              {tier.featured && (
+   619→   619→                <span className="absolute -top-3.5 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg">
+   620→   620→                  <Flame className="size-3.5" aria-hidden="true" />
+   621→   621→                  Популярный выбор
+   622→   622→                </span>
+   623→   623→              )}
+   624→   624→              <div
+   625→   625→                className={cn(
+   626→   626→                  "card-shine group relative flex h-full flex-col rounded-3xl border p-6 transition-all duration-500 hover:-translate-y-1.5 sm:p-7",
+   627→   627→                  tier.featured
+   628→   628→                    ? "glow-featured border-white bg-white text-black"
+   629→   629→                    : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.05]"
+   630→   630→                )}
+   631→   631→              >
+   632→   632→
+   633→   633→              <h3
+   634→   634→                className={cn(
+   635→   635→                  "font-display text-xl font-bold",
+   636→   636→                  tier.featured ? "text-black" : "text-white"
+   637→   637→                )}
+   638→   638→              >
+   639→   639→                {tier.name}
+   640→   640→              </h3>
+   641→   641→              <div
+   642→   642→                className={cn(
+   643→   643→                  "mt-3 font-display text-3xl font-bold tracking-tight",
+   644→   644→                  tier.featured ? "text-black" : "bg-gradient-to-r from-fuchsia-400 to-purple-400 bg-clip-text text-transparent"
+   645→   645→                )}
+   646→   646→              >
+   647→   647→                {tier.price}
+   648→   648→              </div>
+   649→   649→              <p className={cn("mt-2 text-sm", tier.featured ? "text-black/60" : "text-zinc-400")}>
+   650→   650→                {tier.description}
+   651→   651→              </p>
+   652→   652→
+   653→   653→              <ul className="mt-6 flex-1 space-y-3">
+   654→   654→                {tier.features.map((f) => (
+   655→   655→                  <li key={f} className="flex items-start gap-2.5 text-sm">
+
+[showing lines 36-655 of 791; use offset=656 with limit to continue reading]

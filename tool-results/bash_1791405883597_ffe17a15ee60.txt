@@ -1,0 +1,791 @@
+===== about.tsx =====
+import { ArrowDownRight } from "lucide-react";
+import Counter from "./counter";
+import { SectionKicker } from "./section-heading";
+
+const stats = [
+  { value: 6, suffix: "+", label: "лет в веб-разработке" },
+  { value: 40, suffix: "+", label: "проектов сдано в срок" },
+  { value: 30, suffix: "+", label: "довольных клиентов" },
+  { value: 98, suffix: "%", label: "клиентов возвращаются" },
+];
+
+export default function About() {
+  return (
+    <section id="about" className="relative scroll-mt-24 py-24 sm:py-32">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-1/3 size-96 rounded-full bg-indigo-900/10 blur-3xl"
+      />
+      <div className="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10">
+        {/* Text */}
+        <div data-reveal>
+          <SectionKicker>Кто я</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Обо мне
+          </h2>
+          <div className="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-zinc-300 sm:text-lg">
+            <p>
+              Меня зовут Владимир, я веб-разработчик с большим опытом работы в
+              создании современных и удобных сайтов. Окончил магистратуру
+              Университета ИТМО по специальности «Веб-разработка». Работал как
+              самостоятельно, так и в команде — у меня есть опыт разработки от
+              простых лендингов до действительно сложных проектов!
+            </p>
+            <p>
+              Беру на себя как разработку с нуля, так и доработку существующих
+              проектов — от лендингов до сложных многостраничных сайтов. Если
+              вам нужен сайт, который будет не просто «чтобы был», а
+              действительно поможет вашему делу — вы по адресу.
+            </p>
+          </div>
+
+          {/* Counters */}
+          <dl className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {stats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20"
+              >
+                <dd className="font-display text-3xl font-bold tracking-tight">
+                  <Counter
+                    value={s.value}
+                    suffix={s.suffix}
+                    className="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
+                  />
+                </dd>
+                <dt className="mt-1.5 text-xs leading-snug text-zinc-500">
+                  {s.label}
+                </dt>
+              </div>
+            ))}
+          </dl>
+        </div>
+
+        {/* Polaroid photo */}
+        <div
+          className="relative mx-auto w-full max-w-sm"
+          data-reveal
+          style={{ "--reveal-delay": "150ms" } as React.CSSProperties}
+        >
+          <p className="mb-3 flex items-center justify-end gap-1.5 pr-4 text-sm text-zinc-300">
+            Это я
+            <ArrowDownRight className="size-4" aria-hidden="true" />
+          </p>
+          <div className="group relative rotate-[4deg] rounded-2xl bg-white p-3 pb-16 shadow-2xl shadow-black/60 transition-transform duration-500 hover:rotate-1">
+            {/* скотч-полоски */}
+            <span
+              aria-hidden="true"
+              className="absolute -top-3 left-7 z-10 h-7 w-24 -rotate-6 rounded-[2px] bg-white/30 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
+            />
+            <span
+              aria-hidden="true"
+              className="absolute -top-2 right-9 z-10 h-7 w-20 rotate-[5deg] rounded-[2px] bg-white/25 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
+            />
+            <div className="overflow-hidden rounded-xl bg-zinc-800">
+              <img
+                src="/images/me.png"
+                alt="Владимир (Erriour) — фотография"
+                className="aspect-[4/5] w-full scale-[1.04] object-cover blur-[2px] transition-all duration-700 group-hover:blur-0"
+                loading="lazy"
+              />
+            </div>
+            <p className="absolute inset-x-0 bottom-4 text-center font-display text-base font-medium text-zinc-500">
+              Владимир · веб-разработчик
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+===== tech.tsx =====
+import { techRows } from "./data";
+import { Marquee, MarqueeDot } from "./marquee";
+import { SectionKicker } from "./section-heading";
+import { cn } from "@/lib/utils";
+
+function TechRow({
+  items,
+  duration,
+  reverse = false,
+  className,
+}: {
+  items: { label: string; icon?: string; emoji?: string }[];
+  duration: number;
+  reverse?: boolean;
+  className?: string;
+}) {
+  return (
+    <Marquee duration={duration} reverse={reverse} pauseOnHover className={className}>
+      {items.map((item) => (
+        <span key={item.label} className="flex items-center">
+          <span className="flex items-center gap-3 whitespace-nowrap">
+            {item.icon ? (
+               
+              <img
+                src={`/icons/tech/${item.icon}.svg`}
+                alt=""
+                width={26}
+                height={26}
+                className="size-6 sm:size-7 shrink-0"
+                loading="lazy"
+              />
+            ) : (
+              <span aria-hidden="true" className="text-xl sm:text-2xl leading-none">
+                {item.emoji}
+              </span>
+            )}
+            <span className="text-lg sm:text-2xl font-medium text-white/85">
+              {item.label}
+            </span>
+          </span>
+          <MarqueeDot />
+        </span>
+      ))}
+    </Marquee>
+  );
+}
+
+export default function Tech() {
+  return (
+    <section id="tech" className="relative scroll-mt-24 py-24 sm:py-32">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/3 h-80 w-[50rem] max-w-full -translate-x-1/2 rounded-full bg-fuchsia-900/10 blur-3xl"
+      />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Стек</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Технологии
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            которые я знаю и использую в проектах
+          </p>
+        </div>
+      </div>
+
+      <div data-reveal className="relative space-y-7 sm:space-y-9">
+        <TechRow items={techRows[0]} duration={52} />
+        <TechRow items={techRows[1]} duration={58} reverse />
+        <TechRow items={techRows[2]} duration={55} />
+      </div>
+    </section>
+  );
+}
+
+===== contact.tsx =====
+import { ArrowUpRight } from "lucide-react";
+import { socials } from "./data";
+import { SectionKicker } from "./section-heading";
+import ContactForm from "./contact-form";
+import CopyEmailButton from "./copy-email-button";
+import LocalTime from "./local-time";
+
+const primaryNames = ["Telegram", "Discord", "VK", "GitHub"];
+
+const descriptions: Record<string, string> = {
+  Telegram: "Отвечаю в течение часа",
+  Discord: "Для быстрых вопросов",
+  VK: "Пишите в личные сообщения",
+  GitHub: "Мой код и open-source",
+};
+
+export default function Contact() {
+  const primary = primaryNames
+    .map((n) => socials.find((s) => s.name === n))
+    .filter(Boolean) as typeof socials;
+  const secondary = socials.filter((s) => !primaryNames.includes(s.name));
+
+  return (
+    <section id="contact" className="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
+      {/* aurora glow at bottom */}
+      <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+        <div className="aurora-layer aurora-b opacity-70" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(10,10,11,0.82)_100%)]" />
+      </div>
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Контакты</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+            Обсудить задачу
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            напишите мне в мессенджерах или соц.сетях
+          </p>
+          <LocalTime className="mt-6" />
+        </div>
+
+        <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
+          {primary.map((s, i) => (
+            <a
+              key={s.name}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal
+              style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}
+              className="card-shine group flex items-center gap-4 rounded-3xl border border-white/10 bg-white/[0.04] p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.07] sm:p-6"
+            >
+              <span
+                className="grid size-14 shrink-0 place-items-center rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110"
+                style={{ backgroundColor: `#${s.color}22`, border: `1px solid #${s.color}55` }}
+              >
+                
+                <img
+                  src={`/icons/social/${s.icon}.svg`}
+                  alt=""
+                  width={26}
+                  height={26}
+                  className="size-[26px]"
+                  loading="lazy"
+                />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block font-display text-lg font-bold text-white">{s.name}</span>
+                <span className="block truncate text-sm text-zinc-400">{descriptions[s.name] ?? s.handle}</span>
+              </span>
+              <ArrowUpRight
+                className="size-5 shrink-0 text-zinc-500 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+                aria-hidden="true"
+              />
+            </a>
+          ))}
+        </div>
+
+        <div data-reveal className="mt-8 flex flex-wrap items-center justify-center gap-2">
+          {secondary.map((s) => (
+            <a
+              key={s.name}
+              href={s.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-medium text-zinc-300 transition-all hover:border-white/25 hover:bg-white/10 hover:text-white"
+            >
+              
+              <img
+                src={`/icons/social/${s.icon}.svg`}
+                alt=""
+                width={15}
+                height={15}
+                className="size-[15px] opacity-80"
+                loading="lazy"
+              />
+              {s.name}
+            </a>
+          ))}
+          <CopyEmailButton />
+        </div>
+
+        <ContactForm />
+      </div>
+    </section>
+  );
+}
+
+===== own-projects.tsx =====
+import { ArrowUpRight } from "lucide-react";
+import { UnderBornArt, HostFeedArt } from "./case-art";
+import { SectionKicker } from "./section-heading";
+
+function ProjectCard({
+  title,
+  art,
+  status,
+  href,
+}: {
+  title: string;
+  art: React.ReactNode;
+  status: string;
+  href: string;
+}) {
+  return (
+    <div data-reveal>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${title} — перейти на сайт`}
+        className="card-shine group relative block aspect-[16/10] overflow-hidden rounded-3xl border border-white/10 shadow-xl shadow-black/40 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-2xl"
+      >
+        {art}
+      </a>
+      <div className="mt-4 flex items-center justify-between px-1">
+        <span className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-sm font-semibold text-black">
+          <span className="animate-pulse-dot size-1.5 rounded-full bg-black/70" aria-hidden="true" />
+          {status}
+        </span>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-1.5 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+        >
+          Перейти на сайт
+          <ArrowUpRight
+            className="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </a>
+      </div>
+    </div>
+  );
+}
+
+export default function OwnProjects() {
+  return (
+    <section id="projects" className="relative scroll-mt-24 py-24 sm:py-32">
+      {/* soft glow */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-purple-800/15 blur-3xl"
+      />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Pet-проекты</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Собственные проекты
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            проекты, которые я разрабатываю в свободное время
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2 md:gap-6">
+          <ProjectCard
+            title="UnderBorn"
+            art={<UnderBornArt />}
+            status="В разработке"
+            href="https://underborn.ru"
+          />
+          <ProjectCard
+            title="HostFeed"
+            art={<HostFeedArt />}
+            status="В разработке"
+            href="https://hostfeed.ru"
+          />
+        </div>
+
+        <div data-reveal className="mt-14 text-center">
+          <a
+            href="#cases"
+            className="inline-flex items-center gap-2 rounded-2xl bg-white px-9 py-4 text-base font-bold text-black shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.04] active:scale-95"
+          >
+            Посмотреть портфолио
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+===== testimonials.tsx =====
+import { Quote, Star } from "lucide-react";
+import { testimonials } from "./data";
+import { SectionKicker } from "./section-heading";
+
+export default function Testimonials() {
+  return (
+    <section id="reviews" className="relative scroll-mt-24 py-24 sm:py-32">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-1/4 top-16 size-96 rounded-full bg-fuchsia-900/10 blur-3xl"
+      />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Отзывы</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Что говорят клиенты
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            несколько слов от тех, с кем я уже работал
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {testimonials.map((t, i) => (
+            <figure
+              key={t.name}
+              data-reveal
+              style={{ "--reveal-delay": `${i * 100}ms` } as React.CSSProperties}
+              className="card-shine group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.05]"
+            >
+              <Quote
+                aria-hidden="true"
+                className="absolute right-5 top-5 size-8 text-white/[0.06] transition-colors duration-500 group-hover:text-fuchsia-400/25"
+              />
+
+              {/* звёзды */}
+              <div
+                className="flex gap-0.5"
+                role="img"
+                aria-label="Оценка 5 из 5"
+              >
+                {Array.from({ length: 5 }).map((_, s) => (
+                  <Star
+                    key={s}
+                    aria-hidden="true"
+                    className="size-3.5 fill-amber-400 text-amber-400"
+                  />
+                ))}
+              </div>
+
+              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-zinc-300">
+                {t.quote}
+              </blockquote>
+
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-white/5 pt-4">
+                {/* градиентное кольцо вокруг аватара */}
+                <span
+                  aria-hidden="true"
+                  className="grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-fuchsia-500/60 via-purple-500/30 to-white/10 p-[2px] transition-all duration-500 group-hover:from-fuchsia-400/90 group-hover:via-purple-400/60"
+                >
+                  <span className="grid size-full place-items-center rounded-full bg-[#141416] p-[3px]">
+                    <span
+                      className={`grid size-full place-items-center rounded-full bg-gradient-to-br ${t.gradient} font-display text-xs font-bold text-white shadow-lg`}
+                    >
+                      {t.initials}
+                    </span>
+                  </span>
+                </span>
+                <span className="min-w-0">
+                  <span className="block truncate font-display text-sm font-bold text-white">
+                    {t.name}
+                  </span>
+                  <span className="block truncate text-xs text-zinc-500">
+                    {t.role}
+                  </span>
+                </span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+===== process.tsx =====
+import {
+  ChevronRight,
+  MessagesSquare,
+  PenTool,
+  Code2,
+  Rocket,
+} from "lucide-react";
+import { SectionKicker } from "./section-heading";
+
+const steps = [
+  {
+    num: "01",
+    icon: MessagesSquare,
+    title: "Знакомство и ТЗ",
+    text: "Обсуждаем задачу в мессенджере или созвоне. Собираю требования, предлагаю решения, фиксирую смету и сроки.",
+  },
+  {
+    num: "02",
+    icon: PenTool,
+    title: "Дизайн-концепт",
+    text: "Рисую макет ключевых экранов. Стиль согласуем до полного «да» — вносим правки, пока не понравится.",
+  },
+  {
+    num: "03",
+    icon: Code2,
+    title: "Разработка",
+    text: "Верстаю и программирую, показываю промежуточные версии, тестирую на всех устройствах и браузерах.",
+  },
+  {
+    num: "04",
+    icon: Rocket,
+    title: "Запуск и поддержка",
+    text: "Деплой, SEO-база, аналитика и обучение по админке. Две недели бесплатных правок после релиза.",
+  },
+];
+
+export default function Process() {
+  return (
+    <section id="process" className="relative scroll-mt-24 py-24 sm:py-32">
+      {/* точечная сетка + мягкое свечение */}
+      <div
+        aria-hidden="true"
+        className="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"
+      />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Этапы работы</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Как я работаю
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            прозрачный процесс — вы видите результат на каждом шаге
+          </p>
+        </div>
+
+        <div className="relative">
+          {/* соединительная линия и стрелки между шагами (только xl) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-8 top-[52px] hidden xl:block"
+          >
+            <div className="h-px w-full bg-gradient-to-r from-fuchsia-500/10 via-fuchsia-400/30 to-fuchsia-500/10" />
+            <ChevronRight className="absolute -top-[9px] left-1/4 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+            <ChevronRight className="absolute -top-[9px] left-1/2 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+            <ChevronRight className="absolute -top-[9px] left-3/4 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+          </div>
+
+          <ol className="relative grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {steps.map((step, i) => (
+            <li
+              key={step.num}
+              data-reveal
+              style={{ "--reveal-delay": `${i * 110}ms` } as React.CSSProperties}
+            >
+              <article className="card-shine group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.05] sm:p-7">
+                {/* большая номерная подложка */}
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -right-3 -top-7 select-none font-display text-[7rem] font-bold leading-none text-white/[0.045] transition-colors duration-500 group-hover:text-white/[0.08]"
+                >
+                  {step.num}
+                </span>
+
+                <span className="relative grid size-12 place-items-center rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/20 via-purple-500/15 to-transparent">
+                  <step.icon
+                    className="size-5 text-fuchsia-300 transition-transform duration-500 group-hover:scale-110"
+                    aria-hidden="true"
+                  />
+                </span>
+
+                <p className="relative mt-5 text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300/80">
+                  Шаг {step.num}
+                </p>
+                <h3 className="relative mt-2 font-display text-xl font-bold">
+                  {step.title}
+                </h3>
+                <p className="relative mt-3 text-sm leading-relaxed text-zinc-400">
+                  {step.text}
+                </p>
+              </article>
+            </li>
+          ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+===== prices.tsx =====
+import { Check, Flame } from "lucide-react";
+import { prices } from "./data";
+import { SectionKicker } from "./section-heading";
+import PriceCalculator from "./price-calculator";
+import { cn } from "@/lib/utils";
+
+export default function Prices() {
+  return (
+    <section id="prices" className="relative scroll-mt-24 py-24 sm:py-32">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute right-0 top-24 size-96 rounded-full bg-blue-900/10 blur-3xl"
+      />
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
+        <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Тарифы</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+            Цены
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            прозрачные условия — вы платите за результат, без скрытых платежей
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+          {prices.map((tier, i) => (
+            <div
+              key={tier.name}
+              data-reveal
+              style={{ "--reveal-delay": `${i * 90}ms` } as React.CSSProperties}
+              className="relative"
+            >
+              {tier.featured && (
+                <span className="absolute -top-3.5 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg">
+                  <Flame className="size-3.5" aria-hidden="true" />
+                  Популярный выбор
+                </span>
+              )}
+              <div
+                className={cn(
+                  "card-shine group relative flex h-full flex-col rounded-3xl border p-6 transition-all duration-500 hover:-translate-y-1.5 sm:p-7",
+                  tier.featured
+                    ? "glow-featured border-white bg-white text-black"
+                    : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.05]"
+                )}
+              >
+
+              <h3
+                className={cn(
+                  "font-display text-xl font-bold",
+                  tier.featured ? "text-black" : "text-white"
+                )}
+              >
+                {tier.name}
+              </h3>
+              <div
+                className={cn(
+                  "mt-3 font-display text-3xl font-bold tracking-tight",
+                  tier.featured ? "text-black" : "bg-gradient-to-r from-fuchsia-400 to-purple-400 bg-clip-text text-transparent"
+                )}
+              >
+                {tier.price}
+              </div>
+              <p className={cn("mt-2 text-sm", tier.featured ? "text-black/60" : "text-zinc-400")}>
+                {tier.description}
+              </p>
+
+              <ul className="mt-6 flex-1 space-y-3">
+                {tier.features.map((f) => (
+                  <li key={f} className="flex items-start gap-2.5 text-sm">
+                    <Check
+                      className={cn(
+                        "mt-0.5 size-4 shrink-0",
+                        tier.featured ? "text-black" : "text-fuchsia-400"
+                      )}
+                      aria-hidden="true"
+                    />
+                    <span className={tier.featured ? "text-black/80" : "text-zinc-300"}>{f}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div
+                className={cn(
+                  "mt-6 flex items-center justify-between border-t pt-4",
+                  tier.featured ? "border-black/10" : "border-white/10"
+                )}
+              >
+                <span className={cn("text-xs font-semibold uppercase tracking-wider", tier.featured ? "text-black/50" : "text-zinc-500")}>
+                  Срок {tier.term}
+                </span>
+                <a
+                  href="#contact"
+                  className={cn(
+                    "rounded-xl px-4 py-2 text-sm font-bold transition-all hover:scale-105 active:scale-95",
+                    tier.featured
+                      ? "bg-black text-white hover:bg-zinc-800"
+                      : "bg-white/10 text-white hover:bg-white hover:text-black"
+                  )}
+                >
+                  Обсудить
+                </a>
+              </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <PriceCalculator />
+
+        <p data-reveal className="mt-8 text-center text-sm text-zinc-500">
+          Требуется что-то уникальное? Напишите — рассчитаю индивидуально и бесплатно.
+        </p>
+      </div>
+    </section>
+  );
+}
+
+===== faq.tsx =====
+import { MessageCircleQuestion } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { SectionKicker } from "./section-heading";
+
+const faqs = [
+  {
+    q: "Сколько времени занимает разработка?",
+    a: "Лендинг — от 5–10 дней, многостраничный сайт — 2–4 недели, веб-сервис — от месяца. Точные сроки фиксирую до старта работ и придерживаюсь их: за срыв по моей вине дисконт 10%.",
+  },
+  {
+    q: "Как устроена оплата?",
+    a: "Стандартно: 50% предоплата, остаток — после приёмки. Крупные проекты разбиваю на этапы с оплатой по частям. Работаю по договору, закрывающие документы — по запросу.",
+  },
+  {
+    q: "Что нужно от меня на старте?",
+    a: "Достаточно понимания задачи и примеров сайтов, которые нравятся. Тексты, фото и логотип — если есть. Если материалов нет — помогу собрать и оформлю ТЗ за вас.",
+  },
+  {
+    q: "Берёте ли доработку чужого проекта?",
+    a: "Да, это частый формат. Сначала бесплатно посмотрю код и дам оценку: что можно оставить, что стоит переписать. Честно скажу, если доработка экономически бессмысленна.",
+  },
+  {
+    q: "Что с поддержкой после запуска?",
+    a: "Две недели после релиза правки и багфиксы — бесплатно. Дальше — поддержка по договору от 3 000 ₽/мес: обновления, мелкие доработки, мониторинг доступности.",
+  },
+  {
+    q: "Работаешь один или в команде?",
+    a: "Один — дизайн, код и деплой, поэтому нет потерь при передаче между исполнителями. На крупных проектах подключаю проверенных подрядчиков, но за результат отвечаю лично.",
+  },
+];
+
+export default function Faq() {
+  return (
+    <section id="faq" className="relative scroll-mt-24 py-24 sm:py-32">
+      <div className="relative mx-auto max-w-3xl px-5 sm:px-8">
+        <div data-reveal className="mb-10 text-center sm:mb-14">
+          <SectionKicker>Частые вопросы</SectionKicker>
+          <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+            FAQ
+          </h2>
+          <p className="mt-4 text-base text-zinc-400 sm:text-lg">
+            собираю ответы на то, что спрашивают чаще всего
+          </p>
+        </div>
+
+        <Accordion type="single" collapsible className="space-y-3">
+          {faqs.map((item, i) => (
+            <AccordionItem
+              key={item.q}
+              value={`faq-${i}`}
+              data-reveal
+              style={{ "--reveal-delay": `${i * 70}ms` } as React.CSSProperties}
+              className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] px-5 transition-colors hover:border-white/20 data-[state=open]:border-fuchsia-400/30 data-[state=open]:bg-white/[0.05]"
+            >
+              <AccordionTrigger className="py-5 font-display text-base font-bold text-white hover:no-underline sm:text-lg">
+                {item.q}
+              </AccordionTrigger>
+              <AccordionContent className="pb-5 text-sm leading-relaxed text-zinc-400 sm:text-base">
+                {item.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+
+        <p
+          data-reveal
+          className="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-zinc-500"
+        >
+          <MessageCircleQuestion className="size-4 text-fuchsia-300/80" aria-hidden="true" />
+          Остался вопрос?
+          <a
+            href="#contact"
+            className="font-semibold text-zinc-300 underline decoration-fuchsia-400/50 decoration-2 underline-offset-4 transition-colors hover:text-white"
+          >
+            Напишите мне
+          </a>
+          — отвечаю быстро.
+        </p>
+      </div>
+    </section>
+  );
+}
