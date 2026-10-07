@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  ArrowDownWideNarrow,
+  ArrowUpNarrowWide,
   CalendarDays,
   CheckCircle2,
   ClipboardCopy,
@@ -108,6 +110,7 @@ export default function AdminDialog() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [filter, setFilter] = useState<StatusFilter>("all");
   const [query, setQuery] = useState("");
+  const [sortDir, setSortDir] = useState<"desc" | "asc">("desc");
   const [loading, setLoading] = useState(false);
   const [busyId, setBusyId] = useState<string | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<RequestRow | null>(null);
@@ -148,6 +151,7 @@ export default function AdminDialog() {
       setPassword("");
       setQuery("");
       setFilter("all");
+      setSortDir("desc");
       loadRequests();
     }
   }, [open, loadRequests]);
@@ -281,7 +285,7 @@ export default function AdminDialog() {
 
   const visibleRows = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return rows.filter((r) => {
+    const filtered = rows.filter((r) => {
       if (filter !== "all" && r.status !== filter) return false;
       if (!q) return true;
       const haystack = [
@@ -295,7 +299,12 @@ export default function AdminDialog() {
         .toLowerCase();
       return haystack.includes(q);
     });
-  }, [rows, filter, query]);
+    return filtered.sort((a, b) =>
+      sortDir === "desc"
+        ? new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        : new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
+  }, [rows, filter, query, sortDir]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -466,6 +475,25 @@ export default function AdminDialog() {
                   </SelectItem>
                 </SelectContent>
               </Select>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setSortDir((d) => (d === "desc" ? "asc" : "desc"))}
+                aria-label={
+                  sortDir === "desc"
+                    ? "Сортировка: сначала новые — переключить на старые"
+                    : "Сортировка: сначала старые — переключить на новые"
+                }
+                title={sortDir === "desc" ? "Сначала новые" : "Сначала старые"}
+                className="size-9 shrink-0 rounded-xl text-zinc-400 hover:bg-white/10 hover:text-white"
+              >
+                {sortDir === "desc" ? (
+                  <ArrowDownWideNarrow className="size-4" aria-hidden="true" />
+                ) : (
+                  <ArrowUpNarrowWide className="size-4" aria-hidden="true" />
+                )}
+              </Button>
 
               <div className="relative min-w-0 flex-1">
                 <Search

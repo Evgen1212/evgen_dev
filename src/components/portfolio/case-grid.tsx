@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, Sparkles, UserRound } from "lucide-react";
 import {
   Dialog,
@@ -71,6 +71,7 @@ function CaseCell({
 export default function CaseGrid() {
   const [active, setActive] = useState<CaseDetail | null>(null);
   const ActiveArt = active ? caseArt[active.id] : null;
+  const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   // Порядок кейсов для навигации «предыдущий / следующий»
   const order = [...rowOne, ...rowTwo].map((i) => i.id);
@@ -93,6 +94,23 @@ export default function CaseGrid() {
     return () => window.removeEventListener("keydown", onKey);
   }, [active?.id]);
 
+  // Свайп на сенсорных экранах: горизонтальный жест > 64px листает кейс
+  function onTouchStart(e: React.TouchEvent) {
+    const t = e.touches[0];
+    touchStart.current = { x: t.clientX, y: t.clientY };
+  }
+
+  function onTouchEnd(e: React.TouchEvent) {
+    if (!touchStart.current || !active) return;
+    const t = e.changedTouches[0];
+    const dx = t.clientX - touchStart.current.x;
+    const dy = t.clientY - touchStart.current.y;
+    touchStart.current = null;
+    if (Math.abs(dx) > 64 && Math.abs(dx) > Math.abs(dy) * 1.6) {
+      stepCase(active.id, dx < 0 ? 1 : -1);
+    }
+  }
+
   const activeIdx = active ? order.indexOf(active.id) : -1;
   const prevCase = active ? caseDetails[order[(activeIdx - 1 + order.length) % order.length]] : null;
   const nextCase = active ? caseDetails[order[(activeIdx + 1) % order.length]] : null;
@@ -112,7 +130,11 @@ export default function CaseGrid() {
       </div>
 
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
-        <DialogContent className="max-h-[90vh] gap-0 overflow-hidden overflow-y-auto rounded-3xl border-white/10 bg-[#141416] p-0 text-white sm:max-w-2xl">
+        <DialogContent
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          className="max-h-[90vh] gap-0 overflow-hidden overflow-y-auto rounded-3xl border-white/10 bg-[#141416] p-0 text-white sm:max-w-2xl"
+        >
           {active && (
             <>
               <DialogTitle className="sr-only">{active.title}</DialogTitle>
@@ -213,7 +235,10 @@ export default function CaseGrid() {
                     <ChevronRight className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                   </button>
                 </nav>
-                <p className="sr-only">Переключение кейсов также доступно стрелками ← и →</p>
+                <p className="sr-only">
+                  Переключение кейсов также доступно стрелками ← и →, а на
+                  сенсорных экранах — свайпом влево и вправо
+                </p>
 
                 <a
                   href="#contact"

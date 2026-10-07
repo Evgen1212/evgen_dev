@@ -1,6 +1,7 @@
 import { Check, Flame } from "lucide-react";
 import { prices } from "./data";
 import { SectionKicker } from "./section-heading";
+import PriceCalculator from "./price-calculator";
 import { cn } from "@/lib/utils";
 
 export default function Prices() {
@@ -104,6 +105,8 @@ export default function Prices() {
             </div>
           ))}
         </div>
+
+        <PriceCalculator />
 
         <p data-reveal className="mt-8 text-center text-sm text-zinc-500">
           Требуется что-то уникальное? Напишите — рассчитаю индивидуально и бесплатно.

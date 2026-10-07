@@ -2,6 +2,7 @@ import { ArrowUpRight } from "lucide-react";
 import { socials } from "./data";
 import { SectionKicker } from "./section-heading";
 import ContactForm from "./contact-form";
+import CopyEmailButton from "./copy-email-button";
 
 const primaryNames = ["Telegram", "Discord", "VK", "GitHub"];
 
@@ -95,6 +96,7 @@ export default function Contact() {
               {s.name}
             </a>
           ))}
+          <CopyEmailButton />
         </div>
 
         <ContactForm />

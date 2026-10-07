@@ -53,11 +53,18 @@ export default function Testimonials() {
               </blockquote>
 
               <figcaption className="mt-6 flex items-center gap-3 border-t border-white/5 pt-4">
+                {/* градиентное кольцо вокруг аватара */}
                 <span
                   aria-hidden="true"
-                  className={`grid size-10 shrink-0 place-items-center rounded-full bg-gradient-to-br ${t.gradient} font-display text-xs font-bold text-white shadow-lg`}
+                  className="grid shrink-0 place-items-center rounded-full bg-gradient-to-br from-fuchsia-500/60 via-purple-500/30 to-white/10 p-[2px] transition-all duration-500 group-hover:from-fuchsia-400/90 group-hover:via-purple-400/60"
                 >
-                  {t.initials}
+                  <span className="grid size-full place-items-center rounded-full bg-[#141416] p-[3px]">
+                    <span
+                      className={`grid size-full place-items-center rounded-full bg-gradient-to-br ${t.gradient} font-display text-xs font-bold text-white shadow-lg`}
+                    >
+                      {t.initials}
+                    </span>
+                  </span>
                 </span>
                 <span className="min-w-0">
                   <span className="block truncate font-display text-sm font-bold text-white">

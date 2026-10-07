@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -54,6 +54,27 @@ export default function ContactForm() {
     resolver: zodResolver(formSchema),
     defaultValues: { name: "", contact: "", taskType: "landing", message: "", website: "" },
   });
+
+  // Калькулятор проекта отправляет расчёт в форму через CustomEvent
+  useEffect(() => {
+    function onPrefill(e: Event) {
+      const detail = (
+        e as CustomEvent<{ taskType?: FormValues["taskType"]; message?: string }>
+      ).detail;
+      if (!detail) return;
+      if (detail.taskType) {
+        setTaskType(detail.taskType);
+        setValue("taskType", detail.taskType);
+      }
+      if (detail.message) setValue("message", detail.message);
+      toast({
+        title: "Расчёт перенесён в заявку",
+        description: "Осталось указать имя и контакт",
+      });
+    }
+    window.addEventListener("erriour:prefill", onPrefill);
+    return () => window.removeEventListener("erriour:prefill", onPrefill);
+  }, [setValue, toast]);
 
   async function onSubmit(values: FormValues) {
     try {

@@ -1,4 +1,5 @@
 import {
+  ChevronRight,
   MessagesSquare,
   PenTool,
   Code2,
@@ -56,7 +57,19 @@ export default function Process() {
           </p>
         </div>
 
-        <ol className="grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="relative">
+          {/* соединительная линия и стрелки между шагами (только xl) */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-8 top-[52px] hidden xl:block"
+          >
+            <div className="h-px w-full bg-gradient-to-r from-fuchsia-500/10 via-fuchsia-400/30 to-fuchsia-500/10" />
+            <ChevronRight className="absolute -top-[9px] left-1/4 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+            <ChevronRight className="absolute -top-[9px] left-1/2 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+            <ChevronRight className="absolute -top-[9px] left-3/4 size-4 -translate-x-1/2 text-fuchsia-400/50" />
+          </div>
+
+          <ol className="relative grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4">
           {steps.map((step, i) => (
             <li
               key={step.num}
@@ -91,7 +104,8 @@ export default function Process() {
               </article>
             </li>
           ))}
-        </ol>
+          </ol>
+        </div>
       </div>
     </section>
   );

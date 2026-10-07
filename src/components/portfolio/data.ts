@@ -6,6 +6,9 @@ export type SocialLink = {
   color: string; // brand color hex
 };
 
+/** Публичный e-mail для связи (кнопка «скопировать» в контактах) */
+export const contactEmail = "hi@erriour.ru";
+
 export const socials: SocialLink[] = [
   {
     name: "Telegram",
