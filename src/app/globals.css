@@ -256,8 +256,11 @@ body {
   animation: pulse-dot 1.8s ease-in-out infinite;
 }
 
-/* ---------- Reveal on scroll ---------- */
-[data-reveal] {
+/* ---------- Reveal on scroll ----------
+   Прячем контент ТОЛЬКО когда JS доступен (класс .js ставится
+   инлайн-скриптом в <head> до первой отрисовки). Без JS — ботам,
+   принту и полным скриншотам — весь контент сразу виден. */
+.js [data-reveal] {
   opacity: 0;
   transform: translateY(30px);
   transition:
@@ -266,9 +269,17 @@ body {
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-[data-reveal].revealed {
+.js [data-reveal].revealed {
   opacity: 1;
   transform: none;
+}
+
+@media print {
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 
 /* ---------- Card shine sweep ---------- */
@@ -328,10 +339,71 @@ body {
   .animate-float {
     animation: none !important;
   }
-  [data-reveal] {
+  .js [data-reveal] {
     opacity: 1;
     transform: none;
     transition: none;
   }
 }
 
+/* ---------- Focus-visible (a11y polish) ---------- */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible {
+  outline: 2px solid rgba(217, 70, 239, 0.75);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ---------- Featured price glow ---------- */
+.glow-featured {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.9),
+    0 18px 70px -18px rgba(217, 70, 239, 0.55),
+    0 8px 30px -12px rgba(147, 51, 234, 0.4);
+}
+
+/* ---------- Scroll progress bar ---------- */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 3px;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    #d946ef,
+    #a855f7 45%,
+    #38bdf8
+  );
+  transform-origin: 0 50%;
+  transform: scaleX(var(--scroll-progress, 0));
+}
+
+/* ---------- Back-to-top ---------- */
+.back-top {
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.back-top[data-hidden="true"] {
+  opacity: 0;
+  transform: translateY(14px) scale(0.9);
+  pointer-events: none;
+}
+
+/* ---------- Aurora parallax (hero depth) ---------- */
+.parallax-slow {
+  transform: translate3d(0, calc(var(--scroll-y, 0) * 0.06px), 0);
+  will-change: transform;
+}
+
+.parallax-deep {
+  transform: translate3d(0, calc(var(--scroll-y, 0) * 0.14px), 0);
+  will-change: transform;
+}

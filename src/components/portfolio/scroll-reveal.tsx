@@ -20,7 +20,9 @@ export default function ScrollReveal() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -48px 0px" }
+      // threshold 0 — высокие секции раскрываются сразу при появлении,
+      // rootMargin даёт небольшое упреждение (элемент виден на 40px раньше).
+      { threshold: 0, rootMargin: "0px 0px -40px 0px" }
     );
 
     els.forEach((el) => io.observe(el));

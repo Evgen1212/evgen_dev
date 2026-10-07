@@ -3,8 +3,9 @@
 import { useEffect } from "react";
 
 /**
- * Пишет позицию скролла в CSS-переменную --scroll-y (на <html>).
- * Используется для параллакса утки и других микро-эффектов без ре-рендеров.
+ * Пишет позицию скролла в CSS-переменные --scroll-y (px) и
+ * --scroll-progress (0..1) на <html>. Используется для параллакса утки,
+ * авроры и полосы прогресса без ре-рендеров.
  */
 export default function ScrollFx() {
   useEffect(() => {
@@ -13,7 +14,13 @@ export default function ScrollFx() {
 
     const update = () => {
       raf = 0;
-      root.style.setProperty("--scroll-y", String(Math.round(window.scrollY)));
+      const y = window.scrollY;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      root.style.setProperty("--scroll-y", String(Math.round(y)));
+      root.style.setProperty(
+        "--scroll-progress",
+        max > 0 ? String(Math.min(1, y / max)) : "0"
+      );
     };
 
     const onScroll = () => {

@@ -9,12 +9,14 @@ import Contact from "@/components/portfolio/contact";
 import Footer from "@/components/portfolio/footer";
 import ScrollReveal from "@/components/portfolio/scroll-reveal";
 import ScrollFx from "@/components/portfolio/scroll-fx";
+import ScrollWidgets from "@/components/portfolio/scroll-widgets";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-[#0a0a0b] text-zinc-50">
       <ScrollReveal />
       <ScrollFx />
+      <ScrollWidgets />
       <Header />
       <main className="flex-1">
         <Hero />

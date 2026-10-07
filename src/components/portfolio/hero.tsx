@@ -43,10 +43,14 @@ function CraftOutLogo({ className }: { className?: string }) {
 export default function Hero() {
   return (
     <section id="top" className="relative flex min-h-[100svh] flex-col overflow-hidden">
-      {/* Aurora background */}
+      {/* Aurora background (слои с разной глубиной параллакса) */}
       <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
-        <div className="aurora-layer aurora-a" />
-        <div className="aurora-layer aurora-b" />
+        <div className="parallax-slow absolute inset-[-6%]">
+          <div className="aurora-layer aurora-a" />
+        </div>
+        <div className="parallax-deep absolute inset-[-6%]">
+          <div className="aurora-layer aurora-b" />
+        </div>
         {/* vignette to keep edges dark */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(10,10,11,0.7)_100%)]" />
       </div>

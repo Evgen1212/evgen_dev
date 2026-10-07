@@ -37,7 +37,7 @@ export default function Prices() {
                 className={cn(
                   "card-shine group relative flex h-full flex-col rounded-3xl border p-6 transition-all duration-500 hover:-translate-y-1.5 sm:p-7",
                   tier.featured
-                    ? "border-white bg-white text-black shadow-2xl shadow-white/10"
+                    ? "glow-featured border-white bg-white text-black"
                     : "border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.05]"
                 )}
               >

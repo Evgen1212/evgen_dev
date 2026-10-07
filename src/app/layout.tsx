@@ -18,6 +18,7 @@ const comfortaa = Comfortaa({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://erriour.ru"),
   title: "Erriour — От логотипа до логики один специалист!",
   description:
     "Веб-разработка любой сложности: сайты, веб-сервисы, боты, логотипы, системное администрирование. Полный цикл разработки — от идеи до запуска.",
@@ -41,6 +42,26 @@ export const metadata: Metadata = {
       "От логотипа до логики — один специалист! Сайты, боты, дизайн, администрирование.",
     type: "website",
     locale: "ru_RU",
+    siteName: "Erriour",
+    images: [
+      {
+        url: "/images/og.png",
+        width: 1200,
+        height: 630,
+        alt: "Erriour — веб-разработка любой сложности",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Erriour — веб-разработка любой сложности",
+    description:
+      "От логотипа до логики — один специалист! Сайты, боты, дизайн, администрирование.",
+    images: ["/images/og.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -57,6 +78,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning className="dark">
+      <head>
+        {/* Класс .js ставится до первой отрисовки: анимации появления
+            активируются только при доступном JS (иначе контент виден сразу). */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js");`,
+          }}
+        />
+      </head>
       <body
         className={`${manrope.variable} ${comfortaa.variable} antialiased bg-[#0a0a0b] text-zinc-50`}
       >

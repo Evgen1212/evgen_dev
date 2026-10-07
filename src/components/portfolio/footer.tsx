@@ -1,3 +1,5 @@
+import AdminDialog from "./admin-dialog";
+
 export default function Footer() {
   return (
     <footer className="relative mt-auto border-t border-white/10 py-8">
@@ -13,9 +15,12 @@ export default function Footer() {
           © {new Date().getFullYear()} Erriour. От логотипа до логики.
         </p>
 
-        <p className="text-sm text-zinc-500">
-          Сделано с <span className="text-fuchsia-400" aria-hidden="true">♥</span> на Next.js
-        </p>
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-zinc-500">
+            Сделано с <span className="text-fuchsia-400" aria-hidden="true">♥</span> на Next.js
+          </p>
+          <AdminDialog />
+        </div>
       </div>
     </footer>
   );
