@@ -5,6 +5,7 @@ import {
   CheckCircle2,
   ClipboardCopy,
   Clock3,
+  Download,
   Inbox,
   Loader2,
   Lock,
@@ -224,6 +225,39 @@ export default function AdminDialog() {
     }
   }
 
+  /** Экспорт всех заявок в CSV (BOM + «;» — дружелюбно к Excel/Numbers) */
+  function exportCsv() {
+    if (rows.length === 0) return;
+    const esc = (v: string) => `"${String(v).replace(/"/g, '""')}"`;
+    const head = ["Дата", "Имя", "Контакт", "Тип задачи", "Статус", "Сообщение"]
+      .map(esc)
+      .join(";");
+    const lines = rows.map((r) =>
+      [
+        new Date(r.createdAt).toLocaleString("ru-RU"),
+        r.name,
+        r.contact,
+        taskTypeLabels[r.taskType] ?? r.taskType,
+        statusLabels[r.status] ?? r.status,
+        r.message,
+      ]
+        .map(esc)
+        .join(";")
+    );
+    const csv = "\uFEFF" + [head, ...lines].join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `erriour-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast({
+      title: "CSV выгружен",
+      description: `В файле ${rows.length} заявок`,
+    });
+  }
+
   function copyContact(text: string) {
     navigator.clipboard
       .writeText(text)
@@ -320,6 +354,17 @@ export default function AdminDialog() {
                   Заявки
                 </span>
                 <span className="flex items-center gap-1.5">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Экспорт в CSV"
+                    title="Экспорт в CSV"
+                    onClick={exportCsv}
+                    disabled={rows.length === 0}
+                    className="size-8 rounded-lg text-zinc-400 hover:bg-white/10 hover:text-white disabled:opacity-40"
+                  >
+                    <Download className="size-4" aria-hidden="true" />
+                  </Button>
                   <Button
                     variant="ghost"
                     size="icon"

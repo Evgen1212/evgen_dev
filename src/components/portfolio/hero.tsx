@@ -59,6 +59,13 @@ export default function Hero() {
       <div className="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-5 pb-24 pt-32 sm:px-8 lg:grid-cols-[1.25fr_1fr] lg:gap-8 lg:pt-28">
         {/* Left: title */}
         <div data-reveal>
+          <p className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
+            <span className="relative flex size-2" aria-hidden="true">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
+              <span className="relative inline-flex size-2 rounded-full bg-emerald-400" />
+            </span>
+            Свободен для новых заказов
+          </p>
           <h1 className="font-display text-[21vw] font-light leading-[0.95] tracking-tight sm:text-[9rem] lg:text-[8.5rem] xl:text-[10rem]">
             Erriour
           </h1>

@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { socials } from "./data";
+import { SectionKicker } from "./section-heading";
 import ContactForm from "./contact-form";
 
 const primaryNames = ["Telegram", "Discord", "VK", "GitHub"];
@@ -27,6 +28,7 @@ export default function Contact() {
 
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Контакты</SectionKicker>
           <h2 className="font-display text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
             Обсудить задачу
           </h2>

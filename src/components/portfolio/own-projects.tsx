@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { UnderBornArt, HostFeedArt } from "./case-art";
+import { SectionKicker } from "./section-heading";
 
 function ProjectCard({
   title,
@@ -55,6 +56,7 @@ export default function OwnProjects() {
       />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Pet-проекты</SectionKicker>
           <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Собственные проекты
           </h2>

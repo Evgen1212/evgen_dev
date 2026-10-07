@@ -1,5 +1,6 @@
 import { Check, Flame } from "lucide-react";
 import { prices } from "./data";
+import { SectionKicker } from "./section-heading";
 import { cn } from "@/lib/utils";
 
 export default function Prices() {
@@ -11,6 +12,7 @@ export default function Prices() {
       />
       <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         <div data-reveal className="mb-12 text-center sm:mb-16">
+          <SectionKicker>Тарифы</SectionKicker>
           <h2 className="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Цены
           </h2>
