@@ -144,13 +144,91 @@ export type CaseDetail = {
   description: string;
   highlights: string[];
   stack: string[];
+  /** Группа для фильтра портфолио */
+  category: CaseCategory;
 };
+
+export type CaseCategory = "sites" | "games" | "brand";
+
+/** Фильтр портфолио: чипсы над сеткой кейсов */
+export const caseCategories: {
+  key: CaseCategory | "all";
+  label: string;
+}[] = [
+  { key: "all", label: "Все" },
+  { key: "sites", label: "Сайты" },
+  { key: "games", label: "Игровые" },
+  { key: "brand", label: "Брендинг" },
+];
+
+/** ─── Калькулятор проекта: единый источник цен и сроков ─── */
+
+export type CalcProjectKey = "landing" | "multipage" | "webapp" | "bot";
+
+export type CalcProject = {
+  key: CalcProjectKey;
+  label: string;
+  hint: string;
+  base: number; // базовая цена, ₽
+  days: number; // базовый срок, дней
+};
+
+export const calcProjects: CalcProject[] = [
+  { key: "landing", label: "Лендинг", hint: "одностраничный сайт", base: 30000, days: 7 },
+  { key: "multipage", label: "Многостраничный сайт", hint: "корпоративный, каталог", base: 60000, days: 14 },
+  { key: "webapp", label: "Веб-сервис", hint: "SPA, личные кабинеты", base: 120000, days: 30 },
+  { key: "bot", label: "Бот / автоматизация", hint: "Telegram, парсеры", base: 25000, days: 5 },
+];
+
+export type CalcExtraKey =
+  | "design"
+  | "admin"
+  | "payments"
+  | "seo"
+  | "content"
+  | "support";
+
+export type CalcExtra = {
+  key: CalcExtraKey;
+  label: string;
+  price: number;
+  days: number;
+};
+
+export const calcExtras: CalcExtra[] = [
+  { key: "design", label: "Уникальный дизайн", price: 15000, days: 3 },
+  { key: "admin", label: "Админ-панель", price: 20000, days: 4 },
+  { key: "payments", label: "Приём оплат", price: 15000, days: 3 },
+  { key: "seo", label: "SEO-настройка", price: 10000, days: 2 },
+  { key: "content", label: "Контент-наполнение", price: 8000, days: 2 },
+  { key: "support", label: "Поддержка — 1 мес.", price: 10000, days: 0 },
+];
+
+/** Коэффициент срочности: цена ×1,3, срок короче */
+export const RUSH_MULT = 1.3;
+
+const rubFmt = new Intl.NumberFormat("ru-RU");
+
+/** «от 30 000 ₽» для карточек тарифов */
+export function fromPrice(base: number) {
+  return `от ${rubFmt.format(base)} ₽`;
+}
+
+/** Русская плюрализация: 21 день / 22 дня / 25 дней */
+export function pluralDays(n: number) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${n} день`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} дня`;
+  return `${n} дней`;
+}
 
 export const caseDetails: Record<string, CaseDetail> = {
   modern: {
     id: "modern",
     title: "Modern Citi Group",
     tag: "Корпоративный сайт",
+    category: "sites",
     year: "2024",
     role: "Дизайн + Full-stack разработка",
     timeline: "3 недели",
@@ -168,6 +246,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "craftout",
     title: "CraftOut",
     tag: "Игровая платформа · Full-stack",
+    category: "games",
     year: "2025",
     role: "Полный цикл разработки",
     timeline: "2 месяца",
@@ -185,6 +264,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "granline",
     title: "ГранЛайн",
     tag: "Сайт + каталог продукции",
+    category: "sites",
     year: "2023",
     role: "Дизайн, вёрстка, backend",
     timeline: "4 недели",
@@ -202,6 +282,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "lawyer",
     title: "Адвокат Маркин А.Е.",
     tag: "Сайт юриста",
+    category: "sites",
     year: "2023",
     role: "Дизайн + разработка",
     timeline: "10 дней",
@@ -219,6 +300,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "shadows",
     title: "Shadows Project",
     tag: "Брендинг + сайт",
+    category: "brand",
     year: "2024",
     role: "Логотип, айдентика, сайт",
     timeline: "3 недели",
@@ -236,6 +318,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "mineplay",
     title: "Mine Play",
     tag: "Игровой портал",
+    category: "games",
     year: "2022",
     role: "Full-stack разработка",
     timeline: "6 недель",
@@ -253,6 +336,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "cataclysm",
     title: "Project Cataclysm",
     tag: "Промо-сайт игры",
+    category: "games",
     year: "2024",
     role: "Дизайн + разработка",
     timeline: "2 недели",
@@ -270,6 +354,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "underborn",
     title: "UnderBorn",
     tag: "Собственный проект",
+    category: "brand",
     year: "в работе",
     role: "Идея, дизайн, разработка",
     timeline: "MVP в разработке",
@@ -286,6 +371,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     id: "hostfeed",
     title: "HostFeed",
     tag: "Собственный проект",
+    category: "sites",
     year: "в работе",
     role: "Идея, дизайн, разработка",
     timeline: "MVP в разработке",
@@ -307,12 +393,14 @@ export type PriceTier = {
   features: string[];
   term: string;
   featured?: boolean;
+  /** Связь с калькулятором: цена и срок выводятся из calcProjects */
+  calcKey?: CalcProjectKey;
 };
 
-export const prices: PriceTier[] = [
+const tierDefs: Omit<PriceTier, "price" | "term">[] = [
   {
     name: "Лендинг",
-    price: "от 30 000 ₽",
+    calcKey: "landing",
     description: "Одностраничный сайт под ключ для быстрого запуска",
     features: [
       "Уникальный дизайн + вёрстка",
@@ -320,11 +408,10 @@ export const prices: PriceTier[] = [
       "SEO-подготовка и аналитика",
       "Формы заявки и интеграции",
     ],
-    term: "от 7 дней",
   },
   {
     name: "Многостраничный сайт",
-    price: "от 60 000 ₽",
+    calcKey: "multipage",
     description: "Корпоративный сайт, каталог или портфолио",
     features: [
       "Дизайн-система проекта",
@@ -332,12 +419,11 @@ export const prices: PriceTier[] = [
       "Анимации и интерактив",
       "Оптимизация скорости 90+",
     ],
-    term: "от 14 дней",
     featured: true,
   },
   {
     name: "Веб-сервис",
-    price: "от 120 000 ₽",
+    calcKey: "webapp",
     description: "SPA, личные кабинеты и сложные приложения",
     features: [
       "Проектирование архитектуры",
@@ -345,11 +431,10 @@ export const prices: PriceTier[] = [
       "Авторизация и оплаты",
       "Деплой и поддержка",
     ],
-    term: "от 30 дней",
   },
   {
     name: "Боты и автоматизация",
-    price: "от 25 000 ₽",
+    calcKey: "bot",
     description: "Telegram-боты, парсеры и интеграции",
     features: [
       "Telegram / VK боты",
@@ -357,9 +442,18 @@ export const prices: PriceTier[] = [
       "Интеграции с любыми API",
       "Уведомления и отчёты",
     ],
-    term: "от 5 дней",
   },
 ];
+
+/** Цена и срок тарифа выводятся из калькулятора — единый источник правды */
+export const prices: PriceTier[] = tierDefs.map((t) => {
+  const calc = calcProjects.find((p) => p.key === t.calcKey);
+  return {
+    ...t,
+    price: fromPrice(calc?.base ?? 0),
+    term: `от ${pluralDays(calc?.days ?? 0)}`,
+  };
+});
 
 export type Testimonial = {
   name: string;

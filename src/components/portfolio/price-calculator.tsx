@@ -10,67 +10,40 @@ import {
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-type ProjectKey = "landing" | "multipage" | "webapp" | "bot";
-
-const projects: {
-  key: ProjectKey;
-  label: string;
-  hint: string;
-  base: number;
-  days: number;
-}[] = [
-  { key: "landing", label: "Лендинг", hint: "одностраничный сайт", base: 30000, days: 7 },
-  { key: "multipage", label: "Многостраничный сайт", hint: "корпоративный, каталог", base: 60000, days: 14 },
-  { key: "webapp", label: "Веб-сервис", hint: "SPA, личные кабинеты", base: 120000, days: 30 },
-  { key: "bot", label: "Бот / автоматизация", hint: "Telegram, парсеры", base: 25000, days: 5 },
-];
-
-const extrasList = [
-  { key: "design", label: "Уникальный дизайн", price: 15000, days: 3 },
-  { key: "admin", label: "Админ-панель", price: 20000, days: 4 },
-  { key: "payments", label: "Приём оплат", price: 15000, days: 3 },
-  { key: "seo", label: "SEO-настройка", price: 10000, days: 2 },
-  { key: "content", label: "Контент-наполнение", price: 8000, days: 2 },
-  { key: "support", label: "Поддержка — 1 мес.", price: 10000, days: 0 },
-] as const;
-
-type ExtraKey = (typeof extrasList)[number]["key"];
+import {
+  calcProjects,
+  calcExtras,
+  RUSH_MULT,
+  pluralDays,
+  type CalcProjectKey,
+  type CalcExtraKey,
+} from "./data";
 
 const fmt = new Intl.NumberFormat("ru-RU");
 
-/** Русская плюрализация: 21 день / 22 дня / 25 дней */
-function pluralDays(n: number) {
-  const mod10 = n % 10;
-  const mod100 = n % 100;
-  if (mod10 === 1 && mod100 !== 11) return `${n} день`;
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} дня`;
-  return `${n} дней`;
-}
-
 export default function PriceCalculator() {
-  const [project, setProject] = useState<ProjectKey>("multipage");
-  const [extras, setExtras] = useState<Set<ExtraKey>>(() => new Set(["admin"]));
+  const [project, setProject] = useState<CalcProjectKey>("multipage");
+  const [extras, setExtras] = useState<Set<CalcExtraKey>>(() => new Set(["admin"]));
   const [rush, setRush] = useState(false);
 
   const { price, days, projectLabel } = useMemo(() => {
-    const p = projects.find((x) => x.key === project) ?? projects[1];
+    const p = calcProjects.find((x) => x.key === project) ?? calcProjects[1];
     let sum = p.base;
     let d = p.days;
-    extrasList.forEach((e) => {
+    calcExtras.forEach((e) => {
       if (extras.has(e.key)) {
         sum += e.price;
         d += e.days;
       }
     });
     if (rush) {
-      sum = Math.round((sum * 1.3) / 1000) * 1000;
+      sum = Math.round((sum * RUSH_MULT) / 1000) * 1000;
       d = Math.max(3, Math.ceil(d * 0.7));
     }
     return { price: sum, days: d, projectLabel: p.label };
   }, [project, extras, rush]);
 
-  function toggleExtra(key: ExtraKey) {
+  function toggleExtra(key: CalcExtraKey) {
     setExtras((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
@@ -85,7 +58,7 @@ export default function PriceCalculator() {
     setRush(false);
   }
 
-  const chosenExtras = extrasList.filter((e) => extras.has(e.key));
+  const chosenExtras = calcExtras.filter((e) => extras.has(e.key));
 
   const message = [
     "Здравствуйте! Прикинул бюджет на калькуляторе сайта:",
@@ -140,7 +113,7 @@ export default function PriceCalculator() {
                 Тип проекта
               </legend>
               <div className="grid gap-2.5 sm:grid-cols-2">
-                {projects.map((p) => {
+                {calcProjects.map((p) => {
                   const isActive = project === p.key;
                   return (
                     <button
@@ -189,7 +162,7 @@ export default function PriceCalculator() {
                 Дополнительно
               </legend>
               <div className="flex flex-wrap gap-2">
-                {extrasList.map((e) => {
+                {calcExtras.map((e) => {
                   const on = extras.has(e.key);
                   return (
                     <button

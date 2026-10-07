@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, Sparkles, UserRound } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, SlidersHorizontal, Sparkles, UserRound } from "lucide-react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { caseDetails, type CaseDetail } from "./data";
+import {
+  caseCategories,
+  caseDetails,
+  type CaseCategory,
+  type CaseDetail,
+} from "./data";
 import { caseArt } from "./case-art";
 import { cn } from "@/lib/utils";
 
@@ -30,24 +35,34 @@ const rowTwo: GridItem[] = [
   { id: "cataclysm", className: "block aspect-square" },
 ];
 
+const allItems: GridItem[] = [...rowOne, ...rowTwo];
+
 function CaseCell({
-  item,
+  id,
+  className,
+  eager = false,
+  delay = 0,
   onOpen,
 }: {
-  item: GridItem;
+  id: GridItem["id"];
+  className: string;
+  /** true — без data-reveal (для отфильтрованных карточек, анимация filter-in) */
+  eager?: boolean;
+  delay?: number;
   onOpen: (d: CaseDetail) => void;
 }) {
-  const detail = caseDetails[item.id];
-  const Art = caseArt[item.id];
+  const detail = caseDetails[id];
+  const Art = caseArt[id];
   if (!detail || !Art) return null;
 
   return (
     <button
       type="button"
       onClick={() => onOpen(detail)}
-      data-reveal
+      data-reveal={eager ? undefined : true}
+      style={eager ? { animationDelay: `${delay}ms` } : undefined}
       aria-label={`${detail.title} — открыть детали кейса`}
-      className={cn("cursor-pointer text-left", item.className)}
+      className={cn("cursor-pointer text-left", className, eager && "filter-in")}
     >
       <span className="card-shine group relative block h-full w-full overflow-hidden rounded-3xl border border-white/10 shadow-lg shadow-black/40 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-2xl hover:shadow-black/60">
         <Art />
@@ -70,11 +85,30 @@ function CaseCell({
 
 export default function CaseGrid() {
   const [active, setActive] = useState<CaseDetail | null>(null);
+  const [filter, setFilter] = useState<CaseCategory | "all">("all");
   const ActiveArt = active ? caseArt[active.id] : null;
   const touchStart = useRef<{ x: number; y: number } | null>(null);
 
   // Порядок кейсов для навигации «предыдущий / следующий»
-  const order = [...rowOne, ...rowTwo].map((i) => i.id);
+  const order = allItems.map((i) => i.id);
+
+  // Счётчики чипсов фильтра
+  const counts = useMemo(() => {
+    const map: Record<string, number> = { all: allItems.length };
+    for (const item of allItems) {
+      const c = caseDetails[item.id]?.category;
+      if (c) map[c] = (map[c] ?? 0) + 1;
+    }
+    return map;
+  }, []);
+
+  const filtered = useMemo(
+    () =>
+      filter === "all"
+        ? allItems
+        : allItems.filter((i) => caseDetails[i.id]?.category === filter),
+    [filter]
+  );
 
   function stepCase(id: string, dir: 1 | -1) {
     const idx = order.indexOf(id as (typeof order)[number]);
@@ -117,17 +151,77 @@ export default function CaseGrid() {
 
   return (
     <>
-      <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-[1fr_1.95fr_1fr]">
-        {rowOne.map((item) => (
-          <CaseCell key={item.id} item={item} onOpen={setActive} />
-        ))}
+      {/* фильтр портфолио */}
+      <div
+        data-reveal
+        role="group"
+        aria-label="Фильтр кейсов по типу"
+        className="mb-8 flex flex-wrap items-center gap-2 sm:mb-10"
+      >
+        <SlidersHorizontal
+          className="mr-1 size-4 text-zinc-600"
+          aria-hidden="true"
+        />
+        {caseCategories.map((cat) => {
+          const isActive = filter === cat.key;
+          return (
+            <button
+              key={cat.key}
+              type="button"
+              onClick={() => setFilter(cat.key)}
+              aria-pressed={isActive}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 active:scale-95",
+                isActive
+                  ? "border-transparent bg-gradient-to-r from-fuchsia-600 to-purple-600 text-white shadow-lg shadow-fuchsia-900/30"
+                  : "border-white/10 bg-white/[0.04] text-zinc-400 hover:border-white/25 hover:text-zinc-200"
+              )}
+            >
+              {cat.label}
+              <span
+                className={cn(
+                  "rounded-full px-1.5 text-[10px] font-bold leading-4",
+                  isActive ? "bg-black/25 text-white" : "bg-white/10 text-zinc-500"
+                )}
+              >
+                {counts[cat.key] ?? 0}
+              </span>
+            </button>
+          );
+        })}
       </div>
 
-      <div className="mt-4 grid gap-4 sm:mt-5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
-        {rowTwo.map((item) => (
-          <CaseCell key={item.id} item={item} onOpen={setActive} />
-        ))}
-      </div>
+      {filter === "all" ? (
+        <>
+          <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-[1fr_1.95fr_1fr]">
+            {rowOne.map((item) => (
+              <CaseCell key={item.id} id={item.id} className={item.className} onOpen={setActive} />
+            ))}
+          </div>
+
+          <div className="mt-4 grid gap-4 sm:mt-5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {rowTwo.map((item) => (
+              <CaseCell key={item.id} id={item.id} className={item.className} onOpen={setActive} />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div
+          key={filter}
+          className="grid gap-4 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {filtered.map((item, i) => (
+            <CaseCell
+              key={`${filter}-${item.id}`}
+              id={item.id}
+              className="block h-64 md:h-72 lg:h-80"
+              eager
+              delay={i * 70}
+              onOpen={setActive}
+            />
+          ))}
+        </div>
+      )}
 
       <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
         <DialogContent
