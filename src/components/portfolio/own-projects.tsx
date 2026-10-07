@@ -1,5 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
-import { UnderBornArt, HostFeedArt } from "./cases";
+import { UnderBornArt, HostFeedArt } from "./case-art";
 
 function ProjectCard({
   title,

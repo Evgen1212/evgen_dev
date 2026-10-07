@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { socials } from "./data";
+import ContactForm from "./contact-form";
 
 const primaryNames = ["Telegram", "Discord", "VK", "GitHub"];
 
@@ -93,6 +94,8 @@ export default function Contact() {
             </a>
           ))}
         </div>
+
+        <ContactForm />
       </div>
     </section>
   );

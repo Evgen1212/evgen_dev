@@ -8,11 +8,13 @@ import Prices from "@/components/portfolio/prices";
 import Contact from "@/components/portfolio/contact";
 import Footer from "@/components/portfolio/footer";
 import ScrollReveal from "@/components/portfolio/scroll-reveal";
+import ScrollFx from "@/components/portfolio/scroll-fx";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-[#0a0a0b] text-zinc-50">
       <ScrollReveal />
+      <ScrollFx />
       <Header />
       <main className="flex-1">
         <Hero />

@@ -116,13 +116,18 @@ export default function Hero() {
       </div>
 
       {/* Duck */}
-      <img
-        src="/images/duck-transparent.png"
-        alt="Резиновая утка — маскот Erriour"
+      <div
         aria-hidden="true"
-        className="animate-float pointer-events-none absolute bottom-2 right-[-16%] z-20 w-40 select-none drop-shadow-[0_30px_50px_rgba(0,0,0,0.55)] sm:block sm:w-64 md:right-[-6%] md:w-80 xl:w-[26rem] 2xl:w-[30rem]"
-        draggable={false}
-      />
+        className="pointer-events-none absolute inset-x-0 bottom-2 z-20"
+        style={{ transform: "translate3d(0, calc(var(--scroll-y, 0) * -0.12px), 0)" }}
+      >
+        <img
+          src="/images/duck-transparent.png"
+          alt="Резиновая утка — маскот Erriour"
+          className="animate-float pointer-events-none absolute bottom-0 right-[-16%] w-40 select-none drop-shadow-[0_30px_50px_rgba(0,0,0,0.55)] sm:w-64 md:right-[-6%] md:w-80 xl:w-[26rem] 2xl:w-[30rem]"
+          draggable={false}
+        />
+      </div>
 
       {/* Services marquee */}
       <div className="relative z-10 border-t border-white/10 bg-black/25 backdrop-blur-md">
