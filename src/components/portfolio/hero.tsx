@@ -1,4 +1,4 @@
-import { ArrowDownRight, ArrowRight, Zap } from "lucide-react";
+import { ArrowDownRight, ArrowRight, ChevronDown, Zap } from "lucide-react";
 import { heroServices } from "./data";
 import { Marquee, MarqueeDot } from "./marquee";
 import DuckMascot from "./duck";
@@ -130,6 +130,15 @@ export default function Hero() {
 
       {/* Duck (кликабельный маскот-пасхалка) */}
       <DuckMascot />
+
+      {/* Scroll hint (декоративный, слева — утка справа) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-24 left-5 z-10 hidden select-none flex-col items-center gap-1.5 text-zinc-400 motion-reduce:animate-none md:flex sm:left-8 animate-bounce"
+      >
+        <span className="text-[11px] font-bold uppercase tracking-[0.3em]">листай</span>
+        <ChevronDown className="size-4" />
+      </div>
 
       {/* Services marquee */}
       <div className="relative z-10 border-t border-white/10 bg-black/25 backdrop-blur-md">

@@ -36,6 +36,11 @@ const steps = [
 export default function Process() {
   return (
     <section id="process" className="relative scroll-mt-24 py-24 sm:py-32">
+      {/* точечная сетка + мягкое свечение */}
+      <div
+        aria-hidden="true"
+        className="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
+      />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { ArrowUpRight, CalendarDays, Clock, Sparkles, UserRound } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, Sparkles, UserRound } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -71,6 +71,31 @@ function CaseCell({
 export default function CaseGrid() {
   const [active, setActive] = useState<CaseDetail | null>(null);
   const ActiveArt = active ? caseArt[active.id] : null;
+
+  // Порядок кейсов для навигации «предыдущий / следующий»
+  const order = [...rowOne, ...rowTwo].map((i) => i.id);
+
+  function stepCase(id: string, dir: 1 | -1) {
+    const idx = order.indexOf(id as (typeof order)[number]);
+    if (idx === -1) return;
+    const nextId = order[(idx + dir + order.length) % order.length];
+    setActive(caseDetails[nextId]);
+  }
+
+  // Стрелки клавиатуры в открытой модалке
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowRight") stepCase(active.id, 1);
+      else if (e.key === "ArrowLeft") stepCase(active.id, -1);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active?.id]);
+
+  const activeIdx = active ? order.indexOf(active.id) : -1;
+  const prevCase = active ? caseDetails[order[(activeIdx - 1 + order.length) % order.length]] : null;
+  const nextCase = active ? caseDetails[order[(activeIdx + 1) % order.length]] : null;
 
   return (
     <>
@@ -162,6 +187,33 @@ export default function CaseGrid() {
                   <UserRound className="size-4 shrink-0 text-zinc-500" aria-hidden="true" />
                   {active.role}
                 </div>
+
+                {/* навигация между кейсами */}
+                <nav
+                  aria-label="Навигация по кейсам"
+                  className="flex items-center justify-between gap-2"
+                >
+                  <button
+                    type="button"
+                    onClick={() => stepCase(active.id, -1)}
+                    className="group flex min-w-0 items-center gap-1.5 rounded-xl px-3 py-2 text-xs font-semibold text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    <ChevronLeft className="size-4 shrink-0 transition-transform group-hover:-translate-x-0.5" aria-hidden="true" />
+                    <span className="truncate">{prevCase?.title}</span>
+                  </button>
+                  <span className="shrink-0 font-display text-xs font-bold text-zinc-500">
+                    {activeIdx + 1} / {order.length}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => stepCase(active.id, 1)}
+                    className="group flex min-w-0 items-center justify-end gap-1.5 rounded-xl px-3 py-2 text-right text-xs font-semibold text-zinc-400 transition-colors hover:bg-white/5 hover:text-white"
+                  >
+                    <span className="truncate">{nextCase?.title}</span>
+                    <ChevronRight className="size-4 shrink-0 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
+                  </button>
+                </nav>
+                <p className="sr-only">Переключение кейсов также доступно стрелками ← и →</p>
 
                 <a
                   href="#contact"

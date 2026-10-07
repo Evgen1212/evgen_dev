@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  CalendarDays,
   CheckCircle2,
   ClipboardCopy,
   Clock3,
@@ -272,6 +273,12 @@ export default function AdminDialog() {
       );
   }
 
+  const todayCount = useMemo(() => {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    return rows.filter((r) => new Date(r.createdAt) >= start).length;
+  }, [rows]);
+
   const visibleRows = useMemo(() => {
     const q = query.trim().toLowerCase();
     return rows.filter((r) => {
@@ -414,12 +421,13 @@ export default function AdminDialog() {
             </DialogHeader>
 
             {/* Статистика */}
-            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+            <div className="mt-5 grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-5">
               {[
                 { label: "Всего", value: stats?.total ?? 0, icon: Inbox, tint: "text-zinc-300" },
                 { label: "Новые", value: stats?.new ?? 0, icon: Sparkles, tint: "text-fuchsia-300" },
                 { label: "В работе", value: stats?.in_progress ?? 0, icon: Clock3, tint: "text-amber-300" },
                 { label: "Выполнено", value: stats?.done ?? 0, icon: CheckCircle2, tint: "text-emerald-300" },
+                { label: "Сегодня", value: todayCount, icon: CalendarDays, tint: "text-sky-300" },
               ].map((s) => (
                 <div
                   key={s.label}

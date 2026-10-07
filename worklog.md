@@ -110,3 +110,24 @@ Stage Summary:
 - Утка стала интерактивным маскотом-пасхалкой (первый такой элемент на сайте, задаёт tone-of-voice).
 - Риски: отзывы и цифры —示例ные тексты (перед прода заменить на реальные); duck-bounce + toast спам-защита не нужна (тосты сами стакаются, лимит не критичен); dev-скрипт перетирает dev.log при рестарте.
 - Следующие шаги: лёгкая тема (унификация hardcoded-цветов), preloader с уткой, Telegram-уведомления (нужен бот-токен), OG-перегенерация при смене текстов, возможно кейс-модалка prev/next навигация.
+
+---
+Task ID: 6 (cron webDevReview, раунд 6)
+Agent: Z.ai Code (main)
+Task: QA-оценка (сервер живой), новые фичи (prev/next в кейс-модалке, прелоадер с уткой, JSON-LD, стат-карта «Сегодня») + полировка (scroll-hint, dot-grid).
+
+Work Log:
+- QA-базлайн: сервер на 3000 живой (HTTP 200), 10 секций, консоль 0 ошибок → раунд развития.
+- КЕЙС-МОДАЛКА: prev/next навигация + счётчик «N / 7». Порядок = [rowOne+rowTwo] (modern→craftout→granline→lawyer→shadows→mineplay→cataclysm), stepCase с wrap-around (циклично). UI: два ghost-кнопки с названиями соседних кейсов (truncate, ChevronLeft/Right со сдвигом на hover) + font-display счётчик по центру. Клавиатура: ArrowLeft/ArrowRight через window keydown (активна только при открытой модалке, deps active?.id), sr-only подсказка про стрелки. Радиус: ниже роль-блока, выше CTA.
+- ПРЕЛОАДЕР: intro-loader.tsx (клиент) — оверлей z-100 с уткой (intro-wiggle 1.1s), «Erriour» с бегущим градиентом (reuse shine-sweep) и shimmer-полосой. Логика: once per session (sessionStorage erriour-intro), show→fade(950ms)→hidden(1500ms), блокировка body scroll на время показа (со снятием в cleanup). prefers-reduced-motion → не показывается вовсе. setPhase через rAF (react-hooks/set-state-in-effect). Подключён первым в page.tsx.
+- JSON-LD: page.tsx (серверный) — schema.org ProfessionalService: founder Person (Владимир, ИТМО), sameAs всех соцсетей из data.ts, makesOffer из prices (цены в числах через словарь), priceRange, areaServed RU. Скрипт ld+json в конце разметки — проверено наличие в DOM.
+- АДМИНКА: 5-я стат-карта «Сегодня» (CalendarDays, sky-300) — клиентский подсчёт rows с createdAt >= начала суток (useMemo). Сетка статов grid-cols-2 sm:3 lg:5.
+- СТИЛЬ: (1) scroll-hint «ЛИСТАЙ ↓» в hero слева над бегущей строкой (animate-bounce, motion-reduce:animate-none, скрыт на мобильных, aria-hidden) — не конфликтует с уткой справа; (2) .dot-grid — точечная сетка с radial mask в «Этапах работы» (h-28rem сверху секции).
+- Попутные lint-фиксы: лишний eslint-disable в case-grid (warning) удалён; setPhase в rAF.
+- QA agent-browser: прелоадер — гонка eval-ов показала intro=false→true на t≈1.7с (после dev-гидрации), авто-скрытие через ~1.5с, флаг сессии ставится и повторно не показывается (prod: гидрация мгновенная — видно сразу); кейс-модалка: Modern→(next)→CraftOut «2 / 7», ArrowRight→ГранЛайн, ArrowLeft→CraftOut, ArrowLeft×2 → wrap на Project Cataclysm «7 / 7»; админка: «Всего1|Новые1|В работе0|Выполнено0|Сегодня1»; dot-grid/JSON-LD в DOM; консоль 0 ошибок; lint чистый; full-page скриншот 10 секций OK.
+
+Stage Summary:
+- Лендинг: 10 секций + кейс-модалка с полноценной навигацией (кнопки + клавиатура + счётчик) + брендированный интро-прелоадер + JSON-LD для SEO (ProfessionalService с офферами).
+- Админка: 5 стат-карт (добавлена «Сегодня»), поиск, фильтр, CRUD, CSV.
+- Риски: прелоадер в dev виден только после гидрации (~1.5с) — в prod незаметно; «Сегодня» считается по локальному времени браузера админа (ок для лендинга); тексты отзывов/цифр всё ещё примерные.
+- Следующие шаги: лёгкая тема (большой объём), Telegram-уведомления (нужен токен), OG-перегенерация при смене текстов, свайпы на тач для кейс-модалки, i18n/en-версия — опционально.
