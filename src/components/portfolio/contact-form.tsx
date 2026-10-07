@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Loader2, Send, CheckCircle2 } from "lucide-react";
+import { Eraser, Loader2, Send, CheckCircle2, FileCheck2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { socials } from "./data";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, "Как к вам обращаться?").max(60),
@@ -40,20 +41,92 @@ const taskTypes: { value: FormValues["taskType"]; label: string }[] = [
 const fieldClass =
   "rounded-xl border-white/10 bg-white/[0.05] text-white placeholder:text-zinc-500 focus-visible:ring-fuchsia-500/40 focus-visible:border-fuchsia-500/40";
 
+const DRAFT_KEY = "erriour-form-draft";
+
+type Draft = {
+  name?: string;
+  contact?: string;
+  taskType?: FormValues["taskType"];
+  message?: string;
+};
+
+function readDraft(): Draft | null {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    const d = JSON.parse(raw) as Draft;
+    const hasContent = [d.name, d.contact, d.message].some(
+      (v) => typeof v === "string" && v.trim().length > 0
+    );
+    return hasContent ? d : null;
+  } catch {
+    return null;
+  }
+}
+
+function clearDraft() {
+  try {
+    localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
 export default function ContactForm() {
   const { toast } = useToast();
   const [taskType, setTaskType] = useState<FormValues["taskType"]>("landing");
+  const [sent, setSent] = useState(false);
+  const [draftRestored, setDraftRestored] = useState(false);
 
   const {
     register,
     handleSubmit,
     reset,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { name: "", contact: "", taskType: "landing", message: "", website: "" },
   });
+  const watched = useWatch({ control });
+
+  // Восстановление черновика — внутри rAF (react-hooks/set-state-in-effect)
+  useEffect(() => {
+    const stored = readDraft();
+    const raf = requestAnimationFrame(() => {
+      if (stored) {
+        if (stored.name) setValue("name", stored.name);
+        if (stored.contact) setValue("contact", stored.contact);
+        if (stored.message) setValue("message", stored.message);
+        if (stored.taskType) {
+          setTaskType(stored.taskType);
+          setValue("taskType", stored.taskType);
+        }
+        setDraftRestored(true);
+      }
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [setValue]);
+
+  // Автосохранение черновика с дебаунсом 600мс
+  useEffect(() => {
+    const t = setTimeout(() => {
+      try {
+        const draft: Draft = {
+          name: watched.name || undefined,
+          contact: watched.contact || undefined,
+          taskType: watched.taskType,
+          message: watched.message || undefined,
+        };
+        const has = draft.name || draft.contact || draft.message;
+        if (has) localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+      } catch {
+        /* localStorage может быть недоступен */
+      }
+    }, 600);
+    return () => clearTimeout(t);
+  }, [watched.name, watched.contact, watched.message, watched.taskType]);
 
   // Калькулятор проекта отправляет расчёт в форму через CustomEvent
   useEffect(() => {
@@ -92,8 +165,8 @@ export default function ContactForm() {
           title: "Заявка отправлена!",
           description: "Отвечу в течение часа в рабочее время.",
         });
-        reset();
-        setTaskType("landing");
+        clearDraft();
+        setSent(true);
       } else {
         toast({
           title: "Не получилось",
@@ -110,6 +183,54 @@ export default function ContactForm() {
     }
   }
 
+  if (sent) {
+    const tg = socials.find((s) => s.name === "Telegram");
+    return (
+      <div
+        data-reveal
+        className="relative mx-auto mt-12 w-full max-w-4xl overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-500/30 via-purple-500/10 to-transparent p-px"
+        role="status"
+      >
+        <div className="dot-grid rounded-[calc(1.5rem-1px)] bg-[#121214] px-6 py-14 text-center sm:px-9">
+          <span className="mx-auto grid size-16 place-items-center rounded-full border border-emerald-400/30 bg-emerald-500/15">
+            <CheckCircle2 className="size-8 text-emerald-300" aria-hidden="true" />
+          </span>
+          <h3 className="mt-5 font-display text-2xl font-bold sm:text-3xl">
+            Заявка отправлена!
+          </h3>
+          <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-zinc-400 sm:text-base">
+            Спасибо! Я уже увидел заявку и отвечу в течение часа в рабочее
+            время (10:00–22:00 МСК). Срочное — быстрее в Telegram.
+          </p>
+          <div className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <button
+              type="button"
+              onClick={() => {
+                reset();
+                setTaskType("landing");
+                setSent(false);
+              }}
+              className="inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3 text-sm font-bold text-black transition-all hover:scale-[1.02] active:scale-95"
+            >
+              <FileCheck2 className="size-4" aria-hidden="true" />
+              Отправить ещё одну
+            </button>
+            {tg && (
+              <a
+                href={tg.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-zinc-200 transition-all hover:border-white/30 hover:text-white"
+              >
+                Написать в Telegram
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -119,9 +240,28 @@ export default function ContactForm() {
       <div className="pointer-events-none absolute inset-x-0 -top-px mx-auto h-px w-2/3 bg-gradient-to-r from-transparent via-fuchsia-500/60 to-transparent" />
 
       <div>
-        <h3 className="font-display text-2xl font-bold">Или оставьте заявку</h3>
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <h3 className="font-display text-2xl font-bold">Или оставьте заявку</h3>
+          {draftRestored && (
+            <button
+              type="button"
+              onClick={() => {
+                clearDraft();
+                reset();
+                setTaskType("landing");
+                setDraftRestored(false);
+                toast({ title: "Черновик очищен" });
+              }}
+              className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-semibold text-zinc-400 transition-all hover:border-white/25 hover:text-white"
+            >
+              <Eraser className="size-3.5" aria-hidden="true" />
+              Черновик восстановлен — очистить
+            </button>
+          )}
+        </div>
         <p className="mt-1 text-sm text-zinc-400">
-          Расскажите о задаче — отвечу с оценкой сроков и стоимости
+          Расскажите о задаче — отвечу с оценкой сроков и стоимости. Черновик
+          сохраняется автоматически.
         </p>
       </div>
 

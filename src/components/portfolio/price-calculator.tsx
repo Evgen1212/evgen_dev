@@ -1,15 +1,17 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Calculator,
   CalendarClock,
   Check,
   ChevronRight,
+  Link2,
   RotateCcw,
   Zap,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
 import {
   calcProjects,
   calcExtras,
@@ -21,7 +23,33 @@ import {
 
 const fmt = new Intl.NumberFormat("ru-RU");
 
+/** Deep-link расчёта: ?calc=<project>[.<extra>…][.r] — компактно и читаемо */
+function encodeCalc(project: string, extras: Set<string>, rush: boolean) {
+  return [project, ...[...extras], ...(rush ? ["r"] : [])].join(".");
+}
+
+function syncCalcUrl(project: string, extras: Set<string>, rush: boolean) {
+  if (typeof window === "undefined") return;
+  const url = new URL(window.location.href);
+  url.searchParams.set("calc", encodeCalc(project, extras, rush));
+  const qs = url.searchParams.toString();
+  window.history.replaceState(null, "", url.pathname + `?${qs}` + url.hash);
+}
+
+function clearCalcUrl() {
+  if (typeof window === "undefined") return;
+  const url = new URL(window.location.href);
+  url.searchParams.delete("calc");
+  const qs = url.searchParams.toString();
+  window.history.replaceState(
+    null,
+    "",
+    url.pathname + (qs ? `?${qs}` : "") + url.hash
+  );
+}
+
 export default function PriceCalculator() {
+  const { toast } = useToast();
   const [project, setProject] = useState<CalcProjectKey>("multipage");
   const [extras, setExtras] = useState<Set<CalcExtraKey>>(() => new Set(["admin"]));
   const [rush, setRush] = useState(false);
@@ -44,19 +72,56 @@ export default function PriceCalculator() {
   }, [project, extras, rush]);
 
   function toggleExtra(key: CalcExtraKey) {
-    setExtras((prev) => {
-      const next = new Set(prev);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
-      return next;
-    });
+    const next = new Set(extras);
+    if (next.has(key)) next.delete(key);
+    else next.add(key);
+    setExtras(next);
+    syncCalcUrl(project, next, rush);
+  }
+
+  function chooseProject(key: CalcProjectKey) {
+    setProject(key);
+    syncCalcUrl(key, extras, rush);
+  }
+
+  function toggleRush() {
+    const next = !rush;
+    setRush(next);
+    syncCalcUrl(project, extras, next);
   }
 
   function reset() {
     setProject("multipage");
     setExtras(new Set(["admin"]));
     setRush(false);
+    clearCalcUrl();
   }
+
+  /** Восстановление расчёта из ?calc=… (rAF — без set-state-in-effect) */
+  useEffect(() => {
+    const raw = new URLSearchParams(window.location.search).get("calc");
+    if (!raw) return;
+    const parts = raw.split(".");
+    const p = calcProjects.find((x) => x.key === parts[0]);
+    if (!p) return;
+    const raf = requestAnimationFrame(() => {
+      setProject(p.key);
+      const nextExtras = new Set<CalcExtraKey>();
+      for (const part of parts.slice(1)) {
+        if (part === "r") setRush(true);
+        else {
+          const e = calcExtras.find((x) => x.key === part);
+          if (e) nextExtras.add(e.key);
+        }
+      }
+      setExtras(nextExtras);
+      toast({
+        title: "Расчёт восстановлен из ссылки",
+        description: `${p.label}${nextExtras.size ? ` + ${nextExtras.size} доп. опции` : ""}`,
+      });
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [toast]);
 
   const chosenExtras = calcExtras.filter((e) => extras.has(e.key));
 
@@ -119,7 +184,7 @@ export default function PriceCalculator() {
                     <button
                       key={p.key}
                       type="button"
-                      onClick={() => setProject(p.key)}
+                      onClick={() => chooseProject(p.key)}
                       aria-pressed={isActive}
                       className={cn(
                         "rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-0.5",
@@ -200,7 +265,7 @@ export default function PriceCalculator() {
             <div className="flex flex-wrap items-center gap-2">
               <button
                 type="button"
-                onClick={() => setRush((r) => !r)}
+                onClick={toggleRush}
                 aria-pressed={rush}
                 className={cn(
                   "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 active:scale-95",
@@ -252,6 +317,29 @@ export default function PriceCalculator() {
               Перенести в заявку
               <ChevronRight className="size-4" aria-hidden="true" />
             </a>
+            <button
+              type="button"
+              onClick={() => {
+                const url = new URL(window.location.href);
+                url.searchParams.set("calc", encodeCalc(project, extras, rush));
+                const link = url.toString();
+                navigator.clipboard
+                  .writeText(link)
+                  .then(() =>
+                    toast({
+                      title: "Ссылка на расчёт скопирована",
+                      description: "Открыв её, получатель увидит эту же конфигурацию",
+                    })
+                  )
+                  .catch(() =>
+                    toast({ title: "Скопируйте ссылку вручную", description: link })
+                  );
+              }}
+              className="group/calc mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-zinc-500 transition-colors hover:text-fuchsia-300"
+            >
+              <Link2 className="size-3.5 transition-transform group-hover/calc:-rotate-45" aria-hidden="true" />
+              Скопировать ссылку на расчёт
+            </button>
             <p className="mt-3 text-[11px] leading-relaxed text-zinc-600">
               Расчёт ни к чему не обязывает — точную смету зафиксируем после
               обсуждения задачи.

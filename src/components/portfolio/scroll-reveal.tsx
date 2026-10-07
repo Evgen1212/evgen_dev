@@ -4,12 +4,7 @@ import { useEffect } from "react";
 
 export default function ScrollReveal() {
   useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      els.forEach((el) => el.classList.add("revealed"));
-      return;
-    }
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     const io = new IntersectionObserver(
       (entries) => {
@@ -25,8 +20,50 @@ export default function ScrollReveal() {
       { threshold: 0, rootMargin: "0px 0px -40px 0px" }
     );
 
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
+    const observeAll = (root: ParentNode) => {
+      const els = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
+      if (reduced) {
+        els.forEach((el) => el.classList.add("revealed"));
+      } else {
+        els.forEach((el) => {
+          if (!el.classList.contains("revealed")) io.observe(el);
+        });
+      }
+    };
+
+    observeAll(document);
+
+    // Динамически смонтированные [data-reveal] (например, карточка «Заявка
+    // отправлена» после сабмита) тоже должны раскрываться — следим за DOM.
+    let mutationRaf = 0;
+    const mo = new MutationObserver((mutations) => {
+      let hasNew = false;
+      for (const m of mutations) {
+        for (const node of m.addedNodes) {
+          if (
+            node instanceof HTMLElement &&
+            (node.hasAttribute("data-reveal") ||
+              node.querySelector("[data-reveal]"))
+          ) {
+            hasNew = true;
+            break;
+          }
+        }
+        if (hasNew) break;
+      }
+      if (!hasNew || mutationRaf) return;
+      mutationRaf = requestAnimationFrame(() => {
+        mutationRaf = 0;
+        observeAll(document);
+      });
+    });
+    mo.observe(document.body, { childList: true, subtree: true });
+
+    return () => {
+      io.disconnect();
+      mo.disconnect();
+      if (mutationRaf) cancelAnimationFrame(mutationRaf);
+    };
   }, []);
 
   return null;

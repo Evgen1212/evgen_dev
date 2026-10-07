@@ -55,36 +55,53 @@ export default function Header() {
         <div className="flex items-center gap-2">
           <a
             href="#top"
-            className={cn(pill, "flex items-center gap-2.5 py-2 pl-2 pr-4 sm:pr-5")}
+            className={cn(pill, "group flex items-center gap-2.5 py-2 pl-2 pr-4 transition-all duration-300 sm:pr-5")}
             aria-label="Erriour — на главную"
           >
-            <span className="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-700 text-lg shadow-inner">
+            <span
+              className={cn(
+                "grid place-items-center rounded-xl bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-700 text-lg shadow-inner transition-all duration-300",
+                scrolled ? "size-8" : "size-9"
+              )}
+            >
               <span aria-hidden="true">🦆</span>
             </span>
-            <span className="font-display text-lg font-bold tracking-tight">
+            <span
+              className={cn(
+                "font-display font-bold tracking-tight transition-all duration-300",
+                scrolled ? "text-base" : "text-lg"
+              )}
+            >
               Erriour
             </span>
           </a>
 
           <nav
-            className={cn(pill, "hidden lg:flex items-center px-2 py-1.5")}
+            className={cn(
+              pill,
+              "hidden items-center px-2 transition-all duration-300 lg:flex",
+              scrolled ? "py-1" : "py-1.5"
+            )}
             aria-label="Основная навигация"
           >
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                aria-current={activeSection === link.href ? "true" : undefined}
-                className={cn(
-                  "rounded-xl px-4 py-2 text-sm font-semibold transition-colors",
-                  activeSection === link.href
-                    ? "bg-white/15 text-white"
-                    : "text-zinc-300 hover:bg-white/10 hover:text-white"
-                )}
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-300",
+                    isActive
+                      ? "bg-gradient-to-r from-fuchsia-600/90 to-purple-600/90 text-white shadow-md shadow-fuchsia-900/40"
+                      : "text-zinc-300 hover:bg-white/10 hover:text-white"
+                  )}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
         </div>
 
@@ -141,16 +158,25 @@ export default function Header() {
       >
         <div className={cn(pill, "p-3")}>
           <nav className="grid gap-1" aria-label="Мобильная навигация">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="rounded-xl px-4 py-3 text-base font-semibold text-zinc-100 transition-colors hover:bg-white/10"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href;
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setOpen(false)}
+                  aria-current={isActive ? "true" : undefined}
+                  className={cn(
+                    "rounded-xl px-4 py-3 text-base font-semibold transition-colors",
+                    isActive
+                      ? "bg-gradient-to-r from-fuchsia-600/90 to-purple-600/90 text-white"
+                      : "text-zinc-100 hover:bg-white/10"
+                  )}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
           </nav>
           <div className="mt-2 flex flex-wrap gap-1 border-t border-white/10 pt-3">
             {socials.map((s) => (
