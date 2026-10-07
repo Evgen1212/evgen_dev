@@ -3,6 +3,7 @@ import { socials } from "./data";
 import { SectionKicker } from "./section-heading";
 import ContactForm from "./contact-form";
 import CopyEmailButton from "./copy-email-button";
+import LocalTime from "./local-time";
 
 const primaryNames = ["Telegram", "Discord", "VK", "GitHub"];
 
@@ -36,6 +37,7 @@ export default function Contact() {
           <p className="mt-4 text-base text-zinc-400 sm:text-lg">
             напишите мне в мессенджерах или соц.сетях
           </p>
+          <LocalTime className="mt-6" />
         </div>
 
         <div className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">

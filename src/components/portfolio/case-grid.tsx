@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, SlidersHorizontal, Sparkles, UserRound } from "lucide-react";
+import { ArrowUpRight, CalendarDays, ChevronLeft, ChevronRight, Clock, Link2, SlidersHorizontal, Sparkles, UserRound } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,7 @@ import {
   type CaseDetail,
 } from "./data";
 import { caseArt } from "./case-art";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
 type GridItem = {
@@ -37,6 +38,20 @@ const rowTwo: GridItem[] = [
 
 const allItems: GridItem[] = [...rowOne, ...rowTwo];
 
+/** Deep-link: синхронизирует открытый кейс с ?case=<id> в адресной строке */
+function setUrlCase(id: string | null) {
+  if (typeof window === "undefined") return;
+  const url = new URL(window.location.href);
+  if (id) url.searchParams.set("case", id);
+  else url.searchParams.delete("case");
+  const qs = url.searchParams.toString();
+  window.history.replaceState(
+    null,
+    "",
+    url.pathname + (qs ? `?${qs}` : "") + url.hash
+  );
+}
+
 function CaseCell({
   id,
   className,
@@ -49,7 +64,7 @@ function CaseCell({
   /** true — без data-reveal (для отфильтрованных карточек, анимация filter-in) */
   eager?: boolean;
   delay?: number;
-  onOpen: (d: CaseDetail) => void;
+  onOpen: (id: string) => void;
 }) {
   const detail = caseDetails[id];
   const Art = caseArt[id];
@@ -58,7 +73,7 @@ function CaseCell({
   return (
     <button
       type="button"
-      onClick={() => onOpen(detail)}
+      onClick={() => onOpen(id)}
       data-reveal={eager ? undefined : true}
       style={eager ? { animationDelay: `${delay}ms` } : undefined}
       aria-label={`${detail.title} — открыть детали кейса`}
@@ -84,6 +99,7 @@ function CaseCell({
 }
 
 export default function CaseGrid() {
+  const { toast } = useToast();
   const [active, setActive] = useState<CaseDetail | null>(null);
   const [filter, setFilter] = useState<CaseCategory | "all">("all");
   const ActiveArt = active ? caseArt[active.id] : null;
@@ -91,6 +107,42 @@ export default function CaseGrid() {
 
   // Порядок кейсов для навигации «предыдущий / следующий»
   const order = allItems.map((i) => i.id);
+
+  /** Открыть кейс + записать deep-link в адресную строку */
+  function openCase(id: string) {
+    const d = caseDetails[id];
+    if (!d) return;
+    setActive(d);
+    setUrlCase(id);
+  }
+
+  /** Закрыть модалку + убрать deep-link из адреса */
+  function closeCase() {
+    setActive(null);
+    setUrlCase(null);
+  }
+
+  /** Скопировать ссылку на кейс (https://…/?case=<id>) */
+  function copyCaseLink(id: string) {
+    const link = `${window.location.origin}/?case=${id}`;
+    navigator.clipboard
+      .writeText(link)
+      .then(() => toast({ title: "Ссылка на кейс скопирована", description: link }))
+      .catch(() =>
+        toast({
+          title: "Скопируйте ссылку вручную",
+          description: link,
+        })
+      );
+  }
+
+  // Deep-link на первом рендере: /?case=<id> открывает модалку этого кейса
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("case");
+    if (!id || !caseDetails[id]) return;
+    const raf = requestAnimationFrame(() => setActive(caseDetails[id]));
+    return () => cancelAnimationFrame(raf);
+  }, [caseDetails]);
 
   // Счётчики чипсов фильтра
   const counts = useMemo(() => {
@@ -115,6 +167,7 @@ export default function CaseGrid() {
     if (idx === -1) return;
     const nextId = order[(idx + dir + order.length) % order.length];
     setActive(caseDetails[nextId]);
+    setUrlCase(nextId);
   }
 
   // Стрелки клавиатуры в открытой модалке
@@ -195,13 +248,13 @@ export default function CaseGrid() {
         <>
           <div className="grid gap-4 sm:gap-5 md:grid-cols-2 lg:grid-cols-[1fr_1.95fr_1fr]">
             {rowOne.map((item) => (
-              <CaseCell key={item.id} id={item.id} className={item.className} onOpen={setActive} />
+              <CaseCell key={item.id} id={item.id} className={item.className} onOpen={openCase} />
             ))}
           </div>
 
           <div className="mt-4 grid gap-4 sm:mt-5 sm:gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {rowTwo.map((item) => (
-              <CaseCell key={item.id} id={item.id} className={item.className} onOpen={setActive} />
+              <CaseCell key={item.id} id={item.id} className={item.className} onOpen={openCase} />
             ))}
           </div>
         </>
@@ -217,13 +270,13 @@ export default function CaseGrid() {
               className="block h-64 md:h-72 lg:h-80"
               eager
               delay={i * 70}
-              onOpen={setActive}
+              onOpen={openCase}
             />
           ))}
         </div>
       )}
 
-      <Dialog open={!!active} onOpenChange={(o) => !o && setActive(null)}>
+      <Dialog open={!!active} onOpenChange={(o) => !o && closeCase()}>
         <DialogContent
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -253,7 +306,7 @@ export default function CaseGrid() {
                   <h3 className="font-display text-2xl font-bold sm:text-3xl">
                     {active.title}
                   </h3>
-                  <div className="flex gap-4 text-xs text-zinc-400">
+                  <div className="flex flex-wrap items-center gap-4 text-xs text-zinc-400">
                     <span className="flex items-center gap-1.5">
                       <CalendarDays className="size-3.5" aria-hidden="true" />
                       {active.year}
@@ -262,6 +315,16 @@ export default function CaseGrid() {
                       <Clock className="size-3.5" aria-hidden="true" />
                       {active.timeline}
                     </span>
+                    <button
+                      type="button"
+                      onClick={() => copyCaseLink(active.id)}
+                      title="Скопировать ссылку на этот кейс"
+                      aria-label="Скопировать ссылку на этот кейс"
+                      className="group/link inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 font-semibold text-zinc-400 transition-all hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-fuchsia-300 active:scale-95"
+                    >
+                      <Link2 className="size-3.5 transition-transform group-hover/link:-rotate-45" aria-hidden="true" />
+                      Ссылка
+                    </button>
                   </div>
                 </div>
 
@@ -331,12 +394,13 @@ export default function CaseGrid() {
                 </nav>
                 <p className="sr-only">
                   Переключение кейсов также доступно стрелками ← и →, а на
-                  сенсорных экранах — свайпом влево и вправо
+                  сенсорных экранах — свайпом влево и вправо. Ссылку на
+                  конкретный кейс можно скопировать кнопкой «Ссылка».
                 </p>
 
                 <a
                   href="#contact"
-                  onClick={() => setActive(null)}
+                  onClick={closeCase}
                   className="flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-bold text-black transition-all hover:scale-[1.02] active:scale-95"
                 >
                   Хочу похожий проект

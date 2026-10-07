@@ -17,6 +17,7 @@ import {
   Search,
   Sparkles,
   Trash2,
+  TrendingUp,
   X,
 } from "lucide-react";
 import {
@@ -91,6 +92,16 @@ const statusBadge: Record<string, string> = {
 
 const fieldClass =
   "rounded-xl border-white/10 bg-white/[0.05] text-white placeholder:text-zinc-500";
+
+/** Русская плюрализация: 1 заявка / 2 заявки / 5 заявок */
+function pluralRequests(n: number) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${n} заявка`;
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14))
+    return `${n} заявки`;
+  return `${n} заявок`;
+}
 
 const dateFmt = new Intl.DateTimeFormat("ru-RU", {
   day: "numeric",
@@ -283,6 +294,34 @@ export default function AdminDialog() {
     return rows.filter((r) => new Date(r.createdAt) >= start).length;
   }, [rows]);
 
+  /** Последние 14 дней: количество заявок по дням (для мини-графика) */
+  const chart = useMemo(() => {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    const days: { date: Date; count: number }[] = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(start);
+      d.setDate(d.getDate() - i);
+      days.push({ date: d, count: 0 });
+    }
+    for (const r of rows) {
+      const created = new Date(r.createdAt);
+      created.setHours(0, 0, 0, 0);
+      const idx = days.findIndex((d) => d.date.getTime() === created.getTime());
+      if (idx !== -1) days[idx].count++;
+    }
+    return days;
+  }, [rows]);
+  const chartMax = Math.max(1, ...chart.map((d) => d.count));
+  const chartDayFmt = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "short",
+  });
+  const chartTitleFmt = new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+  });
+
   const visibleRows = useMemo(() => {
     const q = query.trim().toLowerCase();
     const filtered = rows.filter((r) => {
@@ -450,6 +489,55 @@ export default function AdminDialog() {
                 </div>
               ))}
             </div>
+
+            {/* Мини-график заявок за 14 дней */}
+            {rows.length > 0 && (
+              <div className="mt-3 rounded-xl border border-white/10 bg-white/[0.03] p-3.5">
+                <div className="mb-2.5 flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-wider text-zinc-500">
+                    <TrendingUp className="size-3.5 text-fuchsia-400" aria-hidden="true" />
+                    Заявки за 14 дней
+                  </span>
+                  <span className="text-[11px] text-zinc-600">
+                    максимум {chartMax} в день
+                  </span>
+                </div>
+                <div className="flex h-16 items-end gap-[3px]">
+                  {chart.map((d) => {
+                    const isToday =
+                      d.date.getTime() === chart[chart.length - 1].date.getTime();
+                    return (
+                      <div
+                        key={d.date.toISOString()}
+                        className="group flex h-full min-w-0 flex-1 flex-col justify-end"
+                        title={`${chartTitleFmt.format(d.date)} — ${pluralRequests(d.count)}`}
+                      >
+                        <div
+                          className={cn(
+                            "w-full rounded-t-sm transition-all duration-300 group-hover:opacity-100",
+                            d.count === 0
+                              ? "h-[3px] bg-white/10"
+                              : isToday
+                                ? "bg-gradient-to-t from-fuchsia-500 to-purple-300 opacity-100"
+                                : "bg-gradient-to-t from-fuchsia-600/70 to-purple-400/90 opacity-80 group-hover:from-fuchsia-500 group-hover:to-purple-300"
+                          )}
+                          style={
+                            d.count === 0
+                              ? undefined
+                              : { height: `${Math.max(12, (d.count / chartMax) * 100)}%` }
+                          }
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="mt-1.5 flex justify-between text-[9px] font-medium text-zinc-600">
+                  <span>{chartDayFmt.format(chart[0].date)}</span>
+                  <span className="text-fuchsia-400/80">сегодня</span>
+                  <span>{chartDayFmt.format(chart[chart.length - 1].date)}</span>
+                </div>
+              </div>
+            )}
 
             {/* Фильтр + поиск */}
             <div className="mt-4 flex flex-wrap items-center gap-2">

@@ -630,3 +630,35 @@ summary:focus-visible {
     animation: none !important;
   }
 }
+
+/* ---------- Section hairline divider ----------
+   Тонкая градиентная линия между секциями со светящимся
+   ромбом по центру. */
+.section-hairline {
+  position: relative;
+  height: 1px;
+  width: calc(100% - 2.5rem);
+  max-width: 72rem;
+  margin-inline: auto;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(217, 70, 239, 0.22) 16%,
+    rgba(139, 92, 246, 0.3) 50%,
+    rgba(217, 70, 239, 0.22) 84%,
+    transparent
+  );
+}
+
+.section-hairline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: linear-gradient(135deg, #d946ef, #8b5cf6);
+  box-shadow: 0 0 14px rgba(217, 70, 239, 0.55);
+}

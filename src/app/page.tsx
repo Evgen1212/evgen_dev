@@ -15,6 +15,7 @@ import ScrollFx from "@/components/portfolio/scroll-fx";
 import ScrollWidgets from "@/components/portfolio/scroll-widgets";
 import IntroLoader from "@/components/portfolio/intro-loader";
 import StickyCta from "@/components/portfolio/sticky-cta";
+import Hairline from "@/components/portfolio/hairline";
 import { socials, prices, calcProjects } from "@/components/portfolio/data";
 
 const jsonLd = {
@@ -59,13 +60,18 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <Cases />
+        <Hairline />
         <OwnProjects />
+        <Hairline />
         <About />
         <Tech />
         <Process />
+        <Hairline />
         <Prices />
+        <Hairline />
         <Faq />
         <Testimonials />
+        <Hairline />
         <Contact />
       </main>
       <Footer />
