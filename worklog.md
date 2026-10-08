@@ -356,3 +356,19 @@ Stage Summary:
 - Все функции работают в Nuxt-версии: deep-links ?case=/сalc, кейс-модалка (клавиатура/свайпы/шаринг), форма (черновик/honeypot/успех), админка (статы/график/CSV/PATCH/DELETE), часы MSK, sitemap, resume.pdf, OG-картинка.
 - Риски/заметки: legacy-nextjs/node_modules занимает ~1ГБ (можно удалить); ESLint для .vue не настроен (плагин eslint-plugin-vue не установлен); сомнительные данные из резюме — заглушки (кейсы/цены/отзывы шаблонные, фавиконка-утка от старого бренда).
 - Следующие шаги: заменить шаблонные кейсы на реальный опыт (Авто-Евро, AlfaBit, Yabbi, Титул-2005), настроить eslint-plugin-vue, светлая тема, реальный Telegram bot token.
+
+---
+Task ID: 11.1
+Agent: Z.ai Code (main)
+Task: Фикс «Blocked request» в превью — Vite-девсервер Nuxt блокировал запросы с внешним Host-заголовком шлюза.
+
+Work Log:
+- Симптом от пользователя: в превью вместо сайта — «Blocked request. This host (ws-…fcapp.run) is not allowed. To allow this host, add … to server.allowedHosts in vite.config.js».
+- Диагноз: превью ходит через Caddy-шлюз (:81 → localhost:3000) с сохранением оригинального Host (`header_up Host {host}`); Vite с версии 5.4.12/6 блокирует незнакомые Host (защита от DNS-rebinding). Next.js такой проверки не имел — поэтому до миграции работало. Подтверждено: curl с внешним Host → HTTP 403.
+- Фикс: nuxt.config.ts → vite.server.allowedHosts: true (домен песочницы динамический, поэтому true, а не фиксированный хост; только dev, на prod не влияет) + комментарий с объяснением.
+- Перезапуск dev-сервера (pkill nuxt → nohup bun run dev), Ready in 2.46s.
+- Верификация: curl с внешним Host → HTTP 200 (было 403); localhost → 200; полная цепочка через шлюз :81 с внешним Host → HTTP 200, 179КБ SSR-HTML, title «Абрамов Евгений — Senior Frontend…» на месте.
+
+Stage Summary:
+- Превью снова открывает сайт: «Blocked request» устранён, Nuxt-девсервер принимает запросы с любым Host через шлюз.
+- Причина инцидента задокументирована в nuxt.config.ts, чтобы при будущих миграциях девсерверов (vite/next) это не всплывало снова.
