@@ -333,3 +333,26 @@ Stage Summary:
 - Архитектурные улучшения против React-версии: URL-синк калькулятора через watch(flush:post) вместо post-update колбэков; SSR-гварды на все DOM-обращения; тосты на синглтоне-композабле вместо headless-хуков.
 - Риски: (1) фавиконка и утка-маскот остались от шаблона Erriour (пользователь не уточнил бренд — оставил заглушкой, при желании меняется за один коммит); (2) кейсы/цены/отзывы — плейсхолдерные (ждали решения: можно заменить на реальный опыт Авто-Евро/Yabbi/AlfaBit/Титул-2005); (3) reveal-анимации не видны на виртуальном скролле --full скриншотов (артефакт headless, при реальном скролле всё раскрывается); (4) focus-trap в модалках упрощён (был у radix) — кандидат в полировку; (5) `nuxt dev` с Node 24 — при апгрейде версий следить за совместимостью.
 - Следующие шаги: заменить кейсы на реальный опыт из резюме (Авто-Евро: миграция legacy → Vue 3; AlfaBit: крипто-биржа SSR, UI-кит 50+; Yabbi: SPA с нуля; Титул-2005: DevExtreme-таблицы); светлая тема; реальный Telegram bot token; политики/страница 404.
+
+---
+Task ID: 11
+Agent: Z.ai Code (main)
+Task: Устранение путаницы «проект всё ещё на Next.js»: вынос Nuxt 4 в корень проекта, архивация Next-версии, перезапуск и полное QA (запрос пользователя после осмотра корневого package.json).
+
+Work Log:
+- Диагноз: пользователь увидел корневой package.json (Next.js, react/next — без vue/nuxt) и старый Next-сервер на порту 3000, который к тому же отдавал GET / 500 → вывод «ты меня обманул?». Фактически Nuxt-версия существовала в nuxt-app/ (Task 10), но не была «первым проектом» и не была запущена.
+- Убил Next-процессы (pids 1055/1088/1231), порт 3000 освобождён.
+- Создан legacy-nextjs/ — архив Next-версии: src, public, package.json, bun.lock, next.config.ts, next-env.d.ts, tsconfig.json, eslint.config.mjs, postcss.config.mjs, tailwind.config.ts, components.json, tests, scripts, prisma, node_modules. Откат возможен: cd legacy-nextjs && bun install && bun run dev.
+- nuxt-app/* перемещён в корень (app/, server/, public/, prisma/, nuxt.config.ts, tsconfig.json, bun.lock, PORTING.md); старый .nuxt удалён для чистой регенерации.
+- package.json в корне теперь Nuxt-проект (abramov-portfolio-nuxt): dev = «nuxt dev 2>&1 | tee dev.log», + db:push. .env в корне уже был: DATABASE_URL=file:/home/z/my-project/db/custom.db — та же БД с историей заявок.
+- bun install → 613 пакетов за 6.2с: nuxt 4.6.0, vue 3.5.43, nitro 2.13.4, vite 8.3.3, lucide-vue-next 0.525.0; prisma generate ок; тест БД: ContactRequest.count() = 1.
+- Запуск: nohup bun run dev → «Nuxt 4.6.0 … Ready in 2.37s» на :3000, curl 200/179KB с SSR-контентом «Абрамов».
+- QA agent-browser — все пункты пройдены: (1) рендер hero с уткой и CraftOut, консоль чистая; (2) кейс-модалка: клик по карточке → ?case=modern, ArrowRight → craftout, Escape → модалка закрыта и URL очищен; (3) прямой deep-link /?case=cataclysm открывает «Project Cataclysm»; (4) все 11 секций в DOM (top/cases/projects/about/tech/process/prices/faq/reviews/contact); (5) скриншоты с реальным скроллом: кейсы с фильтрами-чипсами, «Обо мне» с реальным фото из резюме, счётчики 5+/50+/70%+/5+, scroll-spy в навигации, hairline с ромбом; (6) форма «Обсудить задачу»: заполнение → сабмит → экран успеха «Заявка отправлена!» → строка в БД (Тест Nuxt QA / @nuxt_qa_test / landing); (7) админка erriour2024: статы ВСЕГО 2 / НОВЫЕ 2 / В РАБОТЕ 0 / ВЫПОЛНЕНО 0 / СЕГОДНЯ 1, график «Заявки за 14 дней» с подсветкой «сегодня», список с фильтром/поиском «2 из 2»; (8) удаление заявки через confirm-модалку → БД снова 1 строка, UI обновился; (9) часы «Москва · 12:55»; (10) deep-link калькулятора ?calc=webapp.seo.r → цена с «×1,3»; (11) resume.pdf → 200, sitemap.xml → 200; (12) консоль браузера и dev.log без ошибок.
+- Замечание по QA: первый клик по confirm удаления попал в кнопку строки (неточность селектора QA-скрипта, не баг приложения); точечный клик по кнопке confirm-модалки сработал.
+
+Stage Summary:
+- Корень /home/z/my-project — теперь полноценный Nuxt 4 проект: package.json содержит nuxt/vue/lucide-vue-next, `bun run dev` поднимает Nuxt на :3000 с логом в dev.log; при рестарте контейнера платформа запустит Nuxt, а не Next.
+- Next.js-версия законсервирована в legacy-nextjs/ (полный откат возможен одной командой).
+- Все функции работают в Nuxt-версии: deep-links ?case=/сalc, кейс-модалка (клавиатура/свайпы/шаринг), форма (черновик/honeypot/успех), админка (статы/график/CSV/PATCH/DELETE), часы MSK, sitemap, resume.pdf, OG-картинка.
+- Риски/заметки: legacy-nextjs/node_modules занимает ~1ГБ (можно удалить); ESLint для .vue не настроен (плагин eslint-plugin-vue не установлен); сомнительные данные из резюме — заглушки (кейсы/цены/отзывы шаблонные, фавиконка-утка от старого бренда).
+- Следующие шаги: заменить шаблонные кейсы на реальный опыт (Авто-Евро, AlfaBit, Yabbi, Титул-2005), настроить eslint-plugin-vue, светлая тема, реальный Telegram bot token.

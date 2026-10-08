@@ -1,0 +1,10 @@
+{
+  "pid": 1659,
+  "startedAt": 1791453035093,
+  "interactive": false,
+  "command": "dev",
+  "cwd": "/home/z/my-project",
+  "port": 3000,
+  "hostname": "::",
+  "url": "http://localhost:3000"
+}
