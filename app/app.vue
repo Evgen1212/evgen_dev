@@ -58,18 +58,17 @@ useHead({
     <SiteHeader />
     <main class="flex-1">
       <Hero />
-      <Cases />
       <Hairline />
       <OwnProjects />
       <Hairline />
       <About />
+      <Experience />
       <Tech />
       <Process />
       <Hairline />
       <Prices />
       <Hairline />
       <Faq />
-      <Testimonials />
       <Hairline />
       <Contact />
     </main>

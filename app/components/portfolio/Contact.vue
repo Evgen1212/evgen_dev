@@ -26,12 +26,12 @@ const secondary: typeof socials = [];
 
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
       <div data-reveal class="mb-12 text-center sm:mb-16">
-        <SectionKicker>Контакты</SectionKicker>
+        <SectionKicker>Связь</SectionKicker>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-          Обсудить задачу
+          Контакты
         </h2>
         <p class="mt-4 text-base text-zinc-400 sm:text-lg">
-          напишите мне в мессенджерах или соц.сетях
+          выберите удобный способ — отвечаю быстро
         </p>
         <LocalTime class="mt-6" />
       </div>
@@ -103,8 +103,6 @@ const secondary: typeof socials = [];
         </a>
         <CopyEmailButton />
       </div>
-
-      <ContactForm />
     </div>
   </section>
 </template>

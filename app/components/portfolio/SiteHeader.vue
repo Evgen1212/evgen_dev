@@ -3,10 +3,11 @@ import { Mail, Menu, Phone, X } from "lucide-vue-next";
 import { socials } from "./data";
 
 const navLinks = [
-  { label: "Все работы", href: "#cases" },
+  { label: "Проекты", href: "#projects" },
+  { label: "Опыт", href: "#experience" },
   { label: "Обо мне", href: "#about" },
   { label: "Цены", href: "#prices" },
-  { label: "Обсудить задачу", href: "#contact" },
+  { label: "Контакты", href: "#contact" },
 ];
 
 const pill =

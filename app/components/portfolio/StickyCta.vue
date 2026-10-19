@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
           :tabindex="show ? 0 : -1"
           class="inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-purple-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-900/40 transition-transform hover:scale-[1.03] active:scale-95"
         >
-          Обсудить задачу
+          Обсудить проект
           <ArrowUpRight class="size-4" aria-hidden="true" />
         </a>
       </div>

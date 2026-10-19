@@ -141,30 +141,6 @@ const chosenExtras = computed(() =>
   calcExtras.filter((e) => extras.value.has(e.key)),
 );
 
-const message = computed(() =>
-  [
-    "Здравствуйте! Прикинул бюджет на калькуляторе сайта:",
-    `«${result.value.projectLabel}»`,
-    chosenExtras.value.length > 0
-      ? `+ ${chosenExtras.value.map((e) => e.label.toLowerCase()).join(", ")}`
-      : null,
-    rush.value ? "срочность ×1,3" : null,
-    `— ориентировочно ${fmt.format(result.value.price)} ₽ и ~${pluralDays(result.value.days)}.`,
-    "Хочу обсудить детали!",
-  ]
-    .filter(Boolean)
-    .join(" "),
-);
-
-/** Перенос расчёта в форму заявки (contact-form слушает это событие) */
-function prefillContact() {
-  window.dispatchEvent(
-    new CustomEvent("erriour:prefill", {
-      detail: { taskType: project.value, message: message.value },
-    }),
-  );
-}
-
 /** Скопировать ссылку на расчёт (?calc=…) */
 function copyCalcLink() {
   const url = new URL(window.location.href);
@@ -358,11 +334,12 @@ function copyCalcLink() {
           </p>
 
           <a
-            href="#contact"
+            href="https://t.me/keyboard_brothers"
+            target="_blank"
+            rel="noopener noreferrer"
             class="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] hover:bg-white active:scale-95 lg:mt-auto"
-            @click="prefillContact"
           >
-            Перенести в заявку
+            Обсудить в Telegram
             <ChevronRight class="size-4" aria-hidden="true" />
           </a>
           <button

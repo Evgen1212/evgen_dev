@@ -16,14 +16,11 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 interface _GlobalComponents {
   About: typeof import("../../app/components/portfolio/About.vue")['default']
   AdminDialog: typeof import("../../app/components/portfolio/AdminDialog.vue")['default']
-  CaseArt: typeof import("../../app/components/portfolio/CaseArt.vue")['default']
-  CaseGrid: typeof import("../../app/components/portfolio/CaseGrid.vue")['default']
-  Cases: typeof import("../../app/components/portfolio/Cases.vue")['default']
   Contact: typeof import("../../app/components/portfolio/Contact.vue")['default']
-  ContactForm: typeof import("../../app/components/portfolio/ContactForm.vue")['default']
   CopyEmailButton: typeof import("../../app/components/portfolio/CopyEmailButton.vue")['default']
   Counter: typeof import("../../app/components/portfolio/Counter.vue")['default']
   DuckMascot: typeof import("../../app/components/portfolio/DuckMascot.vue")['default']
+  Experience: typeof import("../../app/components/portfolio/Experience.vue")['default']
   Faq: typeof import("../../app/components/portfolio/Faq.vue")['default']
   Hairline: typeof import("../../app/components/portfolio/Hairline.vue")['default']
   Hero: typeof import("../../app/components/portfolio/Hero.vue")['default']
@@ -35,6 +32,7 @@ interface _GlobalComponents {
   PriceCalculator: typeof import("../../app/components/portfolio/PriceCalculator.vue")['default']
   Prices: typeof import("../../app/components/portfolio/Prices.vue")['default']
   Process: typeof import("../../app/components/portfolio/Process.vue")['default']
+  ResumeModal: typeof import("../../app/components/portfolio/ResumeModal.vue")['default']
   SectionHeading: typeof import("../../app/components/portfolio/SectionHeading.vue")['default']
   SectionKicker: typeof import("../../app/components/portfolio/SectionKicker.vue")['default']
   SiteFooter: typeof import("../../app/components/portfolio/SiteFooter.vue")['default']
@@ -42,7 +40,6 @@ interface _GlobalComponents {
   StickyCta: typeof import("../../app/components/portfolio/StickyCta.vue")['default']
   Tech: typeof import("../../app/components/portfolio/Tech.vue")['default']
   TechRow: typeof import("../../app/components/portfolio/TechRow.vue")['default']
-  Testimonials: typeof import("../../app/components/portfolio/Testimonials.vue")['default']
   Data: typeof import("../../app/components/portfolio/data")['default']
   ToastHost: typeof import("../../app/components/ui/ToastHost.vue")['default']
   /**
@@ -141,14 +138,11 @@ interface _GlobalComponents {
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
   LazyAbout: LazyComponent<typeof import("../../app/components/portfolio/About.vue")['default']>
   LazyAdminDialog: LazyComponent<typeof import("../../app/components/portfolio/AdminDialog.vue")['default']>
-  LazyCaseArt: LazyComponent<typeof import("../../app/components/portfolio/CaseArt.vue")['default']>
-  LazyCaseGrid: LazyComponent<typeof import("../../app/components/portfolio/CaseGrid.vue")['default']>
-  LazyCases: LazyComponent<typeof import("../../app/components/portfolio/Cases.vue")['default']>
   LazyContact: LazyComponent<typeof import("../../app/components/portfolio/Contact.vue")['default']>
-  LazyContactForm: LazyComponent<typeof import("../../app/components/portfolio/ContactForm.vue")['default']>
   LazyCopyEmailButton: LazyComponent<typeof import("../../app/components/portfolio/CopyEmailButton.vue")['default']>
   LazyCounter: LazyComponent<typeof import("../../app/components/portfolio/Counter.vue")['default']>
   LazyDuckMascot: LazyComponent<typeof import("../../app/components/portfolio/DuckMascot.vue")['default']>
+  LazyExperience: LazyComponent<typeof import("../../app/components/portfolio/Experience.vue")['default']>
   LazyFaq: LazyComponent<typeof import("../../app/components/portfolio/Faq.vue")['default']>
   LazyHairline: LazyComponent<typeof import("../../app/components/portfolio/Hairline.vue")['default']>
   LazyHero: LazyComponent<typeof import("../../app/components/portfolio/Hero.vue")['default']>
@@ -160,6 +154,7 @@ interface _GlobalComponents {
   LazyPriceCalculator: LazyComponent<typeof import("../../app/components/portfolio/PriceCalculator.vue")['default']>
   LazyPrices: LazyComponent<typeof import("../../app/components/portfolio/Prices.vue")['default']>
   LazyProcess: LazyComponent<typeof import("../../app/components/portfolio/Process.vue")['default']>
+  LazyResumeModal: LazyComponent<typeof import("../../app/components/portfolio/ResumeModal.vue")['default']>
   LazySectionHeading: LazyComponent<typeof import("../../app/components/portfolio/SectionHeading.vue")['default']>
   LazySectionKicker: LazyComponent<typeof import("../../app/components/portfolio/SectionKicker.vue")['default']>
   LazySiteFooter: LazyComponent<typeof import("../../app/components/portfolio/SiteFooter.vue")['default']>
@@ -167,7 +162,6 @@ interface _GlobalComponents {
   LazyStickyCta: LazyComponent<typeof import("../../app/components/portfolio/StickyCta.vue")['default']>
   LazyTech: LazyComponent<typeof import("../../app/components/portfolio/Tech.vue")['default']>
   LazyTechRow: LazyComponent<typeof import("../../app/components/portfolio/TechRow.vue")['default']>
-  LazyTestimonials: LazyComponent<typeof import("../../app/components/portfolio/Testimonials.vue")['default']>
   LazyData: LazyComponent<typeof import("../../app/components/portfolio/data")['default']>
   LazyToastHost: LazyComponent<typeof import("../../app/components/ui/ToastHost.vue")['default']>
   /**
