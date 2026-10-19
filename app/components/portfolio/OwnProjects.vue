@@ -41,7 +41,7 @@ const projects = [
       <div data-reveal class="mb-12 text-center sm:mb-16">
         <SectionKicker>Участие в проектах</SectionKicker>
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-          Проекты
+          Заказные проекты
         </h2>
         <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           коммерческие проекты, в разработке которых я участвовал как фронтенд-разработчик

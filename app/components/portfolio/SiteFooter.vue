@@ -28,7 +28,7 @@ const footerNav = [
         </a>
 
         <p class="text-sm text-(--ink-faint)">
-          © {{ year }} evgen_dev. Senior Frontend-разработчик.
+          © {{ year }} Абрамов Евгений. Senior Frontend-разработчик.
         </p>
 
         <div class="flex items-center gap-3">

@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import { ArrowDownRight } from "lucide-vue-next";
+import {
+  AppWindow,
+  ArrowDownRight,
+  Blocks,
+  Cable,
+  Gauge,
+  MonitorSmartphone,
+  Rocket,
+  ShieldCheck,
+  Users,
+} from "lucide-vue-next";
 
 /** Статистика из реального резюме (замена React-версии) */
 const stats = [
@@ -7,6 +17,53 @@ const stats = [
   { value: 50, suffix: "+", label: "UI-компонентов в собственном ките (Storybook)" },
   { value: 70, suffix: "%+", label: "покрытие UI-тестами в финтех-проекте" },
   { value: 5, suffix: "+", label: "языков интерфейса в i18n" },
+];
+
+/**
+ * Компетенции из резюме, переведённые на язык заказчика:
+ * без жаргона — что именно это даёт проекту клиента.
+ */
+const competencies = [
+  {
+    icon: Gauge,
+    title: "Сайты, которые летают",
+    text: "Оптимизирую скорость по Google PageSpeed: страницы открываются за секунды даже на слабом интернете — посетители не уходят, пока «грузится».",
+  },
+  {
+    icon: AppWindow,
+    title: "Сложные веб-приложения",
+    text: "Личные кабинеты, дашборды с данными в реальном времени, каталоги, калькуляторы — не просто страницы, а рабочие инструменты для бизнеса.",
+  },
+  {
+    icon: MonitorSmartphone,
+    title: "Работает на любом экране",
+    text: "Телефон, планшет, ноутбук, большой монитор — интерфейс подстраивается сам: ничего не уезжает, не ломается и остаётся удобным.",
+  },
+  {
+    icon: Blocks,
+    title: "Порядок в коде",
+    text: "Проектирую архитектуру по FSD: код структурирован и документирован, поэтому доработки делаются быстро и не ломают то, что уже работает.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Меньше багов — меньше нервов",
+    text: "Пишу автотесты — в проектах покрывал до 70% интерфейса. Ошибки ловятся до того, как их увидят ваши пользователи.",
+  },
+  {
+    icon: Cable,
+    title: "Подключу любой backend",
+    text: "Авторизация, оплаты, карты, чаты и графики в реальном времени: REST API, GraphQL, WebSocket — свяжу фронтенд с любой серверной частью.",
+  },
+  {
+    icon: Rocket,
+    title: "Доведу до запуска",
+    text: "Docker, CI/CD, деплой на сервер: после сдачи проект стабильно работает, а обновления выходят без простоя и «переездов».",
+  },
+  {
+    icon: Users,
+    title: "Опыт лид-разработчика",
+    text: "Ставил стандарты качества, проводил код-ревью и наставлял разработчиков — код останется понятным и без моего участия.",
+  },
 ];
 </script>
 
@@ -102,6 +159,35 @@ const stats = [
           </p>
         </div>
       </div>
+    </div>
+
+    <!-- Компетенции из резюме — языком заказчика -->
+    <div class="relative mx-auto mt-16 max-w-7xl px-5 sm:mt-20 sm:px-8">
+      <div data-reveal class="text-center">
+        <h3 class="font-display text-2xl font-bold tracking-tight sm:text-3xl">
+          Что я умею — простыми словами
+        </h3>
+        <p class="mt-3 text-base text-(--ink-mute)">
+          компетенции из резюме без жаргона — что это даёт вашему проекту
+        </p>
+      </div>
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <li
+          v-for="(c, i) in competencies"
+          :key="c.title"
+          data-reveal
+          :style="{ '--reveal-delay': `${i * 70}ms` }"
+          class="group rounded-2xl border border-(--line-1) bg-(--surface-1) p-5 transition-all duration-300 hover:-translate-y-1 hover:border-(--line-25) hover:bg-(--surface-3)"
+        >
+          <span
+            class="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-fuchsia-500/20 via-purple-500/10 to-transparent text-(--accent-soft) transition-transform duration-300 group-hover:scale-110"
+          >
+            <component :is="c.icon" class="size-5" aria-hidden="true" />
+          </span>
+          <h4 class="mt-4 font-display text-base font-bold">{{ c.title }}</h4>
+          <p class="mt-2 text-sm leading-relaxed text-(--ink-mute)">{{ c.text }}</p>
+        </li>
+      </ul>
     </div>
   </section>
 </template>
