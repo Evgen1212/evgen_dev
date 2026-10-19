@@ -19,7 +19,6 @@ interface _GlobalComponents {
   Contact: typeof import("../../app/components/portfolio/Contact.vue")['default']
   CopyEmailButton: typeof import("../../app/components/portfolio/CopyEmailButton.vue")['default']
   Counter: typeof import("../../app/components/portfolio/Counter.vue")['default']
-  DuckMascot: typeof import("../../app/components/portfolio/DuckMascot.vue")['default']
   Experience: typeof import("../../app/components/portfolio/Experience.vue")['default']
   Faq: typeof import("../../app/components/portfolio/Faq.vue")['default']
   Hairline: typeof import("../../app/components/portfolio/Hairline.vue")['default']
@@ -29,6 +28,7 @@ interface _GlobalComponents {
   Marquee: typeof import("../../app/components/portfolio/Marquee.vue")['default']
   MarqueeDot: typeof import("../../app/components/portfolio/MarqueeDot.vue")['default']
   OwnProjects: typeof import("../../app/components/portfolio/OwnProjects.vue")['default']
+  ParrotMascot: typeof import("../../app/components/portfolio/ParrotMascot.vue")['default']
   PriceCalculator: typeof import("../../app/components/portfolio/PriceCalculator.vue")['default']
   Prices: typeof import("../../app/components/portfolio/Prices.vue")['default']
   Process: typeof import("../../app/components/portfolio/Process.vue")['default']
@@ -141,7 +141,6 @@ interface _GlobalComponents {
   LazyContact: LazyComponent<typeof import("../../app/components/portfolio/Contact.vue")['default']>
   LazyCopyEmailButton: LazyComponent<typeof import("../../app/components/portfolio/CopyEmailButton.vue")['default']>
   LazyCounter: LazyComponent<typeof import("../../app/components/portfolio/Counter.vue")['default']>
-  LazyDuckMascot: LazyComponent<typeof import("../../app/components/portfolio/DuckMascot.vue")['default']>
   LazyExperience: LazyComponent<typeof import("../../app/components/portfolio/Experience.vue")['default']>
   LazyFaq: LazyComponent<typeof import("../../app/components/portfolio/Faq.vue")['default']>
   LazyHairline: LazyComponent<typeof import("../../app/components/portfolio/Hairline.vue")['default']>
@@ -151,6 +150,7 @@ interface _GlobalComponents {
   LazyMarquee: LazyComponent<typeof import("../../app/components/portfolio/Marquee.vue")['default']>
   LazyMarqueeDot: LazyComponent<typeof import("../../app/components/portfolio/MarqueeDot.vue")['default']>
   LazyOwnProjects: LazyComponent<typeof import("../../app/components/portfolio/OwnProjects.vue")['default']>
+  LazyParrotMascot: LazyComponent<typeof import("../../app/components/portfolio/ParrotMascot.vue")['default']>
   LazyPriceCalculator: LazyComponent<typeof import("../../app/components/portfolio/PriceCalculator.vue")['default']>
   LazyPrices: LazyComponent<typeof import("../../app/components/portfolio/Prices.vue")['default']>
   LazyProcess: LazyComponent<typeof import("../../app/components/portfolio/Process.vue")['default']>

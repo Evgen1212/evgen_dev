@@ -4,8 +4,11 @@ import { socials } from "./data";
 
 const descriptions: Record<string, string> = {
   Telegram: "Отвечаю в течение часа",
-  Телефон: "Предпочитаемый способ связи",
-  "E-mail": "Резюме и офферы — по почте",
+  Телефон: "Предпочитаю звонки",
+  WhatsApp: "Тот же номер",
+  "E-mail": "Резюме и офферы",
+  Instagram: "Живая лента и сторис",
+  VK: "Посты и сообщения",
 };
 
 // primaryNames больше не нужен: все соцсети — primary, вторичный ряд чипов пуст
@@ -36,8 +39,8 @@ const secondary: typeof socials = [];
         <LocalTime class="mt-6" />
       </div>
 
-      <!-- карточки соцсетей: 3 в ряд -->
-      <div class="mx-auto grid max-w-4xl gap-4 sm:grid-cols-3">
+      <!-- карточки соцсетей: 6 штук, 2–3 в ряд -->
+      <div class="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <a
           v-for="(s, i) in primary"
           :key="s.name"

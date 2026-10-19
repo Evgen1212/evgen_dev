@@ -14,17 +14,10 @@ const H = 630;
 const svg = `
 <svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="g1" cx="26%" cy="30%" r="55%">
-      <stop offset="0%" stop-color="rgba(192,38,211,0.55)"/>
-      <stop offset="100%" stop-color="rgba(192,38,211,0)"/>
-    </radialGradient>
-    <radialGradient id="g2" cx="18%" cy="85%" r="45%">
-      <stop offset="0%" stop-color="rgba(37,99,235,0.45)"/>
-      <stop offset="100%" stop-color="rgba(37,99,235,0)"/>
-    </radialGradient>
-    <radialGradient id="g3" cx="60%" cy="70%" r="45%">
-      <stop offset="0%" stop-color="rgba(124,58,237,0.35)"/>
-      <stop offset="100%" stop-color="rgba(124,58,237,0)"/>
+    <radialGradient id="g1" cx="30%" cy="18%" r="70%">
+      <stop offset="0%" stop-color="#5b21b6"/>
+      <stop offset="55%" stop-color="#3b0f66"/>
+      <stop offset="100%" stop-color="#0a0a0b"/>
     </radialGradient>
     <linearGradient id="pill" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0%" stop-color="#d946ef"/>
@@ -34,45 +27,32 @@ const svg = `
 
   <rect width="${W}" height="${H}" fill="#0a0a0b"/>
   <rect width="${W}" height="${H}" fill="url(#g1)"/>
-  <rect width="${W}" height="${H}" fill="url(#g2)"/>
-  <rect width="${W}" height="${H}" fill="url(#g3)"/>
 
-  <text x="72" y="250" font-family="DejaVu Sans, sans-serif" font-size="150" font-weight="bold" fill="#fafafa" letter-spacing="-4">Erriour</text>
+  <text x="86" y="210" font-family="DejaVu Sans, sans-serif" font-size="104" font-weight="bold" fill="#fafafa" letter-spacing="-2">Абрамов</text>
+  <text x="86" y="330" font-family="DejaVu Sans, sans-serif" font-size="104" font-weight="bold" fill="#fafafa" letter-spacing="-2">Евгений</text>
 
-  <rect x="74" y="300" width="560" height="58" rx="29" fill="url(#pill)" opacity="0.92"/>
-  <text x="100" y="338" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#ffffff">веб-разработка любой сложности</text>
+  <rect x="86" y="372" width="556" height="58" rx="29" fill="url(#pill)"/>
+  <text x="112" y="411" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="bold" fill="#ffffff">Senior Frontend-разработчик</text>
 
-  <text x="74" y="424" font-family="DejaVu Sans, sans-serif" font-size="28" fill="#e4e4e7">От логотипа до логики — один специалист!</text>
-  <text x="74" y="470" font-family="DejaVu Sans, sans-serif" font-size="24" fill="#a1a1aa">Сайты · Боты · Дизайн · Администрирование</text>
+  <text x="86" y="490" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#d8b4fe">Vue 3 · Nuxt · TypeScript · SPA / SSR</text>
+  <text x="86" y="534" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#a1a1aa">От идеи до продакшена</text>
 
-  <text x="74" y="565" font-family="DejaVu Sans, sans-serif" font-size="24" font-weight="bold" fill="#71717a">erriour.ru</text>
+  <text x="86" y="590" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#a1a1aa">t.me/keyboard_brothers</text>
 </svg>`;
 
-const duckRaw = await sharp(path.join(root, "public/images/duck-transparent.png"))
+const parrot = await sharp(path.join(root, "public/images/parrot-transparent.png"))
+  .resize(390, null) // альфа уже чистая — только масштабируем
   .png()
   .toBuffer();
 
-// срезаем ~6% снизу — там остаётся тёмный след от фона исходника
-const rawMeta = await sharp(duckRaw).metadata();
-const duck = await sharp(duckRaw)
-  .extract({
-    left: 0,
-    top: 0,
-    width: rawMeta.width,
-    height: Math.round(rawMeta.height * 0.94),
-  })
-  .resize(430, null)
-  .png()
-  .toBuffer();
-
-const duckMeta = await sharp(duck).metadata();
+const parrotMeta = await sharp(parrot).metadata();
 
 await sharp(Buffer.from(svg))
   .composite([
     {
-      input: duck,
-      left: W - 430 - 20,
-      top: H - duckMeta.height + 26, // утка слегка «сидит» на нижнем крае
+      input: parrot,
+      left: W - parrotMeta.width - 6,
+      top: H - parrotMeta.height + 30, // попугай слегка «сидит» на нижнем крае
     },
   ])
   .png({ quality: 92 })

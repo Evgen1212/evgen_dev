@@ -37,11 +37,32 @@ export const socials: SocialLink[] = [
     color: "34D399",
   },
   {
+    name: "WhatsApp",
+    handle: "+7 909 335-29-33",
+    href: "https://wa.me/79093352933",
+    icon: "whatsapp",
+    color: "25D366",
+  },
+  {
     name: "E-mail",
     handle: "evg3nyaevgen@yandex.ru",
     href: "mailto:evg3nyaevgen@yandex.ru",
     icon: "mail",
     color: "E879F9",
+  },
+  {
+    name: "Instagram",
+    handle: "@jeka_lavandos",
+    href: "https://www.instagram.com/jeka_lavandos/",
+    icon: "instagram",
+    color: "E4405F",
+  },
+  {
+    name: "VK",
+    handle: "vk.ru/my_wellcom_friends",
+    href: "https://vk.ru/my_wellcom_friends",
+    icon: "vk",
+    color: "0077FF",
   },
 ];
 

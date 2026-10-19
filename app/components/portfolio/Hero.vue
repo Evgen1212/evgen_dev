@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArrowDownRight, ArrowRight, ChevronDown, FileText } from "lucide-vue-next";
 import { heroServices } from "./data";
-// Marquee, MarqueeDot, DuckMascot, ResumeModal — автоимпорт Nuxt (pathPrefix: false)
+// Marquee, MarqueeDot, ParrotMascot, ResumeModal — автоимпорт Nuxt (pathPrefix: false)
 const hireOpen = ref(false);
 </script>
 
@@ -101,10 +101,10 @@ const hireOpen = ref(false);
       </div>
     </div>
 
-    <!-- Duck (кликабельный маскот-пасхалка) -->
-    <DuckMascot />
+    <!-- Parrot (кликабельный маскот-пасхалка) -->
+    <ParrotMascot />
 
-    <!-- Scroll hint (декоративный, слева — утка справа) -->
+    <!-- Scroll hint (декоративный, слева — попугай справа) -->
     <div
       aria-hidden="true"
       class="pointer-events-none absolute bottom-24 left-5 z-10 hidden select-none flex-col items-center gap-1.5 text-zinc-400 motion-reduce:animate-none md:flex sm:left-8 animate-bounce"

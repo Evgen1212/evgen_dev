@@ -2,7 +2,7 @@
 type Phase = "hidden" | "show" | "fade";
 
 /**
- * Брендированный прелоадер: утка покачивается + фамилия с бегущим градиентом.
+ * Брендированный прелоадер: попугай покачивается + фамилия с бегущим градиентом.
  * Показывается один раз за сессию (sessionStorage), ~1.4с суммарно.
  * При prefers-reduced-motion — не показывается вовсе.
  */
@@ -58,10 +58,10 @@ onBeforeUnmount(() => {
     :class="`intro-overlay ${phase === 'fade' ? 'intro-fade' : ''}`"
   >
     <img
-      src="/images/duck-transparent.png"
+      src="/images/parrot-transparent.png"
       alt=""
       draggable="false"
-      class="intro-duck"
+      class="intro-parrot"
     />
     <p class="intro-word">Абрамов</p>
     <span class="intro-bar">

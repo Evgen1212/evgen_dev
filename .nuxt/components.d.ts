@@ -19,7 +19,6 @@ export const AdminDialog: typeof import("../app/components/portfolio/AdminDialog
 export const Contact: typeof import("../app/components/portfolio/Contact.vue")['default']
 export const CopyEmailButton: typeof import("../app/components/portfolio/CopyEmailButton.vue")['default']
 export const Counter: typeof import("../app/components/portfolio/Counter.vue")['default']
-export const DuckMascot: typeof import("../app/components/portfolio/DuckMascot.vue")['default']
 export const Experience: typeof import("../app/components/portfolio/Experience.vue")['default']
 export const Faq: typeof import("../app/components/portfolio/Faq.vue")['default']
 export const Hairline: typeof import("../app/components/portfolio/Hairline.vue")['default']
@@ -29,6 +28,7 @@ export const LocalTime: typeof import("../app/components/portfolio/LocalTime.vue
 export const Marquee: typeof import("../app/components/portfolio/Marquee.vue")['default']
 export const MarqueeDot: typeof import("../app/components/portfolio/MarqueeDot.vue")['default']
 export const OwnProjects: typeof import("../app/components/portfolio/OwnProjects.vue")['default']
+export const ParrotMascot: typeof import("../app/components/portfolio/ParrotMascot.vue")['default']
 export const PriceCalculator: typeof import("../app/components/portfolio/PriceCalculator.vue")['default']
 export const Prices: typeof import("../app/components/portfolio/Prices.vue")['default']
 export const Process: typeof import("../app/components/portfolio/Process.vue")['default']
@@ -141,7 +141,6 @@ export const LazyAdminDialog: LazyComponent<typeof import("../app/components/por
 export const LazyContact: LazyComponent<typeof import("../app/components/portfolio/Contact.vue")['default']>
 export const LazyCopyEmailButton: LazyComponent<typeof import("../app/components/portfolio/CopyEmailButton.vue")['default']>
 export const LazyCounter: LazyComponent<typeof import("../app/components/portfolio/Counter.vue")['default']>
-export const LazyDuckMascot: LazyComponent<typeof import("../app/components/portfolio/DuckMascot.vue")['default']>
 export const LazyExperience: LazyComponent<typeof import("../app/components/portfolio/Experience.vue")['default']>
 export const LazyFaq: LazyComponent<typeof import("../app/components/portfolio/Faq.vue")['default']>
 export const LazyHairline: LazyComponent<typeof import("../app/components/portfolio/Hairline.vue")['default']>
@@ -151,6 +150,7 @@ export const LazyLocalTime: LazyComponent<typeof import("../app/components/portf
 export const LazyMarquee: LazyComponent<typeof import("../app/components/portfolio/Marquee.vue")['default']>
 export const LazyMarqueeDot: LazyComponent<typeof import("../app/components/portfolio/MarqueeDot.vue")['default']>
 export const LazyOwnProjects: LazyComponent<typeof import("../app/components/portfolio/OwnProjects.vue")['default']>
+export const LazyParrotMascot: LazyComponent<typeof import("../app/components/portfolio/ParrotMascot.vue")['default']>
 export const LazyPriceCalculator: LazyComponent<typeof import("../app/components/portfolio/PriceCalculator.vue")['default']>
 export const LazyPrices: LazyComponent<typeof import("../app/components/portfolio/Prices.vue")['default']>
 export const LazyProcess: LazyComponent<typeof import("../app/components/portfolio/Process.vue")['default']>
