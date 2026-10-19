@@ -1,20 +1,9 @@
 <script setup lang="ts">
-import {
-  AppWindow,
-  ArrowDownRight,
-  Blocks,
-  Cable,
-  Gauge,
-  MonitorSmartphone,
-  ShieldCheck,
-} from "lucide-vue-next";
+import { ArrowDownRight } from "lucide-vue-next";
 
 /** Статистика из реального резюме (замена React-версии) */
 const stats = [
   { value: 5, suffix: "+", label: "лет в коммерческой разработке" },
-  { value: 50, suffix: "+", label: "UI-компонентов в собственном ките (Storybook)" },
-  { value: 70, suffix: "%+", label: "покрытие UI-тестами в финтех-проекте" },
-  { value: 5, suffix: "+", label: "языков интерфейса в i18n" },
   { value: 6, suffix: "", label: "отраслей — от финтеха до промышленности" },
   { value: 3, suffix: "", label: "федеральных бренда в заказных проектах" },
   { value: 4, suffix: "", label: "финтех-продукта в продакшене" },
@@ -22,39 +11,38 @@ const stats = [
 ];
 
 /**
- * Компетенции из резюме, переведённые на язык заказчика:
- * без жаргона — что именно это даёт проекту клиента.
+ * «Что я умею» в стиле счётчиков: крупное значение + человеческая подпись.
+ * Факты из резюме, язык — простой, для заказчика.
  */
-const competencies = [
+const competencies: {
+  value: string | number;
+  suffix?: string;
+  label: string;
+}[] = [
   {
-    icon: Gauge,
-    title: "Сайты, которые летают",
-    text: "Оптимизирую скорость по Google PageSpeed: страницы открываются за секунды даже на слабом интернете — посетители не уходят, пока «грузится».",
+    value: "За секунды",
+    label: "открываются страницы — оптимизирую скорость по Google PageSpeed",
   },
   {
-    icon: AppWindow,
-    title: "Сложные веб-приложения",
-    text: "Личные кабинеты, дашборды с данными в реальном времени, каталоги, калькуляторы — не просто страницы, а рабочие инструменты для бизнеса.",
+    value: "Под ключ",
+    label: "веб-приложения: личные кабинеты, дашборды, каталоги, калькуляторы",
   },
   {
-    icon: MonitorSmartphone,
-    title: "Работает на любом экране",
-    text: "Телефон, планшет, ноутбук, большой монитор — интерфейс подстраивается сам: ничего не уезжает, не ломается и остаётся удобным.",
+    value: 100,
+    suffix: "%",
+    label: "адаптивность: телефон, планшет, ноутбук, монитор — ничего не уезжает",
   },
   {
-    icon: Blocks,
-    title: "Порядок в коде",
-    text: "Проектирую архитектуру по FSD: код структурирован и документирован, поэтому доработки делаются быстро и не ломают то, что уже работает.",
+    value: "Чистый код",
+    label: "понятная архитектура — доработки быстрые и ничего не ломают",
   },
   {
-    icon: ShieldCheck,
-    title: "Меньше багов — меньше нервов",
-    text: "Пишу автотесты — в проектах покрывал до 70% интерфейса. Ошибки ловятся до того, как их увидят ваши пользователи.",
+    value: "Автотесты",
+    label: "ошибки ловятся до релиза — ваши пользователи их не увидят",
   },
   {
-    icon: Cable,
-    title: "Подключу любой backend",
-    text: "Авторизация, оплаты, карты, чаты и графики в реальном времени: REST API, GraphQL, WebSocket — свяжу фронтенд с любой серверной частью.",
+    value: "Интеграции",
+    label: "оплаты, карты, чаты, авторизация, данные в реальном времени",
   },
 ];
 </script>
@@ -94,7 +82,7 @@ const competencies = [
         </div>
 
         <!-- Counters -->
-        <dl class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <dl class="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
           <div
             v-for="s in stats"
             :key="s.label"
@@ -166,18 +154,25 @@ const competencies = [
       <ul class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <li
           v-for="(c, i) in competencies"
-          :key="c.title"
+          :key="c.label"
           data-reveal
           :style="{ '--reveal-delay': `${i * 70}ms` }"
-          class="group rounded-2xl border border-(--line-1) bg-(--surface-1) p-5 transition-all duration-300 hover:-translate-y-1 hover:border-(--line-25) hover:bg-(--surface-3)"
+          class="rounded-2xl border border-(--line-1) bg-(--surface-1) p-4 transition-colors duration-300 hover:border-(--line-2)"
         >
-          <span
-            class="grid size-10 place-items-center rounded-xl bg-gradient-to-br from-fuchsia-500/20 via-purple-500/10 to-transparent text-(--accent-soft) transition-transform duration-300 group-hover:scale-110"
-          >
-            <component :is="c.icon" class="size-5" aria-hidden="true" />
-          </span>
-          <h4 class="mt-4 font-display text-base font-bold">{{ c.title }}</h4>
-          <p class="mt-2 text-sm leading-relaxed text-(--ink-mute)">{{ c.text }}</p>
+          <p class="font-display text-3xl font-bold tracking-tight">
+            <Counter
+              v-if="typeof c.value === 'number'"
+              :value="c.value"
+              :suffix="c.suffix"
+              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
+            />
+            <span
+              v-else
+              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
+              >{{ c.value }}</span
+            >
+          </p>
+          <p class="mt-1.5 text-xs leading-snug text-(--ink-faint)">{{ c.label }}</p>
         </li>
       </ul>
     </div>
