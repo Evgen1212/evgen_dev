@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Check, Flame } from "lucide-vue-next";
+import { BadgeCheck, Check, Flame } from "lucide-vue-next";
 import { prices } from "./data";
 </script>
 
@@ -139,7 +139,19 @@ import { prices } from "./data";
 
       <PriceCalculator />
 
-      <p data-reveal class="mt-8 text-center text-sm text-(--ink-faint)">
+      <p
+        data-reveal
+        class="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-(--ink-mute)"
+      >
+        <BadgeCheck
+          class="size-4 shrink-0 text-(--accent-emerald)"
+          aria-hidden="true"
+        />
+        Работаю официально как самозанятый (самозанятые.рф) — чек из «Мой
+        налог» и договор по запросу.
+      </p>
+
+      <p data-reveal class="mt-3 text-center text-sm text-(--ink-faint)">
         Требуется что-то уникальное? Напишите — рассчитаю индивидуально и
         бесплатно.
       </p>
