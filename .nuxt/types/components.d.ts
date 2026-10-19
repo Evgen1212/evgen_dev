@@ -36,6 +36,7 @@ interface _GlobalComponents {
   SectionKicker: typeof import("../../app/components/portfolio/SectionKicker.vue")['default']
   SiteFooter: typeof import("../../app/components/portfolio/SiteFooter.vue")['default']
   SiteHeader: typeof import("../../app/components/portfolio/SiteHeader.vue")['default']
+  Skills: typeof import("../../app/components/portfolio/Skills.vue")['default']
   StickyCta: typeof import("../../app/components/portfolio/StickyCta.vue")['default']
   Tech: typeof import("../../app/components/portfolio/Tech.vue")['default']
   TechRow: typeof import("../../app/components/portfolio/TechRow.vue")['default']
@@ -157,6 +158,7 @@ interface _GlobalComponents {
   LazySectionKicker: LazyComponent<typeof import("../../app/components/portfolio/SectionKicker.vue")['default']>
   LazySiteFooter: LazyComponent<typeof import("../../app/components/portfolio/SiteFooter.vue")['default']>
   LazySiteHeader: LazyComponent<typeof import("../../app/components/portfolio/SiteHeader.vue")['default']>
+  LazySkills: LazyComponent<typeof import("../../app/components/portfolio/Skills.vue")['default']>
   LazyStickyCta: LazyComponent<typeof import("../../app/components/portfolio/StickyCta.vue")['default']>
   LazyTech: LazyComponent<typeof import("../../app/components/portfolio/Tech.vue")['default']>
   LazyTechRow: LazyComponent<typeof import("../../app/components/portfolio/TechRow.vue")['default']>

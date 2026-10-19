@@ -10,41 +10,6 @@ const stats = [
   { value: 2, suffix: " нед.", label: "бесплатной поддержки после запуска" },
 ];
 
-/**
- * «Что я умею» в стиле счётчиков: крупное значение + человеческая подпись.
- * Факты из резюме, язык — простой, для заказчика.
- */
-const competencies: {
-  value: string | number;
-  suffix?: string;
-  label: string;
-}[] = [
-  {
-    value: "За секунды",
-    label: "открываются страницы — оптимизирую скорость по Google PageSpeed",
-  },
-  {
-    value: "Под ключ",
-    label: "веб-приложения: личные кабинеты, дашборды, каталоги, калькуляторы",
-  },
-  {
-    value: 100,
-    suffix: "%",
-    label: "адаптивность: телефон, планшет, ноутбук, монитор — ничего не уезжает",
-  },
-  {
-    value: "Чистый код",
-    label: "понятная архитектура — доработки быстрые и ничего не ломают",
-  },
-  {
-    value: "Автотесты",
-    label: "ошибки ловятся до релиза — ваши пользователи их не увидят",
-  },
-  {
-    value: "Интеграции",
-    label: "оплаты, карты, чаты, авторизация, данные в реальном времени",
-  },
-];
 </script>
 
 <template>
@@ -139,42 +104,6 @@ const competencies: {
           </p>
         </div>
       </div>
-    </div>
-
-    <!-- Компетенции из резюме — языком заказчика -->
-    <div class="relative mx-auto mt-16 max-w-7xl px-5 sm:mt-20 sm:px-8">
-      <div data-reveal class="text-center">
-        <h3 class="font-display text-2xl font-bold tracking-tight sm:text-3xl">
-          Что я умею — простыми словами
-        </h3>
-        <p class="mt-3 text-base text-(--ink-mute)">
-          компетенции из резюме без жаргона — что это даёт вашему проекту
-        </p>
-      </div>
-      <ul class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <li
-          v-for="(c, i) in competencies"
-          :key="c.label"
-          data-reveal
-          :style="{ '--reveal-delay': `${i * 70}ms` }"
-          class="rounded-2xl border border-(--line-1) bg-(--surface-1) p-4 transition-colors duration-300 hover:border-(--line-2)"
-        >
-          <p class="font-display text-3xl font-bold tracking-tight">
-            <Counter
-              v-if="typeof c.value === 'number'"
-              :value="c.value"
-              :suffix="c.suffix"
-              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
-            />
-            <span
-              v-else
-              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
-              >{{ c.value }}</span
-            >
-          </p>
-          <p class="mt-1.5 text-xs leading-snug text-(--ink-faint)">{{ c.label }}</p>
-        </li>
-      </ul>
     </div>
   </section>
 </template>

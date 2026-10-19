@@ -64,6 +64,7 @@ useHead({
       <About />
       <Experience />
       <OwnProjects />
+      <Skills />
       <Hairline />
       <Tech />
       <Process />
