@@ -3,9 +3,9 @@ import { Mail, Menu, Moon, Phone, Sun, X } from "lucide-vue-next";
 import { socials } from "./data";
 
 const navLinks = [
-  { label: "Проекты", href: "#projects" },
-  { label: "Опыт", href: "#experience" },
   { label: "Обо мне", href: "#about" },
+  { label: "Опыт", href: "#experience" },
+  { label: "Проекты", href: "#projects" },
   { label: "Цены", href: "#prices" },
   { label: "Контакты", href: "#contact" },
 ];

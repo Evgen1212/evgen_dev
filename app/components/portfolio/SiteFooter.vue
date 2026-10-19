@@ -2,9 +2,9 @@
 const year = new Date().getFullYear();
 
 const footerNav = [
-  { label: "Проекты", href: "#projects" },
   { label: "Обо мне", href: "#about" },
   { label: "Опыт", href: "#experience" },
+  { label: "Проекты", href: "#projects" },
   { label: "Технологии", href: "#tech" },
   { label: "Этапы", href: "#process" },
   { label: "Цены", href: "#prices" },

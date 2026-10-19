@@ -61,10 +61,10 @@ useHead({
     <main class="flex-1">
       <Hero />
       <Hairline />
-      <OwnProjects />
-      <Hairline />
       <About />
       <Experience />
+      <OwnProjects />
+      <Hairline />
       <Tech />
       <Process />
       <Hairline />

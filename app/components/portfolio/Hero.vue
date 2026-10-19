@@ -30,8 +30,8 @@ const hireOpen = ref(false);
           </span>
           Открыт к новым проектам
         </p>
-        <h1 class="font-display text-[16vw] font-light leading-[0.98] tracking-tight sm:text-[7rem] lg:text-[6.5rem] xl:text-[8rem]">
-          evgen_dev
+        <h1 class="font-display text-[15vw] font-light leading-[1.02] tracking-tight sm:text-[6.5rem] lg:text-[6rem] xl:text-[7.5rem]">
+          Евгений Абрамов
         </h1>
         <p class="mt-7 max-w-xl text-xl font-light leading-snug text-(--ink-soft) sm:text-2xl">
           Senior Frontend-разработчик —
