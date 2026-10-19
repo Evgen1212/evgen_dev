@@ -471,3 +471,18 @@ Stage Summary:
 - Маскот: попугай v2 (зелёный хохолок, крылья с зеленью, огромные глаза, улыбка, румянец) — меньше по размеру, вырезка чистая; og.png с ним же.
 - Риски/заметки: upload/ — несъёмный mount (можно игнорировать); agent-browser для localhost иногда требует, чтобы dev-сервер уже был поднят (проверять curl перед open); при переезде на хостинг — `bun run build`, залить .output/public.
 - Следующие шаги: переписать FAQ/Цены/Этапы под поиск работы (шаблоны «под заказ» ещё с прежнего позиционирования), вычистить неиспользуемые exports data.ts (caseDetails/testimonials), светлая тема.
+
+---
+Task ID: 14.1
+Agent: Z.ai Code (main)
+Task: Перезапуск dev-сервера (пользователь не видел результат в браузере).
+
+Work Log:
+- Диагностика: процесс nuxt отсутствовал, порт 3000 не отвечал (curl 000) — сервер погиб между сессиями (известный инцидент, зафиксирован в Task 14).
+- Перезапуск надёжным способом: bash -c 'setsid nohup bun run dev </dev/null >/dev/null 2>&1 & disown' (двойной отрыв от process group).
+- Ready in 2.5s, HTTP 200; повторный curl — 200 за 0.09s (лёгкая статическая визитка после аудита).
+- QA (agent-browser): страница рендерится (title корректный), попугай v2 с зелёным хохолком в hero, консоль чистая (только vite debug); #contact — 9 ссылок (t.me / tel: / wa.me / mailto: / career.habr.com/zhenek-abramov / github.com/Evgen1212 / gitlab.com/Evgen1212 / instagram.com/jeka_lavandos / vk.ru); hh.ru-ссылка в ResumeModal чистая, без ?hhtmFrom; server/ отсутствует (бекенда нет).
+- Создан cron webDevReview: fixed_rate 900s (каждые 15 минут), job_id 468085 (6-полевой cron-парсер сервиса отверг выражения — используйте fixed_rate).
+
+Stage Summary:
+- Сервер стабильно работает на :3000, все изменения Task 14 доступны пользователю в браузере. Скриншот проверки: /home/z/tmp-shots/restart-check-hero.png.
