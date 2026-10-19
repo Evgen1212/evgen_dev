@@ -25,7 +25,7 @@ const { toasts, dismiss } = useToast();
             'pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-2xl border p-4 pr-10 shadow-2xl backdrop-blur-md',
             t.variant === 'destructive'
               ? 'border-red-500/40 bg-[#1c1013]/95 text-red-50'
-              : 'border-white/10 bg-[#18181b]/95 text-zinc-50'
+              : 'border-(--line-1) bg-(--toast) text-(--ink)'
           )
         "
       >
@@ -35,7 +35,7 @@ const { toasts, dismiss } = useToast();
           </p>
           <p
             v-if="t.description"
-            class="mt-1 break-words text-sm text-zinc-400"
+            class="mt-1 break-words text-sm text-(--ink-mute)"
           >
             {{ t.description }}
           </p>
@@ -43,7 +43,7 @@ const { toasts, dismiss } = useToast();
         <button
           type="button"
           aria-label="Закрыть уведомление"
-          class="absolute right-3 top-3 rounded-md p-1 text-zinc-500 transition-colors hover:bg-white/10 hover:text-white"
+          class="absolute right-3 top-3 rounded-md p-1 text-(--ink-faint) transition-colors hover:bg-(--surface-hover) hover:text-(--ink)"
           @click="dismiss(t.id)"
         >
           <X class="size-4" aria-hidden="true" />

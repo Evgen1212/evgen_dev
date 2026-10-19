@@ -69,7 +69,7 @@ function onAccAfterLeave(el: Element) {
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
           FAQ
         </h2>
-        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           собираю ответы на то, что спрашивают чаще всего
         </p>
       </div>
@@ -82,10 +82,10 @@ function onAccAfterLeave(el: Element) {
           :style="{ '--reveal-delay': `${i * 70}ms` }"
           :class="
             cn(
-              'overflow-hidden rounded-2xl border bg-white/[0.03] px-5 transition-colors hover:border-white/20',
+              'overflow-hidden rounded-2xl border bg-(--surface-1) px-5 transition-colors hover:border-(--line-2)',
               openKey === `faq-${i}`
-                ? 'border-fuchsia-400/30 bg-white/[0.05]'
-                : 'border-white/10',
+                ? 'border-fuchsia-400/30 bg-(--surface-3)'
+                : 'border-(--line-1)',
             )
           "
         >
@@ -95,12 +95,12 @@ function onAccAfterLeave(el: Element) {
               type="button"
               :aria-expanded="openKey === `faq-${i}`"
               :aria-controls="`faq-content-${i}`"
-              class="focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-5 text-left font-display text-base font-bold text-white outline-none transition-all hover:no-underline focus-visible:ring-[3px] sm:text-lg"
+              class="focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-5 text-left font-display text-base font-bold text-(--ink) outline-none transition-all hover:no-underline focus-visible:ring-[3px] sm:text-lg"
               @click="toggle(`faq-${i}`)"
             >
               {{ item.q }}
               <ChevronDown
-                class="pointer-events-none size-4 shrink-0 translate-y-0.5 text-zinc-400 transition-transform duration-200"
+                class="pointer-events-none size-4 shrink-0 translate-y-0.5 text-(--ink-mute) transition-transform duration-200"
                 :class="openKey === `faq-${i}` && 'rotate-180'"
                 aria-hidden="true"
               />
@@ -121,7 +121,7 @@ function onAccAfterLeave(el: Element) {
               class="overflow-hidden"
             >
               <div
-                class="pb-5 text-sm leading-relaxed text-zinc-400 sm:text-base"
+                class="pb-5 text-sm leading-relaxed text-(--ink-mute) sm:text-base"
               >
                 {{ item.a }}
               </div>
@@ -132,16 +132,16 @@ function onAccAfterLeave(el: Element) {
 
       <p
         data-reveal
-        class="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-zinc-500"
+        class="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-(--ink-faint)"
       >
         <MessageCircleQuestion
-          class="size-4 text-fuchsia-300/80"
+          class="size-4 text-(--accent-soft)"
           aria-hidden="true"
         />
         Остался вопрос?
         <a
           href="#contact"
-          class="font-semibold text-zinc-300 underline decoration-fuchsia-400/50 decoration-2 underline-offset-4 transition-colors hover:text-white"
+          class="font-semibold text-(--ink-soft) underline decoration-fuchsia-400/50 decoration-2 underline-offset-4 transition-colors hover:text-(--ink)"
         >
           Напишите мне
         </a>

@@ -29,7 +29,7 @@ defineProps<{
         <span v-else aria-hidden="true" class="text-xl sm:text-2xl leading-none">
           {{ item.emoji }}
         </span>
-        <span class="text-lg sm:text-2xl font-medium text-white/85">
+        <span class="text-lg sm:text-2xl font-medium text-(--ink-soft)">
           {{ item.label }}
         </span>
       </span>

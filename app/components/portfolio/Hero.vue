@@ -15,15 +15,15 @@ const hireOpen = ref(false);
       <div class="parallax-deep absolute inset-[-6%]">
         <div class="aurora-layer aurora-b" />
       </div>
-      <!-- vignette to keep edges dark -->
-      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,rgba(10,10,11,0.7)_100%)]" />
+      <!-- vignette to keep edges clean -->
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--vignette)_100%)]" />
     </div>
 
     <!-- Content -->
     <div class="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-5 pb-24 pt-32 sm:px-8 lg:grid-cols-[1.25fr_1fr] lg:gap-8 lg:pt-28">
       <!-- Left: title -->
       <div data-reveal>
-        <p class="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-emerald-300">
+        <p class="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-(--accent-emerald)">
           <span class="relative flex size-2" aria-hidden="true">
             <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none" />
             <span class="relative inline-flex size-2 rounded-full bg-emerald-400" />
@@ -31,9 +31,9 @@ const hireOpen = ref(false);
           Открыт к новым проектам
         </p>
         <h1 class="font-display text-[16vw] font-light leading-[0.98] tracking-tight sm:text-[7rem] lg:text-[6.5rem] xl:text-[8rem]">
-          Абрамов<br />Евгений
+          evgen_dev
         </h1>
-        <p class="mt-7 max-w-xl text-xl font-light leading-snug text-zinc-100/90 sm:text-2xl">
+        <p class="mt-7 max-w-xl text-xl font-light leading-snug text-(--ink-soft) sm:text-2xl">
           Senior Frontend-разработчик —
           <span class="text-shine font-normal">Vue 3 · Nuxt · TypeScript</span>.
           <br />
@@ -42,14 +42,14 @@ const hireOpen = ref(false);
         <div class="mt-10 flex flex-wrap items-center gap-3">
           <a
             href="#contact"
-            class="inline-flex items-center gap-2 rounded-2xl bg-white px-8 py-4 text-base font-bold text-black shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.04] hover:shadow-fuchsia-500/20 active:scale-95"
+            class="inline-flex items-center gap-2 rounded-2xl border border-(--line-1) bg-white px-8 py-4 text-base font-bold text-black shadow-xl shadow-black/40 transition-all duration-300 hover:scale-[1.04] hover:shadow-fuchsia-500/20 active:scale-95"
           >
             Обсудить проект
           </a>
-          <span class="select-none text-sm font-medium text-zinc-500" aria-hidden="true">или</span>
+          <span class="select-none text-sm font-medium text-(--ink-faint)" aria-hidden="true">или</span>
           <button
             type="button"
-            class="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-6 py-4 text-base font-semibold text-zinc-200 backdrop-blur-sm transition-all duration-300 hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-white active:scale-95"
+            class="inline-flex items-center gap-2 rounded-2xl border border-(--line-15) bg-(--surface-2) px-6 py-4 text-base font-semibold text-(--ink-soft) backdrop-blur-sm transition-all duration-300 hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-(--ink) active:scale-95"
             @click="hireOpen = true"
           >
             <FileText class="size-[18px] opacity-80" aria-hidden="true" />
@@ -62,7 +62,7 @@ const hireOpen = ref(false);
 
       <!-- Right: latest job teaser -->
       <div class="relative hidden lg:block" data-reveal :style="{ '--reveal-delay': '150ms' }">
-        <p class="mb-3 ml-1 flex items-center gap-1.5 text-sm text-zinc-300">
+        <p class="mb-3 ml-1 flex items-center gap-1.5 text-sm text-(--ink-soft)">
           Последнее место работы
           <ArrowDownRight class="size-4" aria-hidden="true" />
         </p>
@@ -93,7 +93,7 @@ const hireOpen = ref(false);
 
         <a
           href="#experience"
-          class="group mt-4 ml-1 inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+          class="group mt-4 ml-1 inline-flex items-center gap-2 text-sm font-medium text-(--ink-soft) transition-colors hover:text-(--ink)"
         >
           Весь опыт работы
           <ArrowRight class="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
@@ -107,14 +107,14 @@ const hireOpen = ref(false);
     <!-- Scroll hint (декоративный, слева — попугай справа) -->
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute bottom-24 left-5 z-10 hidden select-none flex-col items-center gap-1.5 text-zinc-400 motion-reduce:animate-none md:flex sm:left-8 animate-bounce"
+      class="pointer-events-none absolute bottom-24 left-5 z-10 hidden select-none flex-col items-center gap-1.5 text-(--ink-mute) motion-reduce:animate-none md:flex sm:left-8 animate-bounce"
     >
       <span class="text-[11px] font-bold uppercase tracking-[0.3em]">листай</span>
       <ChevronDown class="size-4" />
     </div>
 
     <!-- Services marquee -->
-    <div class="relative z-10 border-t border-white/10 bg-black/25 backdrop-blur-md">
+    <div class="relative z-10 border-t border-(--line-1) bg-(--strip) backdrop-blur-md">
       <Marquee :duration="38" pause-on-hover class="py-5">
         <span v-for="s in heroServices" :key="s.label" class="flex items-center">
           <!-- ServiceBadge (инлайн: локальный под-компонент React) -->
@@ -125,11 +125,11 @@ const hireOpen = ref(false);
             <span
               v-else
               aria-hidden="true"
-              class="grid h-7 min-w-7 place-items-center rounded-md bg-white/15 px-1.5 text-[11px] font-extrabold tracking-tight text-white/90"
+              class="grid h-7 min-w-7 place-items-center rounded-md bg-(--surface-strong) px-1.5 text-[11px] font-extrabold tracking-tight text-(--ink)"
             >
               {{ s.badge }}
             </span>
-            <span class="text-lg sm:text-xl font-medium text-white/90">{{ s.label }}</span>
+            <span class="text-lg sm:text-xl font-medium text-(--ink)">{{ s.label }}</span>
           </span>
           <MarqueeDot />
         </span>

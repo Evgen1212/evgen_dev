@@ -25,11 +25,21 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: "ru" },
       title:
-        "Абрамов Евгений — Senior Frontend-разработчик (Vue.js / Nuxt.js / TypeScript)",
+        "evgen_dev — Senior Frontend-разработчик (Vue.js / Nuxt.js / TypeScript)",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
-        { name: "theme-color", content: "#0a0a0b" },
+        // тема браузера следует за светлой/тёмной темой сайта
+        {
+          name: "theme-color",
+          media: "(prefers-color-scheme: dark)",
+          content: "#0a0a0b",
+        },
+        {
+          name: "theme-color",
+          media: "(prefers-color-scheme: light)",
+          content: "#f6f6f7",
+        },
         {
           name: "description",
           content:
@@ -38,14 +48,14 @@ export default defineNuxtConfig({
         {
           name: "keywords",
           content:
-            "Абрамов Евгений, фронтенд-разработчик, Vue.js, Nuxt.js, TypeScript, SPA, SSR, фронтенд, разработчик",
+            "evgen_dev, Абрамов Евгений, фронтенд-разработчик, Vue.js, Nuxt.js, TypeScript, SPA, SSR, фронтенд, разработчик",
         },
-        { name: "author", content: "Абрамов Евгений" },
+        { name: "author", content: "evgen_dev (Абрамов Евгений)" },
         { name: "robots", content: "index, follow" },
         // OpenGraph
         {
           property: "og:title",
-          content: "Абрамов Евгений — Senior Frontend-разработчик",
+          content: "evgen_dev — Senior Frontend-разработчик",
         },
         {
           property: "og:description",
@@ -54,7 +64,7 @@ export default defineNuxtConfig({
         },
         { property: "og:type", content: "website" },
         { property: "og:locale", content: "ru_RU" },
-        { property: "og:siteName", content: "Абрамов Евгений" },
+        { property: "og:siteName", content: "evgen_dev" },
         { property: "og:image", content: "/images/og.png" },
         { property: "og:image:width", content: "1200" },
         { property: "og:image:height", content: "630" },
@@ -62,7 +72,7 @@ export default defineNuxtConfig({
         { name: "twitter:card", content: "summary_large_image" },
         {
           name: "twitter:title",
-          content: "Абрамов Евгений — Senior Frontend-разработчик",
+          content: "evgen_dev — Senior Frontend-разработчик",
         },
         {
           name: "twitter:description",
@@ -76,6 +86,12 @@ export default defineNuxtConfig({
         { rel: "manifest", href: "/manifest.webmanifest" },
       ],
       script: [
+        {
+          // Тема до первой отрисовки: ручной выбор из localStorage. Без выбора
+          // тему определяет CSS (prefers-color-scheme) — мигалки (FOUC) нет.
+          innerHTML: `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}})();`,
+          tagPriority: "critical",
+        },
         {
           // Класс .js ставится до первой отрисовки: анимации появления
           // активируются только при доступном JS (иначе контент виден сразу).

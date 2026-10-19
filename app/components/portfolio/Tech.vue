@@ -16,7 +16,7 @@ import { techRows } from "./data";
         >
           Технологии
         </h2>
-        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           которые я знаю и использую в проектах
         </p>
       </div>

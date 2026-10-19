@@ -48,29 +48,29 @@ onBeforeUnmount(() => {
           role="dialog"
           aria-modal="true"
           aria-label="Резюме Абрамова Евгения"
-          class="fixed left-1/2 top-1/2 flex max-h-[92vh] w-[calc(100vw-1.5rem)] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#141416] shadow-2xl shadow-black/60"
+          class="fixed left-1/2 top-1/2 flex max-h-[92vh] w-[calc(100vw-1.5rem)] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl border border-(--line-1) bg-(--panel) shadow-2xl shadow-black/60"
         >
           <!-- header -->
-          <div class="flex items-start justify-between gap-4 border-b border-white/10 p-5 sm:p-6">
+          <div class="flex items-start justify-between gap-4 border-b border-(--line-1) p-5 sm:p-6">
             <div class="flex items-center gap-3.5">
               <span
                 class="grid size-11 shrink-0 place-items-center rounded-2xl border border-fuchsia-400/30 bg-fuchsia-500/15"
                 aria-hidden="true"
               >
-                <FileText class="size-5 text-fuchsia-300" />
+                <FileText class="size-5 text-(--accent-soft)" />
               </span>
               <div>
                 <h2 class="font-display text-lg font-bold leading-tight sm:text-xl">
                   Резюме — Абрамов Евгений
                 </h2>
-                <p class="mt-0.5 text-xs text-zinc-400 sm:text-sm">
+                <p class="mt-0.5 text-xs text-(--ink-mute) sm:text-sm">
                   Senior Frontend-разработчик · Vue 3 / Nuxt / TypeScript
                 </p>
               </div>
             </div>
             <button
               type="button"
-              class="grid size-9 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.04] text-zinc-400 transition-colors hover:bg-white/10 hover:text-white"
+              class="grid size-9 shrink-0 place-items-center rounded-xl border border-(--line-1) bg-(--surface-2) text-(--ink-mute) transition-colors hover:bg-(--surface-hover) hover:text-(--ink)"
               aria-label="Закрыть"
               @click="close"
             >
@@ -96,11 +96,11 @@ onBeforeUnmount(() => {
           </div>
 
           <!-- actions -->
-          <div class="flex flex-col gap-3 border-t border-white/10 p-5 sm:flex-row sm:p-6">
+          <div class="flex flex-col gap-3 border-t border-(--line-1) p-5 sm:flex-row sm:p-6">
             <a
               href="/resume.pdf"
               download="Abramov-Evgeniy-resume.pdf"
-              class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] active:scale-95"
+              class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-(--line-1) bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] active:scale-95"
             >
               <Download class="size-4" aria-hidden="true" />
               Скачать резюме
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
               :href="HH_RESUME_URL"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-white/15 bg-white/[0.04] px-6 py-3.5 text-sm font-semibold text-zinc-200 transition-all hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-white active:scale-95"
+              class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-(--line-15) bg-(--surface-2) px-6 py-3.5 text-sm font-semibold text-(--ink-soft) transition-all hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-(--ink) active:scale-95"
             >
               <ExternalLink class="size-4 opacity-80" aria-hidden="true" />
               Смотреть на hh.ru

@@ -75,13 +75,13 @@ onBeforeUnmount(() => {
       show ? 'translate-y-0' : 'translate-y-full'
     )"
   >
-    <div class="border-t border-white/10 bg-black/85 px-4 pt-3 pb-[calc(0.85rem+env(safe-area-inset-bottom))] backdrop-blur-xl">
+    <div class="border-t border-(--line-1) bg-(--cta-bar) px-4 pt-3 pb-[calc(0.85rem+env(safe-area-inset-bottom))] backdrop-blur-xl">
       <div class="mx-auto flex max-w-2xl items-center gap-3">
         <div class="min-w-0 flex-1">
-          <p class="font-display text-sm font-bold text-white">
+          <p class="font-display text-sm font-bold text-(--ink)">
             Есть задача?
           </p>
-          <p class="truncate text-[11px] leading-tight text-zinc-400">
+          <p class="truncate text-[11px] leading-tight text-(--ink-mute)">
             Отвечу в течение дня
           </p>
         </div>

@@ -54,7 +54,7 @@ const steps = [
         >
           Как я работаю
         </h2>
-        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           прозрачный процесс — вы видите результат на каждом шаге
         </p>
       </div>
@@ -87,35 +87,35 @@ const steps = [
             :style="{ '--reveal-delay': `${i * 110}ms` }"
           >
             <article
-              class="card-shine group relative h-full overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:bg-white/[0.05] sm:p-7"
+              class="card-shine group relative h-full overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:bg-(--surface-3) sm:p-7"
             >
               <!-- большая номерная подложка -->
               <span
                 aria-hidden="true"
-                class="pointer-events-none absolute -right-3 -top-7 select-none font-display text-[7rem] font-bold leading-none text-white/[0.045] transition-colors duration-500 group-hover:text-white/[0.08]"
+                class="pointer-events-none absolute -right-3 -top-7 select-none font-display text-[7rem] font-bold leading-none text-(--ghost) transition-colors duration-500 group-hover:text-(--ghost-hover)"
               >
                 {{ step.num }}
               </span>
 
               <span
-                class="relative grid size-12 place-items-center rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/20 via-purple-500/15 to-transparent"
+                class="relative grid size-12 place-items-center rounded-2xl border border-(--line-1) bg-gradient-to-br from-fuchsia-500/20 via-purple-500/15 to-transparent"
               >
                 <component
                   :is="step.icon"
-                  class="size-5 text-fuchsia-300 transition-transform duration-500 group-hover:scale-110"
+                  class="size-5 text-(--accent-soft) transition-transform duration-500 group-hover:scale-110"
                   aria-hidden="true"
                 />
               </span>
 
               <p
-                class="relative mt-5 text-xs font-bold uppercase tracking-[0.2em] text-fuchsia-300/80"
+                class="relative mt-5 text-xs font-bold uppercase tracking-[0.2em] text-(--accent-soft)"
               >
                 Шаг {{ step.num }}
               </p>
               <h3 class="relative mt-2 font-display text-xl font-bold">
                 {{ step.title }}
               </h3>
-              <p class="relative mt-3 text-sm leading-relaxed text-zinc-400">
+              <p class="relative mt-3 text-sm leading-relaxed text-(--ink-mute)">
                 {{ step.text }}
               </p>
             </article>

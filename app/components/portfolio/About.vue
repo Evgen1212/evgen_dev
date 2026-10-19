@@ -28,7 +28,7 @@ const stats = [
           Обо мне
         </h2>
         <div
-          class="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-zinc-300 sm:text-lg"
+          class="mt-8 max-w-xl space-y-5 text-base leading-relaxed text-(--ink-soft) sm:text-lg"
         >
           <p>
             Меня зовут Евгений, я frontend-разработчик с 5+ годами коммерческого
@@ -49,7 +49,7 @@ const stats = [
           <div
             v-for="s in stats"
             :key="s.label"
-            class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-colors hover:border-white/20"
+            class="rounded-2xl border border-(--line-1) bg-(--surface-1) p-4 transition-colors hover:border-(--line-2)"
           >
             <dd class="font-display text-3xl font-bold tracking-tight">
               <Counter
@@ -58,7 +58,7 @@ const stats = [
                 class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
               />
             </dd>
-            <dt class="mt-1.5 text-xs leading-snug text-zinc-500">
+            <dt class="mt-1.5 text-xs leading-snug text-(--ink-faint)">
               {{ s.label }}
             </dt>
           </div>
@@ -71,7 +71,7 @@ const stats = [
         data-reveal
         :style="{ '--reveal-delay': '150ms' }"
       >
-        <p class="mb-3 flex items-center justify-end gap-1.5 pr-4 text-sm text-zinc-300">
+        <p class="mb-3 flex items-center justify-end gap-1.5 pr-4 text-sm text-(--ink-soft)">
           Это я
           <ArrowDownRight class="size-4" aria-hidden="true" />
         </p>

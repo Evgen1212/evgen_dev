@@ -63,7 +63,7 @@ onBeforeUnmount(() => {
       draggable="false"
       class="intro-parrot"
     />
-    <p class="intro-word">Абрамов</p>
+    <p class="intro-word">evgen_dev</p>
     <span class="intro-bar">
       <span />
     </span>

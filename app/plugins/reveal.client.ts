@@ -1,6 +1,9 @@
 /**
  * Reveal on scroll (порт ScrollReveal.tsx):
- * 1) IntersectionObserver наблюдает все [data-reveal] и добавляет .revealed;
+ * 1) IntersectionObserver наблюдает все [data-reveal] и выставляет
+ *    data-revealed="true" (именно атрибут, а не класс: Vue при ре-рендере
+ *    элемента перезаписывает class и стёр бы .revealed — из-за этого
+ *    «исчезал» аккордеон FAQ после клика);
  * 2) MutationObserver подхватывает динамически смонтированные узлы
  *    (например, экран «Заявка отправлена» после сабмита формы).
  */
@@ -13,7 +16,7 @@ export default defineNuxtPlugin(() => {
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add("revealed");
+          entry.target.dataset.revealed = "true";
           io.unobserve(entry.target);
         }
       });
@@ -26,10 +29,12 @@ export default defineNuxtPlugin(() => {
   const observeAll = (root: ParentNode) => {
     const els = Array.from(root.querySelectorAll<HTMLElement>("[data-reveal]"));
     if (reduced) {
-      els.forEach((el) => el.classList.add("revealed"));
+      els.forEach((el) => {
+        el.dataset.revealed = "true";
+      });
     } else {
       els.forEach((el) => {
-        if (!el.classList.contains("revealed")) io.observe(el);
+        if (el.dataset.revealed !== "true") io.observe(el);
       });
     }
   };

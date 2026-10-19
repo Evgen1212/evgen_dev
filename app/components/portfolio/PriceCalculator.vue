@@ -163,22 +163,22 @@ function copyCalcLink() {
     data-reveal
     class="relative mt-10 rounded-3xl bg-gradient-to-br from-fuchsia-500/40 via-purple-500/15 to-transparent p-px sm:mt-12"
   >
-    <div class="relative overflow-hidden rounded-[calc(1.5rem-1px)] bg-[#121214]">
+    <div class="relative overflow-hidden rounded-[calc(1.5rem-1px)] bg-(--panel)">
       <!-- шапка калькулятора -->
       <div
-        class="flex items-center justify-between gap-3 border-b border-white/10 p-5 sm:px-7"
+        class="flex items-center justify-between gap-3 border-b border-(--line-1) p-5 sm:px-7"
       >
         <div class="flex items-center gap-3">
           <span
-            class="grid size-10 shrink-0 place-items-center rounded-2xl border border-white/10 bg-gradient-to-br from-fuchsia-500/25 via-purple-500/15 to-transparent"
+            class="grid size-10 shrink-0 place-items-center rounded-2xl border border-(--line-1) bg-gradient-to-br from-fuchsia-500/25 via-purple-500/15 to-transparent"
           >
-            <Calculator class="size-5 text-fuchsia-300" aria-hidden="true" />
+            <Calculator class="size-5 text-(--accent-soft)" aria-hidden="true" />
           </span>
           <div>
             <h3 class="font-display text-lg font-bold sm:text-xl">
               Калькулятор проекта
             </h3>
-            <p class="text-xs text-zinc-500 sm:text-sm">
+            <p class="text-xs text-(--ink-faint) sm:text-sm">
               предварительная оценка за 30 секунд
             </p>
           </div>
@@ -187,7 +187,7 @@ function copyCalcLink() {
           type="button"
           title="Сбросить настройки"
           aria-label="Сбросить настройки калькулятора"
-          class="grid size-9 shrink-0 place-items-center rounded-xl border border-white/10 text-zinc-500 transition-colors hover:border-white/25 hover:text-white"
+          class="grid size-9 shrink-0 place-items-center rounded-xl border border-(--line-1) text-(--ink-faint) transition-colors hover:border-(--line-25) hover:text-(--ink)"
           @click="reset"
         >
           <RotateCcw class="size-4" aria-hidden="true" />
@@ -199,7 +199,7 @@ function copyCalcLink() {
         <div class="space-y-6 p-5 sm:p-7">
           <fieldset>
             <legend
-              class="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-zinc-500"
+              class="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-(--ink-faint)"
             >
               Тип проекта
             </legend>
@@ -214,13 +214,13 @@ function copyCalcLink() {
                     'rounded-2xl border p-4 text-left transition-all duration-300 hover:-translate-y-0.5',
                     project === p.key
                       ? 'border-fuchsia-400/50 bg-fuchsia-500/10 shadow-lg shadow-fuchsia-900/20'
-                      : 'border-white/10 bg-white/[0.03] hover:border-white/25',
+                      : 'border-(--line-1) bg-(--surface-1) hover:border-(--line-25)',
                   )
                 "
                 @click="chooseProject(p.key)"
               >
                 <span class="flex items-center justify-between gap-2">
-                  <span class="font-display text-sm font-bold text-white">
+                  <span class="font-display text-sm font-bold text-(--ink)">
                     {{ p.label }}
                   </span>
                   <span
@@ -229,17 +229,17 @@ function copyCalcLink() {
                         'grid size-4 shrink-0 place-items-center rounded-full border transition-colors',
                         project === p.key
                           ? 'border-fuchsia-400 bg-fuchsia-500 text-white'
-                          : 'border-white/25',
+                          : 'border-(--line-25)',
                       )
                     "
                   >
                     <Check v-if="project === p.key" class="size-2.5" aria-hidden="true" />
                   </span>
                 </span>
-                <span class="mt-0.5 block text-xs text-zinc-500">
+                <span class="mt-0.5 block text-xs text-(--ink-faint)">
                   {{ p.hint }}
                 </span>
-                <span class="mt-2 block text-xs font-semibold text-fuchsia-300/90">
+                <span class="mt-2 block text-xs font-semibold text-(--accent-soft)">
                   от {{ fmt.format(p.base) }} ₽
                 </span>
               </button>
@@ -248,7 +248,7 @@ function copyCalcLink() {
 
           <fieldset>
             <legend
-              class="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-zinc-500"
+              class="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-(--ink-faint)"
             >
               Дополнительно
             </legend>
@@ -262,8 +262,8 @@ function copyCalcLink() {
                   cn(
                     'inline-flex items-center gap-2 rounded-full border px-3.5 py-2 text-sm font-medium transition-all duration-300 active:scale-95',
                     extras.has(e.key)
-                      ? 'border-fuchsia-400/40 bg-fuchsia-500/10 text-white'
-                      : 'border-white/10 bg-white/[0.03] text-zinc-400 hover:border-white/25 hover:text-zinc-200',
+                      ? 'border-fuchsia-400/40 bg-fuchsia-500/10 text-(--ink)'
+                      : 'border-(--line-1) bg-(--surface-1) text-(--ink-mute) hover:border-(--line-25) hover:text-(--ink-soft)',
                   )
                 "
                 @click="toggleExtra(e.key)"
@@ -274,14 +274,14 @@ function copyCalcLink() {
                       'grid size-4 place-items-center rounded-[5px] border transition-colors',
                       extras.has(e.key)
                         ? 'border-fuchsia-400 bg-fuchsia-500 text-white'
-                        : 'border-white/25',
+                        : 'border-(--line-25)',
                     )
                   "
                 >
                   <Check v-if="extras.has(e.key)" class="size-3" aria-hidden="true" />
                 </span>
                 {{ e.label }}
-                <span class="text-xs text-zinc-500">
+                <span class="text-xs text-(--ink-faint)">
                   +{{ fmt.format(e.price) }} ₽
                 </span>
               </button>
@@ -296,14 +296,14 @@ function copyCalcLink() {
                 cn(
                   'inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-300 active:scale-95',
                   rush
-                    ? 'border-amber-400/50 bg-amber-500/10 text-amber-200'
-                    : 'border-white/10 bg-white/[0.03] text-zinc-400 hover:border-white/25 hover:text-zinc-200',
+                    ? 'border-amber-400/50 bg-amber-500/10 text-(--accent-amber)'
+                    : 'border-(--line-1) bg-(--surface-1) text-(--ink-mute) hover:border-(--line-25) hover:text-(--ink-soft)',
                 )
               "
               @click="toggleRush"
             >
               <Zap
-                :class="cn('size-4', rush && 'fill-amber-300 text-amber-300')"
+                :class="cn('size-4', rush && 'fill-(--accent-amber) text-(--accent-amber)')"
                 aria-hidden="true"
               />
               Срочно ×1,3 — срок короче
@@ -313,9 +313,9 @@ function copyCalcLink() {
 
         <!-- итог -->
         <div
-          class="dot-grid relative flex flex-col border-t border-white/10 p-6 sm:p-7 lg:border-l lg:border-t-0"
+          class="dot-grid relative flex flex-col border-t border-(--line-1) p-6 sm:p-7 lg:border-l lg:border-t-0"
         >
-          <p class="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-(--ink-faint)">
             Предварительно
           </p>
           <p class="mt-2 font-display text-4xl font-bold tracking-tight sm:text-5xl">
@@ -325,11 +325,11 @@ function copyCalcLink() {
               {{ fmt.format(result.price) }} ₽
             </span>
           </p>
-          <p class="mt-3 flex items-center gap-2 text-sm text-zinc-400">
-            <CalendarClock class="size-4 shrink-0 text-fuchsia-300" aria-hidden="true" />
+          <p class="mt-3 flex items-center gap-2 text-sm text-(--ink-mute)">
+            <CalendarClock class="size-4 shrink-0 text-(--accent-soft)" aria-hidden="true" />
             срок ≈ {{ pluralDays(result.days) }}
           </p>
-          <p v-if="rush" class="mt-1.5 text-xs text-amber-300/90">
+          <p v-if="rush" class="mt-1.5 text-xs text-(--accent-amber)">
             применён коэффициент срочности ×1,3
           </p>
 
@@ -337,14 +337,14 @@ function copyCalcLink() {
             href="https://t.me/keyboard_brothers"
             target="_blank"
             rel="noopener noreferrer"
-            class="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] hover:bg-white active:scale-95 lg:mt-auto"
+            class="mt-6 flex items-center justify-center gap-2 rounded-2xl border border-(--line-1) bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] hover:bg-white active:scale-95 lg:mt-auto"
           >
             Обсудить в Telegram
             <ChevronRight class="size-4" aria-hidden="true" />
           </a>
           <button
             type="button"
-            class="group/calc mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-zinc-500 transition-colors hover:text-fuchsia-300"
+            class="group/calc mt-3 flex items-center justify-center gap-1.5 text-xs font-semibold text-(--ink-faint) transition-colors hover:text-(--accent-soft)"
             @click="copyCalcLink"
           >
             <Link2
@@ -353,7 +353,7 @@ function copyCalcLink() {
             />
             Скопировать ссылку на расчёт
           </button>
-          <p class="mt-3 text-[11px] leading-relaxed text-zinc-600">
+          <p class="mt-3 text-[11px] leading-relaxed text-(--ink-faint)">
             Расчёт ни к чему не обязывает — точную смету зафиксируем после
             обсуждения задачи.
           </p>

@@ -43,7 +43,7 @@ const projects = [
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
           Проекты
         </h2>
-        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           коммерческие проекты, в разработке которых я участвовал как фронтенд-разработчик
         </p>
       </div>
@@ -57,7 +57,7 @@ const projects = [
           rel="noopener noreferrer"
           data-reveal
           :style="{ '--reveal-delay': `${i * 90}ms` }"
-          class="group flex flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] shadow-xl shadow-black/30 transition-all duration-500 hover:-translate-y-1.5 hover:border-white/25 hover:shadow-2xl"
+          class="group flex flex-col overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:shadow-2xl"
           :aria-label="`${p.title} (${p.domain}) — открыть в новой вкладке`"
         >
           <!-- скриншот -->
@@ -86,13 +86,13 @@ const projects = [
             <div class="flex items-start justify-between gap-3">
               <h3 class="font-display text-xl font-bold tracking-tight">{{ p.title }}</h3>
               <ArrowUpRight
-                class="mt-1 size-5 shrink-0 text-zinc-500 transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-white"
+                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink)"
                 aria-hidden="true"
               />
             </div>
-            <p class="mt-2 text-sm leading-relaxed text-zinc-400">{{ p.desc }}</p>
+            <p class="mt-2 text-sm leading-relaxed text-(--ink-mute)">{{ p.desc }}</p>
             <span
-              class="mt-4 inline-flex items-center gap-1.5 self-start text-xs font-semibold text-fuchsia-300/90 transition-colors group-hover:text-fuchsia-300"
+              class="mt-4 inline-flex items-center gap-1.5 self-start text-xs font-semibold text-(--accent-soft) transition-colors group-hover:text-(--accent-soft)"
             >
               {{ p.domain }}
             </span>
@@ -103,7 +103,7 @@ const projects = [
       <div data-reveal class="mt-14 text-center">
         <a
           href="#contact"
-          class="group inline-flex items-center gap-2 text-sm font-medium text-zinc-300 transition-colors hover:text-white"
+          class="group inline-flex items-center gap-2 text-sm font-medium text-(--ink-soft) transition-colors hover:text-(--ink)"
         >
           Есть похожий проект? Напишите мне
           <ArrowUpRight

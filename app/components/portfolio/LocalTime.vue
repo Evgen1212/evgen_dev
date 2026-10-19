@@ -52,7 +52,7 @@ onBeforeUnmount(() => {
 <template>
   <p
     data-reveal
-    class="mx-auto flex w-fit items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-zinc-300 backdrop-blur-sm"
+    class="mx-auto flex w-fit items-center gap-2.5 rounded-full border border-(--line-1) bg-(--surface-2) px-4 py-2 text-sm text-(--ink-soft) backdrop-blur-sm"
     title="Моё локальное время — Москва (GMT+3)"
   >
     <span class="relative flex size-2.5" aria-hidden="true">
@@ -61,17 +61,17 @@ onBeforeUnmount(() => {
         class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none"
       />
       <span
-        :class="cn('relative inline-flex size-2.5 rounded-full', online ? 'bg-emerald-400' : 'bg-zinc-500')"
+        :class="cn('relative inline-flex size-2.5 rounded-full', online ? 'bg-emerald-400' : 'bg-(--ink-faint)')"
       />
     </span>
     <span>
       Москва ·
-      <span class="font-semibold tabular-nums text-white">
+      <span class="font-semibold tabular-nums text-(--ink)">
         {{ now ? timeFmt.format(now) : "--:--" }}
       </span>
     </span>
     <span
-      :class="cn('hidden text-xs font-semibold sm:inline', online ? 'text-emerald-400' : 'text-zinc-500')"
+      :class="cn('hidden text-xs font-semibold sm:inline', online ? 'text-(--accent-emerald)' : 'text-(--ink-faint)')"
     >
       {{ online ? "на связи" : "ночью — отвечу утром" }}
     </span>

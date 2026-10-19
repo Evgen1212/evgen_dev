@@ -28,16 +28,15 @@ const svg = `
   <rect width="${W}" height="${H}" fill="#0a0a0b"/>
   <rect width="${W}" height="${H}" fill="url(#g1)"/>
 
-  <text x="86" y="210" font-family="DejaVu Sans, sans-serif" font-size="104" font-weight="bold" fill="#fafafa" letter-spacing="-2">Абрамов</text>
-  <text x="86" y="330" font-family="DejaVu Sans, sans-serif" font-size="104" font-weight="bold" fill="#fafafa" letter-spacing="-2">Евгений</text>
+  <text x="86" y="250" font-family="DejaVu Sans, sans-serif" font-size="112" font-weight="bold" fill="#fafafa" letter-spacing="-2">evgen_dev</text>
 
-  <rect x="86" y="372" width="556" height="58" rx="29" fill="url(#pill)"/>
-  <text x="112" y="411" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="bold" fill="#ffffff">Senior Frontend-разработчик</text>
+  <rect x="86" y="300" width="556" height="58" rx="29" fill="url(#pill)"/>
+  <text x="112" y="339" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="bold" fill="#ffffff">Senior Frontend-разработчик</text>
 
-  <text x="86" y="490" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#d8b4fe">Vue 3 · Nuxt · TypeScript · SPA / SSR</text>
-  <text x="86" y="534" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#a1a1aa">От идеи до продакшена</text>
+  <text x="86" y="440" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#d8b4fe">Vue 3 · Nuxt · TypeScript · SPA / SSR</text>
+  <text x="86" y="484" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#a1a1aa">От идеи до продакшена</text>
 
-  <text x="86" y="590" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#a1a1aa">t.me/keyboard_brothers</text>
+  <text x="86" y="560" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#a1a1aa">t.me/keyboard_brothers</text>
 </svg>`;
 
 const parrot = await sharp(path.join(root, "public/images/parrot-transparent.png"))

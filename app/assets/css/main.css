@@ -75,6 +75,63 @@
 
 :root {
   --radius: 0.625rem;
+  color-scheme: dark;
+
+  /* ============================================================
+     Палитра визитки — тёмная по умолчанию.
+     Светлая включается автоматически по prefers-color-scheme ОС
+     или вручную через <html data-theme="light|dark">
+     (кнопка в шапке, выбор хранится в localStorage «theme»).
+     ============================================================ */
+
+  /* страница и «чернила» */
+  --page: #0a0a0b;
+  --ink: #fafafa;
+  --ink-soft: #d4d4d8;
+  --ink-mute: #a1a1aa;
+  --ink-faint: #71717a;
+
+  /* полупрозрачные поверхности поверх страницы */
+  --surface-1: rgb(255 255 255 / 0.03);
+  --surface-2: rgb(255 255 255 / 0.04);
+  --surface-3: rgb(255 255 255 / 0.055);
+  --surface-4: rgb(255 255 255 / 0.075);
+  --surface-hover: rgb(255 255 255 / 0.1);
+  --surface-strong: rgb(255 255 255 / 0.15);
+
+  /* линии и рамки */
+  --line-faint: rgb(255 255 255 / 0.05);
+  --line-1: rgb(255 255 255 / 0.1);
+  --line-15: rgb(255 255 255 / 0.15);
+  --line-2: rgb(255 255 255 / 0.2);
+  --line-25: rgb(255 255 255 / 0.25);
+
+  /* хром-панели */
+  --chrome: rgb(19 19 21 / 0.85);
+  --panel: #121214;
+  --toast: rgb(24 24 27 / 0.95);
+  --cta-bar: rgb(0 0 0 / 0.85);
+  --strip: rgb(0 0 0 / 0.25);
+  --scrim: rgb(0 0 0 / 0.5);
+  --vignette: rgb(10 10 11 / 0.7);
+  --vignette-strong: rgb(10 10 11 / 0.82);
+  --fade-a: rgb(10 10 11 / 0.7);
+  --fade-b: rgb(10 10 11 / 0.4);
+
+  /* акцентные «чернила» (цветной текст) */
+  --accent-soft: #f0abfc;
+  --accent-emerald: #6ee7b7;
+  --accent-amber: #fcd34d;
+
+  /* декор */
+  --dot: rgb(255 255 255 / 0.08);
+  --ghost: rgb(255 255 255 / 0.045);
+  --ghost-hover: rgb(255 255 255 / 0.08);
+  --scroll-thumb: #27272a;
+  --scroll-thumb-hover: #3f3f46;
+  --featured-ring: rgb(255 255 255 / 0.9);
+  --intro-grad: linear-gradient(90deg, #fff, #e879f9, #fff);
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -95,6 +152,231 @@
   --ring: oklch(0.556 0 0);
 }
 
+/* ─── Светлая тема: значения палитры ─── */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --page: #f6f6f7;
+  --ink: #18181b;
+  --ink-soft: #3f3f46;
+  --ink-mute: #52525b;
+  --ink-faint: #71717a;
+
+  --surface-1: rgb(0 0 0 / 0.03);
+  --surface-2: rgb(0 0 0 / 0.04);
+  --surface-3: rgb(0 0 0 / 0.05);
+  --surface-4: rgb(0 0 0 / 0.065);
+  --surface-hover: rgb(0 0 0 / 0.08);
+  --surface-strong: rgb(0 0 0 / 0.12);
+
+  --line-faint: rgb(0 0 0 / 0.06);
+  --line-1: rgb(0 0 0 / 0.1);
+  --line-15: rgb(0 0 0 / 0.14);
+  --line-2: rgb(0 0 0 / 0.18);
+  --line-25: rgb(0 0 0 / 0.22);
+
+  --chrome: rgb(255 255 255 / 0.78);
+  --panel: #ffffff;
+  --toast: rgb(255 255 255 / 0.95);
+  --cta-bar: rgb(255 255 255 / 0.88);
+  --strip: rgb(0 0 0 / 0.05);
+  --scrim: rgb(255 255 255 / 0.65);
+  --vignette: rgb(255 255 255 / 0.72);
+  --vignette-strong: rgb(255 255 255 / 0.85);
+  --fade-a: rgb(255 255 255 / 0.6);
+  --fade-b: rgb(255 255 255 / 0.3);
+
+  --accent-soft: #a21caf;
+  --accent-emerald: #047857;
+  --accent-amber: #b45309;
+
+  --dot: rgb(0 0 0 / 0.09);
+  --ghost: rgb(0 0 0 / 0.05);
+  --ghost-hover: rgb(0 0 0 / 0.09);
+  --scroll-thumb: #cfcfd6;
+  --scroll-thumb-hover: #a1a1aa;
+  --featured-ring: rgb(0 0 0 / 0.08);
+  --intro-grad: linear-gradient(90deg, #18181b, #c026d3, #18181b);
+
+  --background: #f6f6f7;
+  --foreground: #18181b;
+  --card: #ffffff;
+  --card-foreground: #18181b;
+  --popover: #ffffff;
+  --popover-foreground: #18181b;
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #52525b;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: rgb(0 0 0 / 0.1);
+  --input: rgb(0 0 0 / 0.15);
+  --ring: #a1a1aa;
+}
+
+/* точечные светлые оверрайды декора (ручной выбор темы) */
+/* брендовые моно-иконки соцсетей залиты белым — на светлой теме инвертируем */
+:root[data-theme="light"] .social-icon {
+  filter: invert(1);
+}
+:root[data-theme="light"] ::selection {
+  background: rgb(192 38 211 / 0.22);
+  color: #18181b;
+}
+:root[data-theme="light"] .text-shine {
+  background-image: linear-gradient(
+    110deg,
+    #c026d3 20%,
+    #a21caf 40%,
+    #d946ef 55%,
+    #c026d3 75%
+  );
+}
+:root[data-theme="light"] .aurora-a {
+  background-image:
+    radial-gradient(ellipse 42% 52% at 34% 44%, rgb(192 38 211 / 0.2), transparent 68%),
+    radial-gradient(ellipse 34% 42% at 44% 58%, rgb(147 51 234 / 0.13), transparent 70%),
+    radial-gradient(ellipse 30% 36% at 16% 80%, rgb(37 99 235 / 0.14), transparent 70%),
+    radial-gradient(ellipse 16% 20% at 2% 94%, rgb(234 179 8 / 0.16), transparent 72%);
+}
+:root[data-theme="light"] .aurora-b {
+  background-image:
+    radial-gradient(ellipse 38% 46% at 40% 40%, rgb(217 70 239 / 0.15), transparent 68%),
+    radial-gradient(ellipse 30% 40% at 26% 66%, rgb(124 58 237 / 0.14), transparent 70%),
+    radial-gradient(ellipse 26% 32% at 10% 86%, rgb(59 130 246 / 0.14), transparent 70%),
+    radial-gradient(ellipse 14% 18% at 0% 96%, rgb(163 230 53 / 0.1), transparent 72%);
+}
+/* градиентные клип-тексты (from-fuchsia-300 to-purple-300) темнее на светлом */
+:root[data-theme="light"] .from-fuchsia-300 {
+  --tw-gradient-from: #c026d3;
+}
+:root[data-theme="light"] .to-purple-300 {
+  --tw-gradient-to: #7e22ce;
+}
+:root[data-theme="light"] .glow-featured {
+  box-shadow:
+    0 0 0 1px rgb(0 0 0 / 0.08),
+    0 18px 70px -24px rgb(217 70 239 / 0.4),
+    0 8px 30px -14px rgb(147 51 234 / 0.25);
+}
+
+/* То же, но по системной теме ОС (если нет ручного выбора) */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --page: #f6f6f7;
+    --ink: #18181b;
+    --ink-soft: #3f3f46;
+    --ink-mute: #52525b;
+    --ink-faint: #71717a;
+
+    --surface-1: rgb(0 0 0 / 0.03);
+    --surface-2: rgb(0 0 0 / 0.04);
+    --surface-3: rgb(0 0 0 / 0.05);
+    --surface-4: rgb(0 0 0 / 0.065);
+    --surface-hover: rgb(0 0 0 / 0.08);
+    --surface-strong: rgb(0 0 0 / 0.12);
+
+    --line-faint: rgb(0 0 0 / 0.06);
+    --line-1: rgb(0 0 0 / 0.1);
+    --line-15: rgb(0 0 0 / 0.14);
+    --line-2: rgb(0 0 0 / 0.18);
+    --line-25: rgb(0 0 0 / 0.22);
+
+    --chrome: rgb(255 255 255 / 0.78);
+    --panel: #ffffff;
+    --toast: rgb(255 255 255 / 0.95);
+    --cta-bar: rgb(255 255 255 / 0.88);
+    --strip: rgb(0 0 0 / 0.05);
+    --scrim: rgb(255 255 255 / 0.65);
+    --vignette: rgb(255 255 255 / 0.72);
+    --vignette-strong: rgb(255 255 255 / 0.85);
+    --fade-a: rgb(255 255 255 / 0.6);
+    --fade-b: rgb(255 255 255 / 0.3);
+
+    --accent-soft: #a21caf;
+    --accent-emerald: #047857;
+    --accent-amber: #b45309;
+
+    --dot: rgb(0 0 0 / 0.09);
+    --ghost: rgb(0 0 0 / 0.05);
+    --ghost-hover: rgb(0 0 0 / 0.09);
+    --scroll-thumb: #cfcfd6;
+    --scroll-thumb-hover: #a1a1aa;
+    --featured-ring: rgb(0 0 0 / 0.08);
+    --intro-grad: linear-gradient(90deg, #18181b, #c026d3, #18181b);
+
+    --background: #f6f6f7;
+    --foreground: #18181b;
+    --card: #ffffff;
+    --card-foreground: #18181b;
+    --popover: #ffffff;
+    --popover-foreground: #18181b;
+    --primary: #18181b;
+    --primary-foreground: #fafafa;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18181b;
+    --muted: #f4f4f5;
+    --muted-foreground: #52525b;
+    --accent: #f4f4f5;
+    --accent-foreground: #18181b;
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: rgb(0 0 0 / 0.1);
+    --input: rgb(0 0 0 / 0.15);
+    --ring: #a1a1aa;
+  }
+
+  /* точечные светлые оверрайды декора */
+  :root:not([data-theme="dark"]) .social-icon {
+    filter: invert(1);
+  }
+  :root:not([data-theme="dark"]) ::selection {
+    background: rgb(192 38 211 / 0.22);
+    color: #18181b;
+  }
+  :root:not([data-theme="dark"]) .text-shine {
+    background-image: linear-gradient(
+      110deg,
+      #c026d3 20%,
+      #a21caf 40%,
+      #d946ef 55%,
+      #c026d3 75%
+    );
+  }
+  :root:not([data-theme="dark"]) .aurora-a {
+    background-image:
+      radial-gradient(ellipse 42% 52% at 34% 44%, rgb(192 38 211 / 0.2), transparent 68%),
+      radial-gradient(ellipse 34% 42% at 44% 58%, rgb(147 51 234 / 0.13), transparent 70%),
+      radial-gradient(ellipse 30% 36% at 16% 80%, rgb(37 99 235 / 0.14), transparent 70%),
+      radial-gradient(ellipse 16% 20% at 2% 94%, rgb(234 179 8 / 0.16), transparent 72%);
+  }
+  :root:not([data-theme="dark"]) .aurora-b {
+    background-image:
+      radial-gradient(ellipse 38% 46% at 40% 40%, rgb(217 70 239 / 0.15), transparent 68%),
+      radial-gradient(ellipse 30% 40% at 26% 66%, rgb(124 58 237 / 0.14), transparent 70%),
+      radial-gradient(ellipse 26% 32% at 10% 86%, rgb(59 130 246 / 0.14), transparent 70%),
+      radial-gradient(ellipse 14% 18% at 0% 96%, rgb(163 230 53 / 0.1), transparent 72%);
+  }
+  /* градиентные клип-тексты (from-fuchsia-300 to-purple-300) темнее на светлом */
+  :root:not([data-theme="dark"]) .from-fuchsia-300 {
+    --tw-gradient-from: #c026d3;
+  }
+  :root:not([data-theme="dark"]) .to-purple-300 {
+    --tw-gradient-to: #7e22ce;
+  }
+  :root:not([data-theme="dark"]) .glow-featured {
+    box-shadow:
+      0 0 0 1px rgb(0 0 0 / 0.08),
+      0 18px 70px -24px rgb(217 70 239 / 0.4),
+      0 8px 30px -14px rgb(147 51 234 / 0.25);
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -113,8 +395,8 @@ html {
 }
 
 body {
-  background: #0a0a0b;
-  color: #fafafa;
+  background: var(--page);
+  color: var(--ink);
   font-family: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
     "Segoe UI", sans-serif;
   overflow-x: clip;
@@ -245,18 +527,20 @@ body {
   animation: pulse-dot 1.8s ease-in-out infinite;
 }
 
-/* ---------- Reveal on scroll ---------- */
+/* ---------- Reveal on scroll ----------
+   Состояние — в data-revealed-атрибуте, а НЕ в классе: Vue при ре-рендере
+   перезаписывает class (например, у FAQ-айтема при клике зависит от openKey)
+   и стирал бы императивно добавленный .revealed — элемент «исчезал».
+   Атрибуты вне vnode Vue не трогает, поэтому dataset-переключатель надёжен. */
 .js [data-reveal] {
-  opacity: 0;
-  transform: translateY(30px);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
-.js [data-reveal].revealed {
-  opacity: 1;
-  transform: none;
+.js [data-reveal]:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(30px);
 }
 
 @media print {
@@ -300,22 +584,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0a0b;
+  background: var(--page);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--scroll-thumb);
   border-radius: 8px;
-  border: 2px solid #0a0a0b;
+  border: 2px solid var(--page);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: var(--scroll-thumb-hover);
 }
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: #27272a #0a0a0b;
+  scrollbar-color: var(--scroll-thumb) var(--page);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -325,9 +609,9 @@ body {
     animation: none !important;
   }
   .js [data-reveal] {
-    opacity: 1;
-    transform: none;
-    transition: none;
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
   }
 }
 
@@ -346,7 +630,8 @@ summary:focus-visible {
 
 /* ---------- Featured price glow ---------- */
 .glow-featured {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.9),
+  box-shadow:
+    0 0 0 1px var(--featured-ring),
     0 18px 70px -18px rgba(217, 70, 239, 0.55),
     0 8px 30px -12px rgba(147, 51, 234, 0.4);
 }
@@ -468,7 +753,7 @@ summary:focus-visible {
   place-content: center;
   justify-items: center;
   gap: 6px;
-  background: #0a0a0b;
+  background: var(--page);
   transition: opacity 0.55s ease;
 }
 
@@ -504,7 +789,7 @@ summary:focus-visible {
   font-size: 2.1rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  background-image: linear-gradient(90deg, #fff, #e879f9, #fff);
+  background-image: var(--intro-grad);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -541,10 +826,7 @@ summary:focus-visible {
 
 /* ---------- Dot grid decorative background ---------- */
 .dot-grid {
-  background-image: radial-gradient(
-    rgba(255, 255, 255, 0.08) 1px,
-    transparent 1.5px
-  );
+  background-image: radial-gradient(var(--dot) 1px, transparent 1.5px);
   background-size: 22px 22px;
   mask-image: radial-gradient(
     ellipse 70% 60% at 50% 40%,

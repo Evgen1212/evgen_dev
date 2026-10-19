@@ -4,7 +4,8 @@ import { socials, prices, calcProjects } from "~/components/portfolio/data";
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Абрамов Евгений — Frontend-разработка",
+  name: "evgen_dev — Frontend-разработка",
+  alternateName: "Абрамов Евгений — Frontend-разработка",
   description:
     "Фронтенд-разработка любой сложности: SPA и SSR-приложения на Vue 3 / Nuxt 3 / TypeScript, дизайн-системы, оптимизация Web Vitals. Полный цикл — от идеи до продакшена.",
   areaServed: "RU",
@@ -15,7 +16,8 @@ const jsonLd = {
   },
   founder: {
     "@type": "Person",
-    name: "Абрамов Евгений Павлович",
+    name: "evgen_dev",
+    alternateName: "Абрамов Евгений Павлович",
     jobTitle: "Senior Frontend-разработчик",
     alumniOf: {
       "@type": "CollegeOrUniversity",
@@ -51,7 +53,7 @@ useHead({
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col bg-[#0a0a0b] text-zinc-50">
+  <div class="flex min-h-screen flex-col bg-(--page) text-(--ink)">
     <IntroLoader />
     <!-- плёночное зерно поверх всего интерфейса -->
     <div aria-hidden="true" class="noise-overlay" />

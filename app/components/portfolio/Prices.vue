@@ -17,7 +17,7 @@ import { prices } from "./data";
         >
           Цены
         </h2>
-        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           прозрачные условия — вы платите за результат, без скрытых платежей
         </p>
       </div>
@@ -43,7 +43,7 @@ import { prices } from "./data";
                 'card-shine group relative flex h-full flex-col rounded-3xl border p-6 transition-all duration-500 hover:-translate-y-1.5 sm:p-7',
                 tier.featured
                   ? 'glow-featured border-white bg-white text-black'
-                  : 'border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.05]',
+                  : 'border-(--line-1) bg-(--surface-1) hover:border-(--line-25) hover:bg-(--surface-3)',
               )
             "
           >
@@ -51,7 +51,7 @@ import { prices } from "./data";
               :class="
                 cn(
                   'font-display text-xl font-bold',
-                  tier.featured ? 'text-black' : 'text-white',
+                  tier.featured ? 'text-black' : 'text-(--ink)',
                 )
               "
             >
@@ -73,7 +73,7 @@ import { prices } from "./data";
               :class="
                 cn(
                   'mt-2 text-sm',
-                  tier.featured ? 'text-black/60' : 'text-zinc-400',
+                  tier.featured ? 'text-black/60' : 'text-(--ink-mute)',
                 )
               "
             >
@@ -95,7 +95,7 @@ import { prices } from "./data";
                   "
                   aria-hidden="true"
                 />
-                <span :class="tier.featured ? 'text-black/80' : 'text-zinc-300'">{{
+                <span :class="tier.featured ? 'text-black/80' : 'text-(--ink-soft)'">{{
                   f
                 }}</span>
               </li>
@@ -105,7 +105,7 @@ import { prices } from "./data";
               :class="
                 cn(
                   'mt-6 flex items-center justify-between border-t pt-4',
-                  tier.featured ? 'border-black/10' : 'border-white/10',
+                  tier.featured ? 'border-black/10' : 'border-(--line-1)',
                 )
               "
             >
@@ -113,7 +113,7 @@ import { prices } from "./data";
                 :class="
                   cn(
                     'text-xs font-semibold uppercase tracking-wider',
-                    tier.featured ? 'text-black/50' : 'text-zinc-500',
+                    tier.featured ? 'text-black/50' : 'text-(--ink-faint)',
                   )
                 "
               >
@@ -126,7 +126,7 @@ import { prices } from "./data";
                     'rounded-xl px-4 py-2 text-sm font-bold transition-all hover:scale-105 active:scale-95',
                     tier.featured
                       ? 'bg-black text-white hover:bg-zinc-800'
-                      : 'bg-white/10 text-white hover:bg-white hover:text-black',
+                      : 'bg-(--surface-hover) text-(--ink) hover:bg-(--ink) hover:text-(--page)',
                   )
                 "
               >
@@ -139,7 +139,7 @@ import { prices } from "./data";
 
       <PriceCalculator />
 
-      <p data-reveal class="mt-8 text-center text-sm text-zinc-500">
+      <p data-reveal class="mt-8 text-center text-sm text-(--ink-faint)">
         Требуется что-то уникальное? Напишите — рассчитаю индивидуально и
         бесплатно.
       </p>

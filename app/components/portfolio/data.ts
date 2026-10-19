@@ -10,7 +10,7 @@ export type SocialLink = {
 /** ─── Контактные данные из резюме ─── */
 export const siteOwner = {
   fullName: "Абрамов Евгений Павлович",
-  shortName: "Абрамов Евгений",
+  shortName: "evgen_dev",
   firstName: "Евгений",
   role: "Senior Frontend-разработчик",
   stackLine: "Vue 3 · Nuxt · TypeScript",
@@ -56,20 +56,6 @@ export const socials: SocialLink[] = [
     href: "https://career.habr.com/zhenek-abramov",
     icon: "habr",
     color: "65A3BE",
-  },
-  {
-    name: "GitHub",
-    handle: "@Evgen1212",
-    href: "https://github.com/Evgen1212",
-    icon: "github",
-    color: "E4E4E7",
-  },
-  {
-    name: "GitLab",
-    handle: "@Evgen1212",
-    href: "https://gitlab.com/Evgen1212",
-    icon: "gitlab",
-    color: "FC6D26",
   },
   {
     name: "Instagram",

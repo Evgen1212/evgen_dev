@@ -108,7 +108,7 @@ const jobs: Job[] = [
         <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
           Опыт работы
         </h2>
-        <p class="mt-4 text-base text-zinc-400 sm:text-lg">
+        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           5+ лет коммерческой разработки — от промышленного сектора до финтеха
         </p>
       </div>
@@ -119,7 +119,7 @@ const jobs: Job[] = [
           :key="job.key"
           data-reveal
           :style="{ '--reveal-delay': `${Math.min(i, 2) * 60}ms` }"
-          class="group grid overflow-hidden rounded-[28px] border border-white/10 bg-white/[0.03] shadow-xl shadow-black/30 transition-all duration-500 hover:border-white/20 hover:shadow-2xl lg:grid-cols-2"
+          class="group grid overflow-hidden rounded-[28px] border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:border-(--line-2) hover:shadow-2xl lg:grid-cols-2"
         >
           <!-- скриншот сайта работодателя -->
           <a
@@ -138,7 +138,7 @@ const jobs: Job[] = [
             />
             <div
               aria-hidden="true"
-              class="absolute inset-0 bg-gradient-to-t from-[#0a0a0b]/70 via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-[#0a0a0b]/40"
+              class="absolute inset-0 bg-gradient-to-t from-(--fade-a) via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-(--fade-b)"
               :class="i % 2 === 1 ? 'lg:bg-gradient-to-l' : ''"
             />
             <!-- браузерная рамка -->
@@ -161,10 +161,10 @@ const jobs: Job[] = [
               <span class="rounded-full bg-white px-3.5 py-1 text-xs font-bold text-black">
                 {{ job.period }}
               </span>
-              <span class="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-xs text-zinc-400">
+              <span class="rounded-full border border-(--line-1) bg-(--surface-3) px-3 py-1 text-xs text-(--ink-mute)">
                 {{ job.duration }}
               </span>
-              <span class="inline-flex items-center gap-1 text-xs text-zinc-500">
+              <span class="inline-flex items-center gap-1 text-xs text-(--ink-faint)">
                 <MapPin class="size-3.5" aria-hidden="true" />
                 {{ job.city }}
               </span>
@@ -173,9 +173,9 @@ const jobs: Job[] = [
             <h3 class="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">
               {{ job.company }}
             </h3>
-            <p class="mt-1 text-sm font-semibold text-fuchsia-300">{{ job.role }}</p>
+            <p class="mt-1 text-sm font-semibold text-(--accent-soft)">{{ job.role }}</p>
 
-            <ul class="mt-4 flex-1 space-y-2.5 text-sm leading-relaxed text-zinc-400">
+            <ul class="mt-4 flex-1 space-y-2.5 text-sm leading-relaxed text-(--ink-mute)">
               <li v-for="h in job.highlights" :key="h" class="flex gap-2.5">
                 <span
                   aria-hidden="true"
@@ -187,7 +187,7 @@ const jobs: Job[] = [
 
             <p
               v-if="job.note"
-              class="mt-4 border-l-2 border-fuchsia-400/40 pl-3 text-xs italic leading-relaxed text-zinc-500"
+              class="mt-4 border-l-2 border-fuchsia-400/40 pl-3 text-xs italic leading-relaxed text-(--ink-faint)"
             >
               {{ job.note }}
             </p>
@@ -196,7 +196,7 @@ const jobs: Job[] = [
               <span
                 v-for="t in job.stack"
                 :key="t"
-                class="rounded-full border border-white/10 bg-white/[0.05] px-2.5 py-1 text-[11px] font-medium text-zinc-300"
+                class="rounded-full border border-(--line-1) bg-(--surface-3) px-2.5 py-1 text-[11px] font-medium text-(--ink-soft)"
               >
                 {{ t }}
               </span>
@@ -206,7 +206,7 @@ const jobs: Job[] = [
               :href="job.href"
               target="_blank"
               rel="noopener noreferrer"
-              class="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-zinc-300 transition-colors hover:text-white"
+              class="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-(--ink-soft) transition-colors hover:text-(--ink)"
             >
               Открыть сайт — {{ job.domain }}
               <ExternalLink
