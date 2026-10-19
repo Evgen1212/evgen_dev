@@ -6,9 +6,7 @@ import {
   Cable,
   Gauge,
   MonitorSmartphone,
-  Rocket,
   ShieldCheck,
-  Users,
 } from "lucide-vue-next";
 
 /** Статистика из реального резюме (замена React-версии) */
@@ -17,6 +15,10 @@ const stats = [
   { value: 50, suffix: "+", label: "UI-компонентов в собственном ките (Storybook)" },
   { value: 70, suffix: "%+", label: "покрытие UI-тестами в финтех-проекте" },
   { value: 5, suffix: "+", label: "языков интерфейса в i18n" },
+  { value: 6, suffix: "", label: "отраслей — от финтеха до промышленности" },
+  { value: 3, suffix: "", label: "федеральных бренда в заказных проектах" },
+  { value: 4, suffix: "", label: "финтех-продукта в продакшене" },
+  { value: 2, suffix: " нед.", label: "бесплатной поддержки после запуска" },
 ];
 
 /**
@@ -53,16 +55,6 @@ const competencies = [
     icon: Cable,
     title: "Подключу любой backend",
     text: "Авторизация, оплаты, карты, чаты и графики в реальном времени: REST API, GraphQL, WebSocket — свяжу фронтенд с любой серверной частью.",
-  },
-  {
-    icon: Rocket,
-    title: "Доведу до запуска",
-    text: "Docker, CI/CD, деплой на сервер: после сдачи проект стабильно работает, а обновления выходят без простоя и «переездов».",
-  },
-  {
-    icon: Users,
-    title: "Опыт лид-разработчика",
-    text: "Ставил стандарты качества, проводил код-ревью и наставлял разработчиков — код останется понятным и без моего участия.",
   },
 ];
 </script>
@@ -171,7 +163,7 @@ const competencies = [
           компетенции из резюме без жаргона — что это даёт вашему проекту
         </p>
       </div>
-      <ul class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <ul class="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <li
           v-for="(c, i) in competencies"
           :key="c.title"
