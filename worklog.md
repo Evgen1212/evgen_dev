@@ -444,3 +444,30 @@ Stage Summary:
 - Контакты: 6 карточек (Telegram/Телефон/WhatsApp/E-mail/Instagram/VK) с брендовыми иконками; те же 6 иконок в шапке и JSON-LD.
 - Риски/заметки: звук чириканья в headless-браузере не воспроизвести — проверено отсутствие исключений WebAudio и корректность синтеза; wa.me в JSON-LD sameAs (допустимо, но не профиль — можно отфильтровать при желании); sharp в проект не установлен локально, скрипты резолвят его через глобальный bun-автоинсталл.
 - Следующие шаги: переписать FAQ/Цены/Этапы под поиск работы (всё ещё шаблоны «под заказ»), вычистить неиспользуемые exports data.ts (caseDetails/testimonials/prices-плейсхолдеры), og.png при смене текстов обновлять скриптом, светлую тему по-прежнему нет.
+
+---
+Task ID: 14
+Agent: Z.ai Code (main)
+Task: (1) Контакты: + Хабр Карьера / GitHub / GitLab; (2) чистая ссылка на hh.ru-резюме; (3) аудит — сайт-визитка без бекенда, удаление админки/Next-остатков/скриншотов; (4) попугай v2 — симпатичнее, меньше, зелёные перья на голове.
+
+Work Log:
+- Попугай v2: image-generation («зелёные перья на макушке, огромные блестящие глаза, улыбка, румянец») на МАДЖЕНТА-хромакее (зелёный фон уже нельзя — сами перья зелёные). Скрипт /home/z/tmp-shots/remove-parrot2-bg.mjs: flood-fill от краёв с предикатом «розовое семейство» (r-g≥30, r≥90, b≥g-12) — румянец и язычок не связаны с фоном и не пострадали; первая итерация оставила тёмный след тени под лапками — порог ослаблен, след ушёл; де-спилл розовой каймы (краевые пиксели с r>g+40 && b>g+20 прижимаются к g), feather, trim. Итог: parrot-transparent.png 632×838, 498 КБ, вырезка чистая.
+- ParrotMascot.vue: размер уменьшен ~25% (w-28/sm:w-40/md:w-52/xl:w-64/2xl:w-80). og.png перегенерирован с попугаем v2 (340px ширины).
+- socials в data.ts: + Хабр Карьера (career.habr.com/zhenek-abramov, icon habr, #65A3BE), + GitHub (github.com/Evgen1212, icon github, был в иконках), + GitLab (gitlab.com/Evgen1212, icon gitlab). Итого 9: Telegram, Телефон, WhatsApp, E-mail, Хабр, GitHub, GitLab, Instagram, VK → сетка Contact 3×3.
+- Иконки: public/icons/social/habr.svg и gitlab.svg — скачаны с unpkg (simple-icons@13), приведены к fill="white" (в стиле остальных); github.svg уже был белым.
+- Contact.vue: описания («Резюме и вакансии», «Код и пет-проекты», «Эксперименты и CI/CD»); сетка max-w-5xl sm:grid-cols-2 lg:grid-cols-3 = 9 карточек 3×3.
+- ResumeModal.vue: hh.ru-ссылка очищена от ?hhtmFrom=profile → https://hh.ru/resume/69aab81cff0ca036cf0039ed1f62446e344c4b (прямая публичная), target=_blank.
+- АУДИТ / УДАЛЕНИЕ (запрос «никакого бекенда, это визитка»): server/ целиком (contact.post.ts, admin login/logout/requests, admin-auth, db.ts, routes/sitemap.xml.ts); AdminDialog.vue + его рендер в SiteFooter.vue; prisma/, db/, .env (DATABASE_URL); зависимости @prisma/client, prisma, zod (bun install: Removed 3, node_modules 613→456 пакетов).
+- Sitemap перенесён в статику public/sitemap.xml (тот же XML), robots.txt упрощён (без Disallow /api/admin).
+- Next-легаси и мусор удалены: nuxt-app/ (полный дубль Nuxt-проекта!), legacy-nextjs/ (архив), src/ (старый Next), next.config.ts, tailwind.config.ts, postcss.config.mjs, components.json, eslint.config.mjs, tests/, examples/, mini-services/, download/ (QA-скриншоты), tool-results/, PORTING.md. Остался только upload/ — смонтированный volume платформы (rm невозможен, Device busy; содержимое больше нигде не используется).
+- package.json: скрипты db:generate/db:push удалены, build → «nuxt generate» (статичный сайт), + og-скрипт; nuxt.config.ts: nitro.prerender.routes ["/"] — визитка собирается в чистые статические файлы без сервера.
+- QA (agent-browser): hero с попугаем v2 (1440px и 390px) — меньше и милее; клик → тост «Чирик! 👋», parrot-chirps=1; контакты 9 карточек 3×3 со всеми иконками; шапка 9 иконок (влезают), мобильное бургер-меню — 9 иконок в 2 ряда; модалка резюме: hh.ru-ссылка без query, target=_blank, PDF-превью рендерится; футер — 🦜, админки нет; HTTP 200: sitemap.xml, robots.txt, og.png, habr/gitlab/github.svg; консоль и dev.log чистые.
+- Инцидент с dev-сервером: после pkill сервер, запущенный обычным nohup … & , погибал на границе tool-вызовов (дважды). Лечение: bash -c 'setsid nohup bun run dev </dev/null >/dev/null 2>&1 & disown' — двойной отрыв от process group; сервер стабилен. QA-скриншоты теперь пишутся в /home/z/tmp-shots/ (вне проекта, download/ удалён).
+
+Stage Summary:
+- Сайт — чистая статическая визитка: ни API, ни БД, ни авторизации, ни серверных утилит; `bun run build` = nuxt generate → статические файлы для любого хостинга. Дев-сервер работает как раньше на :3000.
+- Контакты: 9 карточек (Telegram/Телефон/WhatsApp/E-mail/Хабр Карьера/GitHub/GitLab/Instagram/VK) с брендовыми иконками; 9 иконок в шапке и в мобильном меню; JSON-LD sameAs обновился автоматически.
+- Резюме: прямая ссылка hh.ru (без ?hhtmFrom) в модалке «Нанять на работу», PDF /resume.pdf остался.
+- Маскот: попугай v2 (зелёный хохолок, крылья с зеленью, огромные глаза, улыбка, румянец) — меньше по размеру, вырезка чистая; og.png с ним же.
+- Риски/заметки: upload/ — несъёмный mount (можно игнорировать); agent-browser для localhost иногда требует, чтобы dev-сервер уже был поднят (проверять curl перед open); при переезде на хостинг — `bun run build`, залить .output/public.
+- Следующие шаги: переписать FAQ/Цены/Этапы под поиск работы (шаблоны «под заказ» ещё с прежнего позиционирования), вычистить неиспользуемые exports data.ts (caseDetails/testimonials), светлая тема.

@@ -51,6 +51,27 @@ export const socials: SocialLink[] = [
     color: "E879F9",
   },
   {
+    name: "Хабр Карьера",
+    handle: "career.habr.com/zhenek-abramov",
+    href: "https://career.habr.com/zhenek-abramov",
+    icon: "habr",
+    color: "65A3BE",
+  },
+  {
+    name: "GitHub",
+    handle: "@Evgen1212",
+    href: "https://github.com/Evgen1212",
+    icon: "github",
+    color: "E4E4E7",
+  },
+  {
+    name: "GitLab",
+    handle: "@Evgen1212",
+    href: "https://gitlab.com/Evgen1212",
+    icon: "gitlab",
+    color: "FC6D26",
+  },
+  {
     name: "Instagram",
     handle: "@jeka_lavandos",
     href: "https://www.instagram.com/jeka_lavandos/",

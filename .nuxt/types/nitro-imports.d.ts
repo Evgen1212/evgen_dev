@@ -1,6 +1,4 @@
 declare global {
-  const ADMIN_COOKIE: typeof import('../../server/utils/admin-auth').ADMIN_COOKIE
-  const COOKIE_MAX_AGE: typeof import('../../server/utils/admin-auth').COOKIE_MAX_AGE
   const H3Error: typeof import('../../node_modules/h3/dist/index').H3Error
   const H3Event: typeof import('../../node_modules/h3/dist/index').H3Event
   const __buildAssetsURL: typeof import('../../node_modules/@nuxt/nitro-server/dist/runtime/utils/paths').buildAssetsURL
@@ -15,7 +13,6 @@ declare global {
   const cachedEventHandler: typeof import('../../node_modules/nitropack/dist/runtime/internal/cache').cachedEventHandler
   const cachedFunction: typeof import('../../node_modules/nitropack/dist/runtime/internal/cache').cachedFunction
   const callNodeListener: typeof import('../../node_modules/h3/dist/index').callNodeListener
-  const checkPassword: typeof import('../../server/utils/admin-auth').checkPassword
   const clearResponseHeaders: typeof import('../../node_modules/h3/dist/index').clearResponseHeaders
   const clearSession: typeof import('../../node_modules/h3/dist/index').clearSession
   const createApp: typeof import('../../node_modules/h3/dist/index').createApp
@@ -24,7 +21,6 @@ declare global {
   const createEvent: typeof import('../../node_modules/h3/dist/index').createEvent
   const createEventStream: typeof import('../../node_modules/h3/dist/index').createEventStream
   const createRouter: typeof import('../../node_modules/h3/dist/index').createRouter
-  const db: typeof import('../../server/utils/db').db
   const defaultContentType: typeof import('../../node_modules/h3/dist/index').defaultContentType
   const defineAppConfig: typeof import('../../node_modules/@nuxt/nitro-server/dist/runtime/utils/config').defineAppConfig
   const defineCachedEventHandler: typeof import('../../node_modules/nitropack/dist/runtime/internal/cache').defineCachedEventHandler
@@ -45,7 +41,6 @@ declare global {
   const deleteCookie: typeof import('../../node_modules/h3/dist/index').deleteCookie
   const dynamicEventHandler: typeof import('../../node_modules/h3/dist/index').dynamicEventHandler
   const eventHandler: typeof import('../../node_modules/h3/dist/index').eventHandler
-  const expectedToken: typeof import('../../server/utils/admin-auth').expectedToken
   const fetchWithEvent: typeof import('../../node_modules/h3/dist/index').fetchWithEvent
   const fromNodeMiddleware: typeof import('../../node_modules/h3/dist/index').fromNodeMiddleware
   const fromPlainHandler: typeof import('../../node_modules/h3/dist/index').fromPlainHandler
@@ -84,10 +79,8 @@ declare global {
   const isMethod: typeof import('../../node_modules/h3/dist/index').isMethod
   const isPreflightRequest: typeof import('../../node_modules/h3/dist/index').isPreflightRequest
   const isStream: typeof import('../../node_modules/h3/dist/index').isStream
-  const isValidToken: typeof import('../../server/utils/admin-auth').isValidToken
   const isWebResponse: typeof import('../../node_modules/h3/dist/index').isWebResponse
   const lazyEventHandler: typeof import('../../node_modules/h3/dist/index').lazyEventHandler
-  const loginThrottled: typeof import('../../server/utils/admin-auth').loginThrottled
   const nitroPlugin: typeof import('../../node_modules/nitropack/dist/runtime/internal/plugin').nitroPlugin
   const parseCookies: typeof import('../../node_modules/h3/dist/index').parseCookies
   const promisifyNodeListener: typeof import('../../node_modules/h3/dist/index').promisifyNodeListener
@@ -97,7 +90,6 @@ declare global {
   const readMultipartFormData: typeof import('../../node_modules/h3/dist/index').readMultipartFormData
   const readRawBody: typeof import('../../node_modules/h3/dist/index').readRawBody
   const readValidatedBody: typeof import('../../node_modules/h3/dist/index').readValidatedBody
-  const registerFail: typeof import('../../server/utils/admin-auth').registerFail
   const removeResponseHeader: typeof import('../../node_modules/h3/dist/index').removeResponseHeader
   const runTask: typeof import('../../node_modules/nitropack/dist/runtime/internal/task').runTask
   const sanitizeStatusCode: typeof import('../../node_modules/h3/dist/index').sanitizeStatusCode
@@ -156,5 +148,3 @@ export { defineNitroErrorHandler } from 'nitropack/runtime/internal/error/utils'
 export { buildAssetsURL as __buildAssetsURL, publicAssetsURL as __publicAssetsURL } from '/home/z/my-project/node_modules/@nuxt/nitro-server/dist/runtime/utils/paths';
 export { defineAppConfig } from '/home/z/my-project/node_modules/@nuxt/nitro-server/dist/runtime/utils/config';
 export { useAppConfig } from '/home/z/my-project/node_modules/@nuxt/nitro-server/dist/runtime/utils/app-config';
-export { ADMIN_COOKIE, COOKIE_MAX_AGE, expectedToken, checkPassword, isValidToken, loginThrottled, registerFail } from '/home/z/my-project/server/utils/admin-auth';
-export { db } from '/home/z/my-project/server/utils/db';

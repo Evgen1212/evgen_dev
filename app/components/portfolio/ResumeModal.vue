@@ -5,7 +5,7 @@ const props = defineProps<{ open: boolean }>();
 const emit = defineEmits<{ (e: "update:open", v: boolean): void }>();
 
 const HH_RESUME_URL =
-  "https://hh.ru/resume/69aab81cff0ca036cf0039ed1f62446e344c4b?hhtmFrom=profile";
+  "https://hh.ru/resume/69aab81cff0ca036cf0039ed1f62446e344c4b";
 
 function close() {
   emit("update:open", false);

@@ -41,7 +41,7 @@ const svg = `
 </svg>`;
 
 const parrot = await sharp(path.join(root, "public/images/parrot-transparent.png"))
-  .resize(390, null) // альфа уже чистая — только масштабируем
+  .resize(340, null) // альфа уже чистая — только масштабируем
   .png()
   .toBuffer();
 

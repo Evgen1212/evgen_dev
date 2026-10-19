@@ -22,7 +22,7 @@ const footerNav = [
           class="flex items-center gap-2 transition-opacity hover:opacity-80"
         >
           <span class="grid size-8 place-items-center rounded-lg bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-700 text-sm">
-            <span aria-hidden="true">🦆</span>
+            <span aria-hidden="true">🦜</span>
           </span>
           <span class="font-display text-base font-bold">Абрамов</span>
         </a>
@@ -37,8 +37,6 @@ const footerNav = [
             <span class="text-fuchsia-400" aria-hidden="true">♥</span>
             на Nuxt
           </p>
-          <!-- Компонент админки (автоимпорт Nuxt, появится отдельно) -->
-          <AdminDialog />
         </div>
       </div>
 

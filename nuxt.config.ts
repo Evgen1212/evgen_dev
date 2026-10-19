@@ -92,5 +92,10 @@ export default defineNuxtConfig({
         target: "esnext",
       },
     },
+    // Сайт — статичная визитка без бекенда: `bun run build` (= nuxt generate)
+    // prerender-ит «/» в готовые HTML/ассеты для любого статик-хостинга.
+    prerender: {
+      routes: ["/"],
+    },
   },
 });

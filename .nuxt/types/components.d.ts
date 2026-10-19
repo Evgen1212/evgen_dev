@@ -15,7 +15,6 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 
 interface _GlobalComponents {
   About: typeof import("../../app/components/portfolio/About.vue")['default']
-  AdminDialog: typeof import("../../app/components/portfolio/AdminDialog.vue")['default']
   Contact: typeof import("../../app/components/portfolio/Contact.vue")['default']
   CopyEmailButton: typeof import("../../app/components/portfolio/CopyEmailButton.vue")['default']
   Counter: typeof import("../../app/components/portfolio/Counter.vue")['default']
@@ -137,7 +136,6 @@ interface _GlobalComponents {
    */
   NuxtIsland: typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
   LazyAbout: LazyComponent<typeof import("../../app/components/portfolio/About.vue")['default']>
-  LazyAdminDialog: LazyComponent<typeof import("../../app/components/portfolio/AdminDialog.vue")['default']>
   LazyContact: LazyComponent<typeof import("../../app/components/portfolio/Contact.vue")['default']>
   LazyCopyEmailButton: LazyComponent<typeof import("../../app/components/portfolio/CopyEmailButton.vue")['default']>
   LazyCounter: LazyComponent<typeof import("../../app/components/portfolio/Counter.vue")['default']>

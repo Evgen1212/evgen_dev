@@ -118,7 +118,7 @@ onBeforeUnmount(() => {
         src="/images/parrot-transparent.png"
         alt="Жёлтый попугай — маскот сайта"
         :class="cn(
-          'animate-float pointer-events-none w-36 select-none drop-shadow-[0_30px_50px_rgba(0,0,0,0.55)] sm:w-56 md:w-72 xl:w-[22rem] 2xl:w-[26rem]',
+          'animate-float pointer-events-none w-28 select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)] sm:w-40 md:w-52 xl:w-64 2xl:w-80',
           bouncing && 'parrot-bounce'
         )"
         draggable="false"
