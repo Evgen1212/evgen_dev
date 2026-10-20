@@ -62,7 +62,7 @@ const toggleSection = () => {
         class="grid transition-all duration-500 ease-in-out md:grid-rows-[1fr] md:opacity-100"
         :class="isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
       >
-        <div class="overflow-hidden">
+        <div class="overflow-hidden md:overflow-visible">
           <div
             class="max-md:mt-0 max-md:rounded-b-3xl max-md:rounded-t-none max-md:bg-(--surface-2) max-md:px-4 max-md:pb-4 max-md:pt-4"
           >
@@ -80,7 +80,7 @@ const toggleSection = () => {
             >
               <span
                 v-if="tier.featured"
-                class="absolute -top-3.5 left-6 z-10 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg"
+                class="absolute -top-3.5 left-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg"
               >
                 <Flame class="size-3.5" aria-hidden="true" />
                 Популярный выбор
