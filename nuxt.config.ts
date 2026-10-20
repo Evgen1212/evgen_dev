@@ -21,9 +21,8 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
     server: {
-      // Превью открывается через динамический домен-шлюз (Caddy
-      // пробрасывает оригинальный Host). Без этого Vite блокирует
-      // запросы с чужим Host: «Blocked request… add server.allowedHosts».
+      // Внешние preview-домены (туннели/шлюзы) передают свой Host.
+      // Без этого Vite блокирует запросы: «Blocked request… add server.allowedHosts».
       // Только dev-сервер; на prod-сборку не влияет.
       allowedHosts: true,
     },

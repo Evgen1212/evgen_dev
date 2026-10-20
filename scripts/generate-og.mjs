@@ -33,7 +33,7 @@ const svg = `
   <rect x="86" y="300" width="556" height="58" rx="29" fill="url(#pill)"/>
   <text x="112" y="339" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="bold" fill="#ffffff">Senior Frontend-разработчик</text>
 
-  <text x="86" y="440" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#d8b4fe">Vue 3 · Nuxt · TypeScript · SPA / SSR</text>
+  <text x="86" y="440" font-family="DejaVu Sans, sans-serif" font-size="28" fill="#d8b4fe">Vue 3 · Nuxt · TypeScript · React · Next.js</text>
   <text x="86" y="484" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#a1a1aa">От идеи до продакшена</text>
 
   <text x="86" y="560" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#a1a1aa">t.me/keyboard_brothers</text>
