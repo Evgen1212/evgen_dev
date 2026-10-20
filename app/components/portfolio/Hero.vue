@@ -35,7 +35,7 @@ const hireOpen = useState('resume-open', () => false);
       class="relative z-10 mx-auto grid w-full max-w-7xl flex-1 items-center gap-12 px-5 pb-24 pt-32 sm:px-8 lg:grid-cols-[1.25fr_1fr] lg:gap-8 lg:pt-28"
     >
       <!-- Left: title -->
-      <div data-reveal>
+      <div>
         <p
           class="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-400/25 bg-emerald-400/10 px-4 py-1.5 text-sm font-medium text-(--accent-emerald)"
         >
@@ -95,11 +95,7 @@ const hireOpen = useState('resume-open', () => false);
       </div>
 
       <!-- Right: latest job teaser -->
-      <div
-        class="relative hidden lg:block"
-        data-reveal
-        :style="{ '--reveal-delay': '150ms' }"
-      >
+      <div class="relative hidden lg:block">
         <p
           class="mb-3 ml-1 flex items-center gap-1.5 text-sm text-(--ink-soft)"
         >
@@ -115,10 +111,17 @@ const hireOpen = useState('resume-open', () => false);
           <div
             class="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-black"
           >
-            <img
-              :src="useAsset('images/work-autoeuro.jpg')"
+            <SmartImage
+              name="work-autoeuro"
               alt="Скриншот сайта Авто-Евро"
-              class="absolute inset-0 h-full w-full object-cover object-top"
+              :width="1200"
+              :height="750"
+              :widths="[480, 720, 960, 1200]"
+              sizes="(min-width: 1024px) 45vw, 1px"
+              loading="lazy"
+              fetchpriority="low"
+              class="absolute inset-0"
+              img-class="h-full w-full object-cover object-top"
             />
             <div
               class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/45"
@@ -186,6 +189,7 @@ const hireOpen = useState('resume-open', () => false);
               height="26"
               class="size-6 shrink-0 sm:size-7"
               loading="lazy"
+              decoding="async"
             />
             <span
               v-else-if="s.emoji"

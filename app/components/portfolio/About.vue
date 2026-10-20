@@ -90,11 +90,17 @@ const stats = [
             class="absolute -top-2 right-9 z-10 h-7 w-20 rotate-[5deg] rounded-[2px] bg-white/25 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
           />
           <div class="overflow-hidden rounded-xl bg-zinc-800">
-            <img
-              :src="useAsset('images/me.png')"
+            <SmartImage
+              name="me"
               alt="Евгений Абрамов — фотография"
-              class="aspect-[4/5] w-full scale-[1.04] object-cover blur-[0.5px] transition-all duration-700 group-hover:blur-0"
+              :width="382"
+              :height="500"
+              :widths="[382]"
+              sizes="(min-width: 1024px) 380px, 80vw"
               loading="lazy"
+              fetchpriority="low"
+              class="w-full"
+              img-class="aspect-[4/5] w-full scale-[1.04] object-cover blur-[0.5px] transition-all duration-700 group-hover:blur-0"
             />
           </div>
           <p

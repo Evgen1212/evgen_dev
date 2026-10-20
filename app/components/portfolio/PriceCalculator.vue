@@ -50,9 +50,7 @@ const { toast } = useToast();
 /* ─── Мобильный аккордеон: шапка калькулятора ─── */
 const isOpen = ref(false);
 const toggleCollapse = () => {
-  if (window.innerWidth < 768) {
-    isOpen.value = !isOpen.value;
-  }
+  isOpen.value = !isOpen.value;
 };
 
 const project = ref<CalcProjectKey>('multipage');
@@ -186,7 +184,8 @@ function copyCalcLink() {
         role="button"
         tabindex="0"
         :aria-expanded="isOpen"
-        class="flex w-full cursor-pointer items-center justify-between gap-3 border-b border-(--line-1) p-5 text-left md:cursor-default sm:px-7"
+        class="flex w-full cursor-pointer items-center justify-between gap-3 p-5 text-left sm:px-7"
+        :class="isOpen ? 'border-b border-(--line-1)' : ''"
         @click="toggleCollapse"
         @keydown.enter="toggleCollapse"
         @keydown.space.prevent="toggleCollapse"
@@ -216,20 +215,23 @@ function copyCalcLink() {
             aria-label="Сбросить настройки калькулятора"
             class="grid size-9 shrink-0 place-items-center rounded-xl border border-(--line-1) text-(--ink-faint) transition-colors hover:border-(--line-25) hover:text-(--ink)"
             @click.stop="reset"
+            @keydown.enter.stop
+            @keydown.space.stop
           >
             <RotateCcw class="size-4" aria-hidden="true" />
           </button>
           
           <ChevronDown 
-            class="size-5 text-(--ink-faint) transition-transform duration-300 md:hidden"
+            class="size-5 text-(--ink-faint) transition-transform duration-300"
             :class="{ 'rotate-180': isOpen }"
           />
         </div>
       </div>
 
       <div
-        class="grid transition-all duration-500 ease-in-out md:grid-rows-[1fr] md:opacity-100"
+        class="grid transition-all duration-500 ease-in-out"
         :class="isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+        :inert="!isOpen"
       >
         <div class="overflow-hidden">
           <div class="grid lg:grid-cols-[1.45fr_1fr]">

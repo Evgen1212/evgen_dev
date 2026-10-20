@@ -120,16 +120,25 @@ onBeforeUnmount(() => {
       @click="chirp"
     >
       <span class="parrot-sway block">
-        <img
-          :src="useAsset('images/parrot-transparent.png')"
+        <SmartImage
+          name="parrot"
           alt="Жёлтый попугай — маскот сайта"
+          :width="830"
+          :height="1015"
+          :widths="[160, 256, 384, 512, 640]"
+          sizes="(min-width: 1536px) 320px, (min-width: 1280px) 256px, (min-width: 768px) 208px, (min-width: 640px) 160px, 112px"
+          loading="eager"
+          fetchpriority="low"
+          skeleton="glow"
+          color="#d946ef"
           :class="
             cn(
-              'pointer-events-none w-28 select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)] sm:w-40 md:w-52 xl:w-64 2xl:w-80',
+              'pointer-events-none block w-28 select-none overflow-visible sm:w-40 md:w-52 xl:w-64 2xl:w-80',
               bouncing && 'parrot-bounce',
             )
           "
-          draggable="false"
+          img-class="w-full h-auto select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)]"
+          :draggable="false"
         />
       </span>
     </button>

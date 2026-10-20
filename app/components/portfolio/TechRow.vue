@@ -25,6 +25,7 @@ defineProps<{
           height="26"
           class="size-6 sm:size-7 shrink-0"
           loading="lazy"
+          decoding="async"
         />
         <span v-else aria-hidden="true" class="text-xl sm:text-2xl leading-none">
           {{ item.emoji }}
