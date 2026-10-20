@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://evgen1212.github.io/myResume/sitemap.xml
+Sitemap: https://evgen1212.github.io/evgen_dev/sitemap.xml

@@ -8,7 +8,7 @@ const baseURL = (process.env.NUXT_APP_BASE_URL || "/").replace(/\/?$/, "/");
 
 /** Публичный адрес сайта — нужен для абсолютных OG/Twitter-картинок */
 const siteUrl = (
-  process.env.NUXT_PUBLIC_SITE_URL || "https://evgen1212.github.io/myResume"
+  process.env.NUXT_PUBLIC_SITE_URL || "https://evgen1212.github.io/evgen_dev"
 ).replace(/\/+$/, "");
 
 export default defineNuxtConfig({
