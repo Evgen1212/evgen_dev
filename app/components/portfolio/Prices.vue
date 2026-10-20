@@ -20,7 +20,7 @@ const toggleSection = () => {
       <div class="mb-8 md:mb-16" :class="isOpen ? 'max-md:mb-0' : ''">
         <button
           @click="toggleSection"
-          class="group w-full text-left md:cursor-default md:text-center"
+          class="group block w-full text-left md:cursor-default md:text-center"
           :aria-expanded="isOpen"
         >
           <div 
@@ -29,7 +29,7 @@ const toggleSection = () => {
               cn(
                 'relative overflow-hidden border p-6 transition-all duration-300 md:border-0 md:bg-transparent md:p-0',
                 isOpen
-                  ? 'max-md:rounded-t-3xl max-md:rounded-b-none max-md:border-b-transparent border-(--accent-soft)/30 bg-(--surface-2)'
+                  ? 'max-md:rounded-t-3xl max-md:rounded-b-none max-md:border-b-transparent max-md:pb-0 border-(--accent-soft)/30 bg-(--surface-2)'
                   : 'rounded-3xl border-(--line-1) bg-(--surface-1)',
               )
             "
