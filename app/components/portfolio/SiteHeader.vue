@@ -112,11 +112,17 @@ onBeforeUnmount(() => {
               )
             "
           >
-            <img
-              :src="useAsset('images/avatar.jpg')"
+            <SmartImage
+              name="avatar"
               alt="Аватар"
-              class="w-full h-full rounded-full object-cover"
-              loading="lazy"
+              :width="1080"
+              :height="1080"
+              :widths="[48, 96, 144]"
+              sizes="48px"
+              loading="eager"
+              fetchpriority="auto"
+              class="h-full w-full rounded-full"
+              img-class="h-full w-full rounded-full object-cover"
             />
           </span>
           <span
@@ -226,7 +232,8 @@ onBeforeUnmount(() => {
               width="16"
               height="16"
               class="social-icon size-8 opacity-80 hover:opacity-100"
-              loading="lazy"
+              loading="eager"
+              decoding="async"
             />
           </a>
         </div>
@@ -300,8 +307,11 @@ onBeforeUnmount(() => {
               v-else
               :src="useAsset(`icons/social/${s.icon}.svg`)"
               alt=""
+              width="16"
+              height="16"
               class="social-icon size-8 opacity-80"
               loading="lazy"
+              decoding="async"
             />
           </a>
         </div>

@@ -11,7 +11,7 @@ const toggleProject = (i: number) => {
 
 /**
  * Коммерческие проекты, в которых участвовал как фронтенд-разработчик.
- * Скриншоты: /images/proj-<key>.jpg (сняты headless-браузером).
+ * Скриншоты: /images/opt/proj-<key>-*.webp (сняты headless-браузером).
  */
 const projects = [
   {
@@ -78,11 +78,17 @@ const projects = [
             class="relative aspect-[16/10] cursor-pointer overflow-hidden md:cursor-default"
             @click="toggleProject(i)"
           >
-            <img
-              :src="useAsset(`images/proj-${p.key}.jpg`)"
+            <SmartImage
+              :name="`proj-${p.key}`"
               :alt="`Скриншот сайта ${p.title} — ${p.domain}`"
+              :width="1200"
+              :height="750"
+              :widths="[480, 720, 960, 1200]"
+              sizes="(min-width: 1280px) 400px, (min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
               loading="lazy"
-              class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.05]"
+              fetchpriority="low"
+              class="absolute inset-0"
+              img-class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.05]"
             />
             <div
               aria-hidden="true"

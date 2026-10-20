@@ -39,7 +39,7 @@ const svg = `
   <text x="86" y="560" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#a1a1aa">t.me/keyboard_brothers</text>
 </svg>`;
 
-const parrot = await sharp(path.join(root, "public/images/parrot-transparent.png"))
+const parrot = await sharp(path.join(root, "app/assets/images/source/parrot-transparent.png"))
   .resize(340, null) // альфа уже чистая — только масштабируем
   .png()
   .toBuffer();

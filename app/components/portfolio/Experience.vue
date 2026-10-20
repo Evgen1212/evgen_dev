@@ -18,7 +18,7 @@ const onJobShotClick = (e: MouseEvent, i: number) => {
 
 /**
  * Опыт работы — блоки мест работы из резюме Абрамова Евгения.
- * Скриншоты сайтов работодателей: /images/work-<key>.jpg (сняты headless-браузером).
+ * Скриншоты сайтов работодателей: /images/opt/work-<key>-*.webp (сняты headless-браузером).
  */
 type Job = {
   key: string;
@@ -146,11 +146,17 @@ const jobs: Job[] = [
             class="relative block aspect-[16/10] overflow-hidden lg:aspect-auto"
             @click="onJobShotClick($event, i)"
           >
-            <img
-              :src="useAsset(`images/work-${job.key}.jpg`)"
+            <SmartImage
+              :name="`work-${job.key}`"
               :alt="`Скриншот сайта ${job.company} — ${job.domain}`"
+              :width="1200"
+              :height="750"
+              :widths="[480, 720, 960, 1200]"
+              sizes="(min-width: 1280px) 512px, (min-width: 1024px) 50vw, 100vw"
               loading="lazy"
-              class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+              fetchpriority="low"
+              class="absolute inset-0"
+              img-class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
             />
             <div
               aria-hidden="true"

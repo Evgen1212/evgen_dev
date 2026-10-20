@@ -70,6 +70,7 @@ const secondary: typeof socials = [];
               height="26"
               class="social-icon size-[26px]"
               loading="lazy"
+              decoding="async"
             />
           </span>
           <span class="min-w-0 flex-1">
@@ -102,6 +103,7 @@ const secondary: typeof socials = [];
             height="15"
             class="social-icon size-[15px] opacity-80"
             loading="lazy"
+            decoding="async"
           />
           {{ s.name }}
         </a>

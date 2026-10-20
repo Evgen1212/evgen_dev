@@ -93,6 +93,20 @@ export default defineNuxtConfig({
         { name: "twitter:image", content: `${siteUrl}/images/og.png` },
       ],
       link: [
+        {
+          rel: "preload",
+          as: "font",
+          type: "font/woff2",
+          href: `${baseURL}fonts/comfortaa-cyrillic.woff2`,
+          crossorigin: "anonymous",
+        },
+        {
+          rel: "preload",
+          as: "font",
+          type: "font/woff2",
+          href: `${baseURL}fonts/manrope-cyrillic.woff2`,
+          crossorigin: "anonymous",
+        },
         { rel: "icon", type: "image/svg+xml", href: `${baseURL}favicon.svg` },
         { rel: "manifest", href: `${baseURL}manifest.webmanifest` },
       ],
