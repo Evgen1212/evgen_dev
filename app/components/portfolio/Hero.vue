@@ -116,7 +116,7 @@ const hireOpen = useState('resume-open', () => false);
             class="relative aspect-[16/10] overflow-hidden rounded-[20px] bg-black"
           >
             <img
-              src="/images/work-autoeuro.jpg"
+              :src="useAsset('images/work-autoeuro.jpg')"
               alt="Скриншот сайта Авто-Евро"
               class="absolute inset-0 h-full w-full object-cover object-top"
             />
@@ -180,7 +180,7 @@ const hireOpen = useState('resume-open', () => false);
           <span class="flex items-center gap-3 whitespace-nowrap">
             <img
               v-if="s.icon"
-              :src="`/icons/tech/${s.icon}.svg`"
+              :src="useAsset(`icons/tech/${s.icon}.svg`)"
               alt=""
               width="26"
               height="26"

@@ -121,7 +121,7 @@ onBeforeUnmount(() => {
     >
       <span class="parrot-sway block">
         <img
-          src="/images/parrot-transparent.png"
+          :src="useAsset('images/parrot-transparent.png')"
           alt="Жёлтый попугай — маскот сайта"
           :class="
             cn(

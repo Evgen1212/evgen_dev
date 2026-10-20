@@ -19,7 +19,7 @@ defineProps<{
       <span class="flex items-center gap-3 whitespace-nowrap">
         <img
           v-if="item.icon"
-          :src="`/icons/tech/${item.icon}.svg`"
+          :src="useAsset(`icons/tech/${item.icon}.svg`)"
           alt=""
           width="26"
           height="26"

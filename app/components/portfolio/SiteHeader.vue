@@ -113,7 +113,7 @@ onBeforeUnmount(() => {
             "
           >
             <img
-              src="/images/avatar.jpg"
+              :src="useAsset('images/avatar.jpg')"
               alt="Аватар"
               class="w-full h-full rounded-full object-cover"
               loading="lazy"
@@ -221,7 +221,7 @@ onBeforeUnmount(() => {
             />
             <img
               v-else
-              :src="`/icons/social/${s.icon}.svg`"
+              :src="useAsset(`icons/social/${s.icon}.svg`)"
               alt=""
               width="16"
               height="16"
@@ -298,7 +298,7 @@ onBeforeUnmount(() => {
             />
             <img
               v-else
-              :src="`/icons/social/${s.icon}.svg`"
+              :src="useAsset(`icons/social/${s.icon}.svg`)"
               alt=""
               class="social-icon size-8 opacity-80"
               loading="lazy"

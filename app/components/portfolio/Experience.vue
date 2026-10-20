@@ -147,7 +147,7 @@ const jobs: Job[] = [
             @click="onJobShotClick($event, i)"
           >
             <img
-              :src="`/images/work-${job.key}.jpg`"
+              :src="useAsset(`images/work-${job.key}.jpg`)"
               :alt="`Скриншот сайта ${job.company} — ${job.domain}`"
               loading="lazy"
               class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"

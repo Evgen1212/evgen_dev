@@ -81,14 +81,14 @@ onBeforeUnmount(() => {
           <!-- pdf preview -->
           <div class="min-h-0 flex-1 overflow-y-auto bg-zinc-200">
             <object
-              data="/resume.pdf#view=FitH"
+              :data="`${useAsset('resume.pdf')}#view=FitH`"
               type="application/pdf"
               class="h-[58vh] w-full"
               aria-label="Превью резюме PDF"
             >
               <!-- фолбэк для браузеров без встроенного PDF-просмотрщика -->
               <iframe
-                src="/resume.pdf#view=FitH"
+                :src="`${useAsset('resume.pdf')}#view=FitH`"
                 class="h-[58vh] w-full"
                 title="Резюме PDF"
               ></iframe>
@@ -98,7 +98,7 @@ onBeforeUnmount(() => {
           <!-- actions -->
           <div class="flex flex-col gap-3 border-t border-(--line-1) p-5 sm:flex-row sm:p-6">
             <a
-              href="/resume.pdf"
+              :href="useAsset('resume.pdf')"
               download="Abramov-Evgeniy-resume.pdf"
               class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-(--line-1) bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] active:scale-95"
             >

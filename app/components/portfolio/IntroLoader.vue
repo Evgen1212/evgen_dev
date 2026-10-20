@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
     :class="`intro-overlay ${phase === 'fade' ? 'intro-fade' : ''}`"
   >
     <img
-      src="/images/parrot-transparent.png"
+      :src="useAsset('images/parrot-transparent.png')"
       alt=""
       draggable="false"
       class="intro-parrot"

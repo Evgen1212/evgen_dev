@@ -64,7 +64,7 @@ const secondary: typeof socials = [];
             <Mail v-else-if="s.icon === 'mail'" class="size-[26px]" aria-hidden="true" />
             <img
               v-else
-              :src="`/icons/social/${s.icon}.svg`"
+              :src="useAsset(`icons/social/${s.icon}.svg`)"
               alt=""
               width="26"
               height="26"
@@ -96,7 +96,7 @@ const secondary: typeof socials = [];
           class="inline-flex items-center gap-2 rounded-full border border-(--line-1) bg-(--surface-2) px-4 py-2 text-sm font-medium text-(--ink-soft) transition-all hover:border-(--line-25) hover:bg-(--surface-hover) hover:text-(--ink)"
         >
           <img
-            :src="`/icons/social/${s.icon}.svg`"
+            :src="useAsset(`icons/social/${s.icon}.svg`)"
             alt=""
             width="15"
             height="15"

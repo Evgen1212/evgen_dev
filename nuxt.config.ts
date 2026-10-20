@@ -1,5 +1,16 @@
 import tailwindcss from "@tailwindcss/vite";
 
+/**
+ * GitHub Pages отдаёт project-сайт из подпапки /<repo>/,
+ * поэтому baseURL задаётся через env в CI. Локально — корень.
+ */
+const baseURL = (process.env.NUXT_APP_BASE_URL || "/").replace(/\/?$/, "/");
+
+/** Публичный адрес сайта — нужен для абсолютных OG/Twitter-картинок */
+const siteUrl = (
+  process.env.NUXT_PUBLIC_SITE_URL || "https://evgen1212.github.io/myResume"
+).replace(/\/+$/, "");
+
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
   devtools: { enabled: false },
@@ -22,6 +33,7 @@ export default defineNuxtConfig({
   components: [{ path: "~/components", pathPrefix: false }],
 
   app: {
+    baseURL,
     head: {
       htmlAttrs: { lang: "ru" },
       title:
@@ -65,7 +77,7 @@ export default defineNuxtConfig({
         { property: "og:type", content: "website" },
         { property: "og:locale", content: "ru_RU" },
         { property: "og:siteName", content: "evgen_dev" },
-        { property: "og:image", content: "/images/og.png" },
+        { property: "og:image", content: `${siteUrl}/images/og.png` },
         { property: "og:image:width", content: "1200" },
         { property: "og:image:height", content: "630" },
         // Twitter
@@ -79,11 +91,11 @@ export default defineNuxtConfig({
           content:
             "Vue 3 / Nuxt 3 / TypeScript — SPA и SSR-приложения от идеи до продакшена.",
         },
-        { name: "twitter:image", content: "/images/og.png" },
+        { name: "twitter:image", content: `${siteUrl}/images/og.png` },
       ],
       link: [
-        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-        { rel: "manifest", href: "/manifest.webmanifest" },
+        { rel: "icon", type: "image/svg+xml", href: `${baseURL}favicon.svg` },
+        { rel: "manifest", href: `${baseURL}manifest.webmanifest` },
       ],
       script: [
         {
@@ -103,6 +115,8 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // Статика + .nojekyll + 404.html для GitHub Pages
+    preset: "github-pages",
     esbuild: {
       options: {
         target: "esnext",
@@ -111,7 +125,7 @@ export default defineNuxtConfig({
     // Сайт — статичная визитка без бекенда: `bun run build` (= nuxt generate)
     // prerender-ит «/» в готовые HTML/ассеты для любого статик-хостинга.
     prerender: {
-      routes: ["/"],
+      routes: ["/", "/404.html"],
     },
   },
 });

@@ -91,7 +91,7 @@ const stats = [
           />
           <div class="overflow-hidden rounded-xl bg-zinc-800">
             <img
-              src="/images/me.png"
+              :src="useAsset('images/me.png')"
               alt="Евгений Абрамов — фотография"
               class="aspect-[4/5] w-full scale-[1.04] object-cover blur-[0.5px] transition-all duration-700 group-hover:blur-0"
               loading="lazy"

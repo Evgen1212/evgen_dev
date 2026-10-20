@@ -79,7 +79,7 @@ const projects = [
             @click="toggleProject(i)"
           >
             <img
-              :src="`/images/proj-${p.key}.jpg`"
+              :src="useAsset(`images/proj-${p.key}.jpg`)"
               :alt="`Скриншот сайта ${p.title} — ${p.domain}`"
               loading="lazy"
               class="absolute inset-0 h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.05]"
