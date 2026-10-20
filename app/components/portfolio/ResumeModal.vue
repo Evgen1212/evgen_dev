@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
                   Резюме — Абрамов Евгений
                 </h2>
                 <p class="mt-0.5 text-xs text-(--ink-mute) sm:text-sm">
-                  Senior Frontend-разработчик · Vue 3 / Nuxt / TypeScript
+                  Senior Frontend-разработчик · Vue 3 / Nuxt / TypeScript · React / Next.js
                 </p>
               </div>
             </div>

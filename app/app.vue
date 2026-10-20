@@ -68,7 +68,6 @@ useHead({
       <Hairline />
       <Tech />
       <Process />
-      <Hairline />
       <Prices />
       <Hairline />
       <Faq />

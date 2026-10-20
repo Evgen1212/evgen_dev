@@ -1,5 +1,20 @@
 <script setup lang="ts">
-import { ExternalLink, MapPin } from "lucide-vue-next";
+import { ChevronDown, ExternalLink, MapPin } from "lucide-vue-next";
+
+/* ─── Мобильный аккордеон: каждая работа — отдельный айтем ─── */
+const openJob = ref<number | null>(0);
+const toggleJob = (i: number) => {
+  if (window.innerWidth < 1024) {
+    openJob.value = openJob.value === i ? null : i;
+  }
+};
+/* На мобилке клик по скриншоту раскрывает айтем, на десктопе — ведёт на сайт */
+const onJobShotClick = (e: MouseEvent, i: number) => {
+  if (window.innerWidth < 1024) {
+    e.preventDefault();
+    toggleJob(i);
+  }
+};
 
 /**
  * Опыт работы — блоки мест работы из резюме Абрамова Евгения.
@@ -129,6 +144,7 @@ const jobs: Job[] = [
             :class="i % 2 === 1 ? 'lg:order-2' : ''"
             :aria-label="`Сайт ${job.company} (${job.domain}) — открыть в новой вкладке`"
             class="relative block aspect-[16/10] overflow-hidden lg:aspect-auto"
+            @click="onJobShotClick($event, i)"
           >
             <img
               :src="`/images/work-${job.key}.jpg`"
@@ -157,63 +173,85 @@ const jobs: Job[] = [
 
           <!-- контент -->
           <div class="flex flex-col p-6 sm:p-8" :class="i % 2 === 1 ? 'lg:order-1' : ''">
-            <div class="flex flex-wrap items-center gap-2">
-              <span class="rounded-full bg-white px-3.5 py-1 text-xs font-bold text-black">
-                {{ job.period }}
-              </span>
-              <span class="rounded-full border border-(--line-1) bg-(--surface-3) px-3 py-1 text-xs text-(--ink-mute)">
-                {{ job.duration }}
-              </span>
-              <span class="inline-flex items-center gap-1 text-xs text-(--ink-faint)">
-                <MapPin class="size-3.5" aria-hidden="true" />
-                {{ job.city }}
-              </span>
-            </div>
-
-            <h3 class="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-              {{ job.company }}
-            </h3>
-            <p class="mt-1 text-sm font-semibold text-(--accent-soft)">{{ job.role }}</p>
-
-            <ul class="mt-4 flex-1 space-y-2.5 text-sm leading-relaxed text-(--ink-mute)">
-              <li v-for="h in job.highlights" :key="h" class="flex gap-2.5">
-                <span
-                  aria-hidden="true"
-                  class="mt-[7px] size-1.5 shrink-0 rounded-full bg-gradient-to-br from-fuchsia-400 to-purple-500"
-                />
-                <span>{{ h }}</span>
-              </li>
-            </ul>
-
-            <p
-              v-if="job.note"
-              class="mt-4 border-l-2 border-fuchsia-400/40 pl-3 text-xs italic leading-relaxed text-(--ink-faint)"
+            <button
+              type="button"
+              class="flex w-full items-start justify-between gap-3 text-left lg:cursor-default"
+              :aria-expanded="openJob === i"
+              @click="toggleJob(i)"
             >
-              {{ job.note }}
-            </p>
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="rounded-full bg-white px-3.5 py-1 text-xs font-bold text-black">
+                    {{ job.period }}
+                  </span>
+                  <span class="rounded-full border border-(--line-1) bg-(--surface-3) px-3 py-1 text-xs text-(--ink-mute)">
+                    {{ job.duration }}
+                  </span>
+                  <span class="inline-flex items-center gap-1 text-xs text-(--ink-faint)">
+                    <MapPin class="size-3.5" aria-hidden="true" />
+                    {{ job.city }}
+                  </span>
+                </div>
 
-            <div class="mt-5 flex flex-wrap gap-1.5">
-              <span
-                v-for="t in job.stack"
-                :key="t"
-                class="rounded-full border border-(--line-1) bg-(--surface-3) px-2.5 py-1 text-[11px] font-medium text-(--ink-soft)"
-              >
-                {{ t }}
-              </span>
-            </div>
+                <h3 class="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                  {{ job.company }}
+                </h3>
+                <p class="mt-1 text-sm font-semibold text-(--accent-soft)">{{ job.role }}</p>
+              </div>
 
-            <a
-              :href="job.href"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-(--ink-soft) transition-colors hover:text-(--ink)"
-            >
-              Открыть сайт — {{ job.domain }}
-              <ExternalLink
-                class="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+              <ChevronDown
+                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-transform duration-300 lg:hidden"
+                :class="openJob === i && 'rotate-180'"
                 aria-hidden="true"
               />
-            </a>
+            </button>
+
+            <div
+              class="grid transition-all duration-500 ease-in-out lg:grid-rows-[1fr] lg:opacity-100"
+              :class="openJob === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+            >
+              <div class="overflow-hidden">
+                <ul class="mt-4 flex-1 space-y-2.5 text-sm leading-relaxed text-(--ink-mute)">
+                  <li v-for="h in job.highlights" :key="h" class="flex gap-2.5">
+                    <span
+                      aria-hidden="true"
+                      class="mt-[7px] size-1.5 shrink-0 rounded-full bg-gradient-to-br from-fuchsia-400 to-purple-500"
+                    />
+                    <span>{{ h }}</span>
+                  </li>
+                </ul>
+
+                <p
+                  v-if="job.note"
+                  class="mt-4 border-l-2 border-fuchsia-400/40 pl-3 text-xs italic leading-relaxed text-(--ink-faint)"
+                >
+                  {{ job.note }}
+                </p>
+
+                <div class="mt-5 flex flex-wrap gap-1.5">
+                  <span
+                    v-for="t in job.stack"
+                    :key="t"
+                    class="rounded-full border border-(--line-1) bg-(--surface-3) px-2.5 py-1 text-[11px] font-medium text-(--ink-soft)"
+                  >
+                    {{ t }}
+                  </span>
+                </div>
+
+                <a
+                  :href="job.href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-(--ink-soft) transition-colors hover:text-(--ink)"
+                >
+                  Открыть сайт — {{ job.domain }}
+                  <ExternalLink
+                    class="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    aria-hidden="true"
+                  />
+                </a>
+              </div>
+            </div>
           </div>
         </article>
       </div>

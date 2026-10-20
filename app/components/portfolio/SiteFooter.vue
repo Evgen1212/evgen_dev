@@ -19,12 +19,9 @@ const footerNav = [
       <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <a
           href="#top"
-          class="flex items-center gap-2 transition-opacity hover:opacity-80"
+          class="font-display text-base font-bold transition-opacity hover:opacity-80"
         >
-          <span class="grid size-8 place-items-center rounded-lg bg-gradient-to-br from-fuchsia-500 via-purple-600 to-indigo-700 text-sm">
-            <span aria-hidden="true">🦜</span>
-          </span>
-          <span class="font-display text-base font-bold">evgen_dev</span>
+          evgen_dev
         </a>
 
         <p class="text-sm text-(--ink-faint)">

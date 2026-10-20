@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { ArrowUpRight } from "lucide-vue-next";
+import { ArrowUpRight, ChevronDown } from "lucide-vue-next";
+
+/* ─── Мобильный аккордеон: каждый проект — отдельный айтем ─── */
+const openProject = ref<number | null>(0);
+const toggleProject = (i: number) => {
+  if (window.innerWidth < 768) {
+    openProject.value = openProject.value === i ? null : i;
+  }
+};
 
 /**
  * Коммерческие проекты, в которых участвовал как фронтенд-разработчик.
@@ -49,19 +57,27 @@ const projects = [
       </div>
 
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-6">
-        <a
+        <article
           v-for="(p, i) in projects"
           :key="p.key"
-          :href="p.href"
-          target="_blank"
-          rel="noopener noreferrer"
           data-reveal
           :style="{ '--reveal-delay': `${i * 90}ms` }"
-          class="group flex flex-col overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:shadow-2xl"
-          :aria-label="`${p.title} (${p.domain}) — открыть в новой вкладке`"
+          class="group relative flex flex-col overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:shadow-2xl"
         >
+          <!-- ссылка на весь проект (только десктоп) -->
+          <a
+            :href="p.href"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="absolute inset-0 z-10 hidden md:block"
+            :aria-label="`${p.title} (${p.domain}) — открыть в новой вкладке`"
+          />
+
           <!-- скриншот -->
-          <div class="relative aspect-[16/10] overflow-hidden">
+          <div
+            class="relative aspect-[16/10] cursor-pointer overflow-hidden md:cursor-default"
+            @click="toggleProject(i)"
+          >
             <img
               :src="`/images/proj-${p.key}.jpg`"
               :alt="`Скриншот сайта ${p.title} — ${p.domain}`"
@@ -83,21 +99,43 @@ const projects = [
 
           <!-- контент -->
           <div class="flex flex-1 flex-col p-5 sm:p-6">
-            <div class="flex items-start justify-between gap-3">
+            <button
+              type="button"
+              class="flex w-full items-start justify-between gap-3 text-left md:cursor-default"
+              :aria-expanded="openProject === i"
+              @click="toggleProject(i)"
+            >
               <h3 class="font-display text-xl font-bold tracking-tight">{{ p.title }}</h3>
-              <ArrowUpRight
-                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink)"
+
+              <ChevronDown
+                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-transform duration-300 md:hidden"
+                :class="openProject === i && 'rotate-180'"
                 aria-hidden="true"
               />
-            </div>
-            <p class="mt-2 text-sm leading-relaxed text-(--ink-mute)">{{ p.desc }}</p>
-            <span
-              class="mt-4 inline-flex items-center gap-1.5 self-start text-xs font-semibold text-(--accent-soft) transition-colors group-hover:text-(--accent-soft)"
+              <ArrowUpRight
+                class="mt-1 hidden size-5 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink) md:block"
+                aria-hidden="true"
+              />
+            </button>
+
+            <div
+              class="grid transition-all duration-500 ease-in-out md:grid-rows-[1fr] md:opacity-100"
+              :class="openProject === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
             >
-              {{ p.domain }}
-            </span>
+              <div class="overflow-hidden">
+                <p class="mt-2 text-sm leading-relaxed text-(--ink-mute)">{{ p.desc }}</p>
+                <a
+                  :href="p.href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="relative z-20 mt-4 inline-flex items-center gap-1.5 self-start text-xs font-semibold text-(--accent-soft) transition-colors hover:text-(--ink)"
+                >
+                  {{ p.domain }}
+                </a>
+              </div>
+            </div>
           </div>
-        </a>
+        </article>
       </div>
 
       <div data-reveal class="mt-14 text-center">

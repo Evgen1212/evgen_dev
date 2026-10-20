@@ -34,8 +34,8 @@ const stats = [
         >
           <p>
             Меня зовут Евгений, я frontend-разработчик с 5+ годами коммерческого
-            опыта. Специализируюсь на Vue 3 / Nuxt 3 / TypeScript, есть
-            практический опыт с React. Разрабатываю SPA и SSR/SSG-приложения —
+            опыта. Специализируюсь на Vue 3 / Nuxt 3 / TypeScript, также
+            работаю с React / Next.js. Разрабатываю SPA и SSR/SSG-приложения —
             от лендингов до финтех-сервисов с realtime-данными.
           </p>
           <p>
@@ -93,7 +93,7 @@ const stats = [
             <img
               src="/images/me.png"
               alt="Евгений Абрамов — фотография"
-              class="aspect-[4/5] w-full scale-[1.04] object-cover blur-[2px] transition-all duration-700 group-hover:blur-0"
+              class="aspect-[4/5] w-full scale-[1.04] object-cover blur-[0.5px] transition-all duration-700 group-hover:blur-0"
               loading="lazy"
             />
           </div>

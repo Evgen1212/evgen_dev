@@ -13,7 +13,7 @@ export const siteOwner = {
   shortName: "evgen_dev",
   firstName: "Евгений",
   role: "Senior Frontend-разработчик",
-  stackLine: "Vue 3 · Nuxt · TypeScript",
+  stackLine: "Vue 3 · Nuxt · TypeScript · React · Next.js",
   city: "Москва",
   experienceYears: 5,
 };
@@ -76,13 +76,17 @@ export const socials: SocialLink[] = [
 export type Service = {
   badge?: string;
   emoji?: string;
+  /** slug иконки из /public/icons/tech/<icon>.svg */
+  icon?: string;
   label: string;
 };
 
 export const heroServices: Service[] = [
-  { badge: "TS", label: "TypeScript" },
-  { badge: "V3", label: "Vue 3" },
-  { badge: "N3", label: "Nuxt 3/4" },
+  { icon: "typescript", label: "TypeScript" },
+  { icon: "vuedotjs", label: "Vue 3" },
+  { icon: "nuxt", label: "Nuxt 3/4" },
+  { icon: "react", label: "React" },
+  { icon: "nextdotjs", label: "Next.js" },
   { badge: "SPA", label: "SPA и SSR" },
   { emoji: "🎨", label: "UI-киты и дизайн-системы" },
   { emoji: "⚡", label: "Веб-сервисы" },
@@ -117,6 +121,8 @@ export const techRows: TechItem[][] = [
     { label: "JavaScript", icon: "javascript" },
     { label: "Vue 3", icon: "vuedotjs" },
     { label: "Nuxt 3/4", icon: "nuxt" },
+    { label: "React", icon: "react" },
+    { label: "Next.js", icon: "nextdotjs" },
     { label: "Pinia", icon: "pinia" },
     { label: "Vuex", emoji: "🏪" },
     { label: "Vite", icon: "vite" },
@@ -156,10 +162,10 @@ export type CalcProject = {
 };
 
 export const calcProjects: CalcProject[] = [
-  { key: "landing", label: "Лендинг", hint: "одностраничный сайт", base: 25000, days: 7 },
-  { key: "multipage", label: "Многостраничный сайт", hint: "корпоративный, каталог", base: 50000, days: 14 },
-  { key: "webapp", label: "Веб-сервис", hint: "SPA, личные кабинеты", base: 100000, days: 30 },
-  { key: "bot", label: "Бот / автоматизация", hint: "Telegram, парсеры", base: 20000, days: 5 },
+  { key: "landing", label: "Лендинг", hint: "одностраничный сайт", base: 25000, days: 5 },
+  { key: "multipage", label: "Многостраничный сайт", hint: "корпоративный, каталог", base: 50000, days: 10 },
+  { key: "webapp", label: "Веб-сервис", hint: "SPA, личные кабинеты", base: 100000, days: 21 },
+  { key: "bot", label: "Бот / автоматизация", hint: "Telegram, парсеры", base: 20000, days: 3 },
 ];
 
 export type CalcExtraKey =
@@ -202,6 +208,14 @@ export function pluralDays(n: number) {
   const mod100 = n % 100;
   if (mod10 === 1 && mod100 !== 11) return `${n} день`;
   if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) return `${n} дня`;
+  return `${n} дней`;
+}
+
+/** Родительный падеж после «от»: от 5 дней / от 21 дня */
+function pluralDaysFrom(n: number) {
+  const mod10 = n % 10;
+  const mod100 = n % 100;
+  if (mod10 === 1 && mod100 !== 11) return `${n} дня`;
   return `${n} дней`;
 }
 
@@ -270,6 +284,6 @@ export const prices: PriceTier[] = tierDefs.map((t) => {
   return {
     ...t,
     price: fromPrice(calc?.base ?? 0),
-    term: `от ${pluralDays(calc?.days ?? 0)}`,
+    term: `от ${pluralDaysFrom(calc?.days ?? 0)}`,
   };
 });

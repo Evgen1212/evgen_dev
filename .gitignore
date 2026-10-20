@@ -52,3 +52,11 @@ prompt
 server.log
 # Skills directory
 /skills/
+
+# Nuxt build output & generated files
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist

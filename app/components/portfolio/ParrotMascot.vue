@@ -2,12 +2,12 @@
 const { toast } = useToast();
 
 const chirpPhrases = [
-  "Чирик! 👋",
-  "Чирик-чирик! Обсудим проект?",
-  "Попугай одобряет этот дизайн 🦜",
-  "Чирик! Я тут самый важный",
-  "Работаю за семечки 🌻",
-  "Чирик! Vue 3 · Nuxt · TypeScript",
+  'Чирик! 👋',
+  'Чирик-чирик! Обсудим проект?',
+  'Попугай одобряет этот дизайн 🦜',
+  'Чирик! Я тут самый важный',
+  'Работаю за семечки 🌻',
+  'Чирик! Vue 3 · Nuxt · TypeScript',
 ];
 
 const CHIRP_MILESTONE = 10;
@@ -22,7 +22,7 @@ function playChirpSound() {
         .webkitAudioContext;
     if (!Ctx) return;
     const ctx = new Ctx();
-    if (ctx.state === "suspended") void ctx.resume();
+    if (ctx.state === 'suspended') void ctx.resume();
 
     const master = ctx.createGain();
     master.gain.value = 0.13;
@@ -32,7 +32,7 @@ function playChirpSound() {
     const trill = (start: number, f1: number, f2: number, f3: number) => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
-      osc.type = "sine";
+      osc.type = 'sine';
       osc.frequency.setValueAtTime(f1, start);
       osc.frequency.exponentialRampToValueAtTime(f2, start + 0.045);
       osc.frequency.exponentialRampToValueAtTime(f3, start + 0.11);
@@ -76,23 +76,26 @@ function chirp() {
 
   let count = 0;
   try {
-    count = Number(localStorage.getItem("parrot-chirps") ?? "0") + 1;
-    localStorage.setItem("parrot-chirps", String(count));
+    count = Number(localStorage.getItem('parrot-chirps') ?? '0') + 1;
+    localStorage.setItem('parrot-chirps', String(count));
   } catch {
     count = 1;
   }
 
   if (count === CHIRP_MILESTONE) {
     toast({
-      title: "10 чириков! 🏆",
-      description: "Попугай официально признал тебя своим.",
+      title: '10 чириков! 🏆',
+      description: 'Попугай официально признал тебя своим.',
     });
   } else {
-    const phrase = chirpPhrases[Math.floor(Math.random() * chirpPhrases.length)];
+    const phrase =
+      chirpPhrases[Math.floor(Math.random() * chirpPhrases.length)];
     toast({
       title: phrase,
       description:
-        count === 1 ? "Ты нашёл попугая! Кликни ещё — ему нравится." : undefined,
+        count === 1
+          ? 'Ты нашёл попугая! Кликни ещё — ему нравится.'
+          : undefined,
     });
   }
 }
@@ -105,24 +108,30 @@ onBeforeUnmount(() => {
 <template>
   <div
     class="pointer-events-none absolute inset-x-0 bottom-2 z-20"
-    :style="{ transform: 'translate3d(0, calc(var(--scroll-y, 0) * -0.12px), 0)' }"
+    :style="{
+      transform: 'translate3d(0, calc(var(--scroll-y, 0) * -0.12px), 0)',
+    }"
   >
     <button
       type="button"
       aria-label="Попугай-маскот — нажми, и он чирикнет"
       title="Чирик?"
-      class="pointer-events-auto absolute bottom-0 right-[-16%] cursor-pointer border-0 bg-transparent p-0 md:right-[-6%]"
+      class="parrot-bob pointer-events-auto absolute bottom-0 right-[0%] cursor-pointer border-0 bg-transparent p-0 md:right-[0%]"
       @click="chirp"
     >
-      <img
-        src="/images/parrot-transparent.png"
-        alt="Жёлтый попугай — маскот сайта"
-        :class="cn(
-          'animate-float pointer-events-none w-28 select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)] sm:w-40 md:w-52 xl:w-64 2xl:w-80',
-          bouncing && 'parrot-bounce'
-        )"
-        draggable="false"
-      />
+      <span class="parrot-sway block">
+        <img
+          src="/images/parrot-transparent.png"
+          alt="Жёлтый попугай — маскот сайта"
+          :class="
+            cn(
+              'pointer-events-none w-28 select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)] sm:w-40 md:w-52 xl:w-64 2xl:w-80',
+              bouncing && 'parrot-bounce',
+            )
+          "
+          draggable="false"
+        />
+      </span>
     </button>
   </div>
 </template>

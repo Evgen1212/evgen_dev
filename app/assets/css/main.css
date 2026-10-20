@@ -1,49 +1,51 @@
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
 /* ---------- Самохостинг шрифтов (Manrope + Comfortaa, variable) ---------- */
 @font-face {
-  font-family: "Manrope";
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 200 800;
   font-display: swap;
-  src: url("/fonts/manrope-cyrillic.woff2") format("woff2");
+  src: url('/fonts/manrope-cyrillic.woff2') format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 @font-face {
-  font-family: "Manrope";
+  font-family: 'Manrope';
   font-style: normal;
   font-weight: 200 800;
   font-display: swap;
-  src: url("/fonts/manrope-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('/fonts/manrope-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Comfortaa";
+  font-family: 'Comfortaa';
   font-style: normal;
   font-weight: 300 700;
   font-display: swap;
-  src: url("/fonts/comfortaa-cyrillic.woff2") format("woff2");
+  src: url('/fonts/comfortaa-cyrillic.woff2') format('woff2');
   unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
 }
 @font-face {
-  font-family: "Comfortaa";
+  font-family: 'Comfortaa';
   font-style: normal;
   font-weight: 300 700;
   font-display: swap;
-  src: url("/fonts/comfortaa-latin.woff2") format("woff2");
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
-    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
-    U+2212, U+2215, U+FEFF, U+FFFD;
+  src: url('/fonts/comfortaa-latin.woff2') format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
+    U+2215, U+FEFF, U+FFFD;
 }
 
 :root {
-  --font-manrope: "Manrope";
-  --font-comfortaa: "Comfortaa";
+  --font-manrope: 'Manrope';
+  --font-comfortaa: 'Comfortaa';
 }
 
 @theme inline {
@@ -153,7 +155,7 @@
 }
 
 /* ─── Светлая тема: значения палитры ─── */
-:root[data-theme="light"] {
+:root[data-theme='light'] {
   color-scheme: light;
 
   --page: #f6f6f7;
@@ -220,14 +222,14 @@
 
 /* точечные светлые оверрайды декора (ручной выбор темы) */
 /* брендовые моно-иконки соцсетей залиты белым — на светлой теме инвертируем */
-:root[data-theme="light"] .social-icon {
+:root[data-theme='light'] .social-icon {
   filter: invert(1);
 }
-:root[data-theme="light"] ::selection {
+:root[data-theme='light'] ::selection {
   background: rgb(192 38 211 / 0.22);
   color: #18181b;
 }
-:root[data-theme="light"] .text-shine {
+:root[data-theme='light'] .text-shine {
   background-image: linear-gradient(
     110deg,
     #c026d3 20%,
@@ -236,28 +238,60 @@
     #c026d3 75%
   );
 }
-:root[data-theme="light"] .aurora-a {
+:root[data-theme='light'] .aurora-a {
   background-image:
-    radial-gradient(ellipse 42% 52% at 34% 44%, rgb(192 38 211 / 0.2), transparent 68%),
-    radial-gradient(ellipse 34% 42% at 44% 58%, rgb(147 51 234 / 0.13), transparent 70%),
-    radial-gradient(ellipse 30% 36% at 16% 80%, rgb(37 99 235 / 0.14), transparent 70%),
-    radial-gradient(ellipse 16% 20% at 2% 94%, rgb(234 179 8 / 0.16), transparent 72%);
+    radial-gradient(
+      ellipse 42% 52% at 34% 44%,
+      rgb(192 38 211 / 0.2),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 34% 42% at 44% 58%,
+      rgb(147 51 234 / 0.13),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 30% 36% at 16% 80%,
+      rgb(37 99 235 / 0.14),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 16% 20% at 2% 94%,
+      rgb(234 179 8 / 0.16),
+      transparent 72%
+    );
 }
-:root[data-theme="light"] .aurora-b {
+:root[data-theme='light'] .aurora-b {
   background-image:
-    radial-gradient(ellipse 38% 46% at 40% 40%, rgb(217 70 239 / 0.15), transparent 68%),
-    radial-gradient(ellipse 30% 40% at 26% 66%, rgb(124 58 237 / 0.14), transparent 70%),
-    radial-gradient(ellipse 26% 32% at 10% 86%, rgb(59 130 246 / 0.14), transparent 70%),
-    radial-gradient(ellipse 14% 18% at 0% 96%, rgb(163 230 53 / 0.1), transparent 72%);
+    radial-gradient(
+      ellipse 38% 46% at 40% 40%,
+      rgb(217 70 239 / 0.15),
+      transparent 68%
+    ),
+    radial-gradient(
+      ellipse 30% 40% at 26% 66%,
+      rgb(124 58 237 / 0.14),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 26% 32% at 10% 86%,
+      rgb(59 130 246 / 0.14),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 14% 18% at 0% 96%,
+      rgb(163 230 53 / 0.1),
+      transparent 72%
+    );
 }
 /* градиентные клип-тексты (from-fuchsia-300 to-purple-300) темнее на светлом */
-:root[data-theme="light"] .from-fuchsia-300 {
+:root[data-theme='light'] .from-fuchsia-300 {
   --tw-gradient-from: #c026d3;
 }
-:root[data-theme="light"] .to-purple-300 {
+:root[data-theme='light'] .to-purple-300 {
   --tw-gradient-to: #7e22ce;
 }
-:root[data-theme="light"] .glow-featured {
+:root[data-theme='light'] .glow-featured {
   box-shadow:
     0 0 0 1px rgb(0 0 0 / 0.08),
     0 18px 70px -24px rgb(217 70 239 / 0.4),
@@ -266,7 +300,7 @@
 
 /* То же, но по системной теме ОС (если нет ручного выбора) */
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
+  :root:not([data-theme='dark']) {
     color-scheme: light;
 
     --page: #f6f6f7;
@@ -332,14 +366,14 @@
   }
 
   /* точечные светлые оверрайды декора */
-  :root:not([data-theme="dark"]) .social-icon {
+  :root:not([data-theme='dark']) .social-icon {
     filter: invert(1);
   }
-  :root:not([data-theme="dark"]) ::selection {
+  :root:not([data-theme='dark']) ::selection {
     background: rgb(192 38 211 / 0.22);
     color: #18181b;
   }
-  :root:not([data-theme="dark"]) .text-shine {
+  :root:not([data-theme='dark']) .text-shine {
     background-image: linear-gradient(
       110deg,
       #c026d3 20%,
@@ -348,28 +382,60 @@
       #c026d3 75%
     );
   }
-  :root:not([data-theme="dark"]) .aurora-a {
+  :root:not([data-theme='dark']) .aurora-a {
     background-image:
-      radial-gradient(ellipse 42% 52% at 34% 44%, rgb(192 38 211 / 0.2), transparent 68%),
-      radial-gradient(ellipse 34% 42% at 44% 58%, rgb(147 51 234 / 0.13), transparent 70%),
-      radial-gradient(ellipse 30% 36% at 16% 80%, rgb(37 99 235 / 0.14), transparent 70%),
-      radial-gradient(ellipse 16% 20% at 2% 94%, rgb(234 179 8 / 0.16), transparent 72%);
+      radial-gradient(
+        ellipse 42% 52% at 34% 44%,
+        rgb(192 38 211 / 0.2),
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse 34% 42% at 44% 58%,
+        rgb(147 51 234 / 0.13),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 30% 36% at 16% 80%,
+        rgb(37 99 235 / 0.14),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 16% 20% at 2% 94%,
+        rgb(234 179 8 / 0.16),
+        transparent 72%
+      );
   }
-  :root:not([data-theme="dark"]) .aurora-b {
+  :root:not([data-theme='dark']) .aurora-b {
     background-image:
-      radial-gradient(ellipse 38% 46% at 40% 40%, rgb(217 70 239 / 0.15), transparent 68%),
-      radial-gradient(ellipse 30% 40% at 26% 66%, rgb(124 58 237 / 0.14), transparent 70%),
-      radial-gradient(ellipse 26% 32% at 10% 86%, rgb(59 130 246 / 0.14), transparent 70%),
-      radial-gradient(ellipse 14% 18% at 0% 96%, rgb(163 230 53 / 0.1), transparent 72%);
+      radial-gradient(
+        ellipse 38% 46% at 40% 40%,
+        rgb(217 70 239 / 0.15),
+        transparent 68%
+      ),
+      radial-gradient(
+        ellipse 30% 40% at 26% 66%,
+        rgb(124 58 237 / 0.14),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 26% 32% at 10% 86%,
+        rgb(59 130 246 / 0.14),
+        transparent 70%
+      ),
+      radial-gradient(
+        ellipse 14% 18% at 0% 96%,
+        rgb(163 230 53 / 0.1),
+        transparent 72%
+      );
   }
   /* градиентные клип-тексты (from-fuchsia-300 to-purple-300) темнее на светлом */
-  :root:not([data-theme="dark"]) .from-fuchsia-300 {
+  :root:not([data-theme='dark']) .from-fuchsia-300 {
     --tw-gradient-from: #c026d3;
   }
-  :root:not([data-theme="dark"]) .to-purple-300 {
+  :root:not([data-theme='dark']) .to-purple-300 {
     --tw-gradient-to: #7e22ce;
   }
-  :root:not([data-theme="dark"]) .glow-featured {
+  :root:not([data-theme='dark']) .glow-featured {
     box-shadow:
       0 0 0 1px rgb(0 0 0 / 0.08),
       0 18px 70px -24px rgb(217 70 239 / 0.4),
@@ -397,14 +463,20 @@ html {
 body {
   background: var(--page);
   color: var(--ink);
-  font-family: var(--font-manrope), ui-sans-serif, system-ui, -apple-system,
-    "Segoe UI", sans-serif;
+  font-family:
+    var(--font-manrope),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
   overflow-x: clip;
 }
 
 .font-display {
-  font-family: var(--font-comfortaa), var(--font-manrope), ui-sans-serif,
-    system-ui, sans-serif;
+  font-family:
+    var(--font-comfortaa), var(--font-manrope), ui-sans-serif, system-ui,
+    sans-serif;
 }
 
 ::selection {
@@ -421,25 +493,51 @@ body {
 }
 
 .aurora-a {
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       ellipse 42% 52% at 34% 44%,
       rgba(192, 38, 211, 0.5),
       transparent 68%
     ),
-    radial-gradient(ellipse 34% 42% at 44% 58%, rgba(147, 51, 234, 0.32), transparent 70%),
-    radial-gradient(ellipse 30% 36% at 16% 80%, rgba(37, 99, 235, 0.4), transparent 70%),
-    radial-gradient(ellipse 16% 20% at 2% 94%, rgba(234, 179, 8, 0.32), transparent 72%);
+    radial-gradient(
+      ellipse 34% 42% at 44% 58%,
+      rgba(147, 51, 234, 0.32),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 30% 36% at 16% 80%,
+      rgba(37, 99, 235, 0.4),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 16% 20% at 2% 94%,
+      rgba(234, 179, 8, 0.32),
+      transparent 72%
+    );
 }
 
 .aurora-b {
-  background-image: radial-gradient(
+  background-image:
+    radial-gradient(
       ellipse 38% 46% at 40% 40%,
       rgba(217, 70, 239, 0.38),
       transparent 68%
     ),
-    radial-gradient(ellipse 30% 40% at 26% 66%, rgba(124, 58, 237, 0.34), transparent 70%),
-    radial-gradient(ellipse 26% 32% at 10% 86%, rgba(59, 130, 246, 0.34), transparent 70%),
-    radial-gradient(ellipse 14% 18% at 0% 96%, rgba(163, 230, 53, 0.22), transparent 72%);
+    radial-gradient(
+      ellipse 30% 40% at 26% 66%,
+      rgba(124, 58, 237, 0.34),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 26% 32% at 10% 86%,
+      rgba(59, 130, 246, 0.34),
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 14% 18% at 0% 96%,
+      rgba(163, 230, 53, 0.22),
+      transparent 72%
+    );
   animation: aurora-breathe 14s ease-in-out infinite alternate;
 }
 
@@ -496,19 +594,40 @@ body {
   );
 }
 
-/* ---------- Float ---------- */
-@keyframes float-y {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-2deg);
+/* ---------- Parrot: маятник у лап + лёгкое парение ---------- */
+/* Наклон −6° → +6°, точка вращения у лап (низ по центру) */
+@keyframes parrot-sway {
+  0% {
+    transform: rotate(-6deg);
   }
   50% {
-    transform: translateY(-20px) rotate(1.6deg);
+    transform: rotate(6deg);
+  }
+  100% {
+    transform: rotate(-6deg);
   }
 }
 
-.animate-float {
-  animation: float-y 7s ease-in-out infinite;
+.parrot-sway {
+  animation: parrot-sway 4.8s ease-in-out infinite;
+  transform-origin: 50% 100%;
+}
+
+/* Лёгкое покачивание вверх-вниз — 2 подъёма за полный цикл */
+@keyframes parrot-bob {
+  0%,
+  50%,
+  100% {
+    transform: translateY(0);
+  }
+  25%,
+  75% {
+    transform: translateY(-4%);
+  }
+}
+
+.parrot-bob {
+  animation: parrot-bob 4.8s ease-in-out infinite;
 }
 
 @keyframes pulse-dot {
@@ -533,7 +652,8 @@ body {
    и стирал бы императивно добавленный .revealed — элемент «исчезал».
    Атрибуты вне vnode Vue не трогает, поэтому dataset-переключатель надёжен. */
 .js [data-reveal] {
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
@@ -558,7 +678,7 @@ body {
 }
 
 .card-shine::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(
@@ -605,7 +725,8 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
   .aurora-blob,
-  .animate-float {
+  .parrot-sway,
+  .parrot-bob {
     animation: none !important;
   }
   .js [data-reveal] {
@@ -618,7 +739,7 @@ body {
 /* ---------- Focus-visible (a11y polish) ---------- */
 a:focus-visible,
 button:focus-visible,
-[role="button"]:focus-visible,
+[role='button']:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible,
@@ -650,10 +771,12 @@ summary:focus-visible {
 
 /* ---------- Back-to-top ---------- */
 .back-top {
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
 }
 
-.back-top[data-hidden="true"] {
+.back-top[data-hidden='true'] {
   opacity: 0;
   transform: translateY(14px) scale(0.9);
   pointer-events: none;
@@ -858,7 +981,7 @@ summary:focus-visible {
 
 /* ---------- Mobile sticky CTA ---------- */
 @media (max-width: 767.98px) {
-  html[data-sticky-cta="on"] .back-top {
+  html[data-sticky-cta='on'] .back-top {
     bottom: calc(env(safe-area-inset-bottom) + 5.9rem);
     transition-property: bottom, background-color, color;
     transition-duration: 0.4s;
@@ -910,7 +1033,7 @@ summary:focus-visible {
 }
 
 .section-hairline::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 50%;
   top: 50%;
