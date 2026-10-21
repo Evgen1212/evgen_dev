@@ -1,51 +1,51 @@
 <script setup lang="ts">
-import { socials, prices, calcProjects } from "~/components/portfolio/data";
+import { socials, prices, calcProjects } from '~/components/portfolio/data';
 
 const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  name: "evgen_dev — Frontend-разработка",
-  alternateName: "Абрамов Евгений — Frontend-разработка",
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'evgen_dev — Frontend-разработка',
+  alternateName: 'Абрамов Евгений — Frontend-разработка',
   description:
-    "Фронтенд-разработка любой сложности: SPA и SSR-приложения на Vue 3 / Nuxt 3 / TypeScript, дизайн-системы, оптимизация Web Vitals. Полный цикл — от идеи до продакшена.",
-  areaServed: "RU",
+    'Фронтенд-разработка любой сложности: SPA и SSR-приложения на Vue 3 / Nuxt 3 / TypeScript, дизайн-системы, оптимизация Web Vitals. Полный цикл — от идеи до продакшена.',
+  areaServed: 'RU',
   address: {
-    "@type": "PostalAddress",
-    addressLocality: "Москва",
-    addressCountry: "RU",
+    '@type': 'PostalAddress',
+    addressLocality: 'Москва',
+    addressCountry: 'RU',
   },
   founder: {
-    "@type": "Person",
-    name: "evgen_dev",
-    alternateName: "Абрамов Евгений Павлович",
-    jobTitle: "Senior Frontend-разработчик",
+    '@type': 'Person',
+    name: 'evgen_dev',
+    alternateName: 'Абрамов Евгений Павлович',
+    jobTitle: 'Senior Frontend-разработчик',
     alumniOf: {
-      "@type": "CollegeOrUniversity",
-      name: "Саратовский государственный технический университет им. Ю.А. Гагарина",
+      '@type': 'CollegeOrUniversity',
+      name: 'Саратовский государственный технический университет им. Ю.А. Гагарина',
     },
     knowsAbout: [
-      "Vue.js",
-      "Nuxt.js",
-      "TypeScript",
-      "SPA",
-      "SSR",
-      "Фронтенд-архитектура",
+      'Vue.js',
+      'Nuxt.js',
+      'TypeScript',
+      'SPA',
+      'SSR',
+      'Фронтенд-архитектура',
     ],
   },
-  sameAs: socials.filter((s) => s.href.startsWith("http")).map((s) => s.href),
+  sameAs: socials.filter((s) => s.href.startsWith('http')).map((s) => s.href),
   makesOffer: prices.map((tier) => ({
-    "@type": "Offer",
+    '@type': 'Offer',
     name: tier.name,
     description: tier.description,
     price: calcProjects.find((c) => c.key === tier.calcKey)?.base ?? 0,
-    priceCurrency: "RUB",
+    priceCurrency: 'RUB',
   })),
 };
 
 useHead({
   script: [
     {
-      type: "application/ld+json",
+      type: 'application/ld+json',
       innerHTML: JSON.stringify(jsonLd),
     },
   ],
@@ -54,7 +54,6 @@ useHead({
 
 <template>
   <div class="flex min-h-screen flex-col bg-(--page) text-(--ink)">
-    <IntroLoader />
     <!-- плёночное зерно поверх всего интерфейса -->
     <div aria-hidden="true" class="noise-overlay" />
     <SiteHeader />

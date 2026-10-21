@@ -17,6 +17,9 @@ const open = ref(false);
 const scrolled = ref(false);
 const activeSection = ref('');
 
+/** Буквы логотипа: по одной появляются при первом заходе (класс .brand-intro) */
+const brandLetters = [...'evgen_dev'];
+
 /* ─── Тема: по умолчанию следим за ОС, клик — ручной выбор (localStorage) ─── */
 const resolvedTheme = ref<'light' | 'dark'>('dark');
 
@@ -133,7 +136,13 @@ onBeforeUnmount(() => {
               )
             "
           >
-            evgen_dev
+            <span
+              v-for="(letter, i) in brandLetters"
+              :key="i"
+              class="brand-letter"
+              :style="{ '--i': i }"
+              >{{ letter }}</span
+            >
           </span>
         </a>
 

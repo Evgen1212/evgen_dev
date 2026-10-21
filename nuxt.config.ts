@@ -123,6 +123,13 @@ export default defineNuxtConfig({
           innerHTML: `document.documentElement.classList.add("js");`,
           tagPriority: "critical",
         },
+        {
+          // Одноразовая анимация «evgen_dev» в шапке (раз за сессию).
+          // Класс добавляется до первой отрисовки, поэтому буквы появляются
+          // вместе с контентом — без оверлея и без задержки страницы.
+          innerHTML: `(function(){try{if(sessionStorage.getItem("evg-brand-intro")==="1")return;if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;document.documentElement.classList.add("brand-intro");sessionStorage.setItem("evg-brand-intro","1")}catch(e){}})();`,
+          tagPriority: "critical",
+        },
       ],
     },
   },
