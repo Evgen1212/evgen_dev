@@ -1,15 +1,5 @@
 <script setup lang="ts">
 import {
-  Calculator,
-  CalendarClock,
-  Check,
-  ChevronRight,
-  ChevronDown,
-  Link2,
-  RotateCcw,
-  Zap,
-} from 'lucide-vue-next';
-import {
   calcProjects,
   calcExtras,
   fromPrice,
@@ -48,11 +38,11 @@ function clearCalcUrl() {
 
 const { toast } = useToast();
 
-/* ─── Мобильный аккордеон: шапка калькулятора ─── */
+/** Аккордеон: весь калькулятор сворачивается на всех breakpoints */
 const isOpen = ref(false);
-const toggleCollapse = () => {
+function toggleCollapse() {
   isOpen.value = !isOpen.value;
-};
+}
 
 const project = ref<CalcProjectKey>('multipage');
 const extras = ref<Set<CalcExtraKey>>(new Set<CalcExtraKey>(['admin']));
@@ -121,6 +111,7 @@ function reset() {
 /** Восстановление расчёта из ?calc=… (только клиент — hydration-safe) */
 onMounted(() => {
   const raw = new URLSearchParams(window.location.search).get('calc');
+  if (raw) isOpen.value = true;
   if (!raw) return;
   const parts = raw.split('.');
   const p = calcProjects.find((x) => x.key === parts[0]);
@@ -172,24 +163,59 @@ function copyCalcLink() {
 }
 </script>
 <template>
-  <div class="calc" data-reveal>
-    <div class="calc-controls">
-      <div class="calc-head">
-        <div class="calc-heading">
-          <span class="calc-icon" aria-hidden="true">
-            <svg class="icon"><use href="#i-calculator" /></svg>
+  <div
+    class="calc-accordion"
+    :class="{ 'is-open': isOpen }"
+    data-reveal
+  >
+    <div class="calc-accordion-head">
+      <h3 class="calc-accordion-title">
+        <button
+          id="calc-trigger"
+          class="calc-trigger"
+          type="button"
+          :aria-expanded="isOpen"
+          aria-controls="calc-panel"
+          @click="toggleCollapse"
+        >
+          <span class="calc-heading">
+            <span class="calc-icon" aria-hidden="true">
+              <svg class="icon"><use href="#i-calculator" /></svg>
+            </span>
+            <span class="calc-heading-copy">
+              <span class="calc-heading-name">Калькулятор проекта</span>
+              <span class="calc-heading-sub">предварительная оценка за 30 секунд</span>
+            </span>
           </span>
-          <div>
-            <h3>Калькулятор проекта</h3>
-            <p>предварительная оценка за 30 секунд</p>
-          </div>
-        </div>
-        <button class="calc-reset" type="button" @click="reset">
-          <svg class="icon" aria-hidden="true"><use href="#i-reset" /></svg>
-          Сбросить
+          <span v-if="!isOpen" class="calc-trigger-preview nowrap" aria-hidden="true">
+            {{ fmt.format(result.price) }} ₽
+          </span>
+          <span class="calc-chevron" aria-hidden="true">
+            <svg class="icon"><use href="#i-chevron-down" /></svg>
+          </span>
         </button>
-      </div>
+      </h3>
+      <button
+        v-show="isOpen"
+        class="calc-reset"
+        type="button"
+        @click="reset"
+      >
+        <svg class="icon" aria-hidden="true"><use href="#i-reset" /></svg>
+        Сбросить
+      </button>
+    </div>
 
+    <div
+      id="calc-panel"
+      class="calc-panel"
+      role="region"
+      aria-labelledby="calc-trigger"
+      :inert="!isOpen"
+    >
+      <div class="calc-panel-inner">
+        <div class="calc">
+          <div class="calc-controls">
       <fieldset class="calc-fieldset">
         <legend>Тип проекта</legend>
         <div class="calc-projects" role="group" aria-label="Тип проекта">
@@ -241,9 +267,9 @@ function copyCalcLink() {
           <span class="switch-hint">приоритетная работа над проектом</span>
         </span>
       </label>
-    </div>
+          </div>
 
-    <div class="calc-summary">
+          <div class="calc-summary">
       <p class="calc-summary-label">Предварительно</p>
       <p class="calc-amount nowrap">{{ fmt.format(result.price) }} ₽</p>
       <p class="calc-days">
@@ -268,6 +294,9 @@ function copyCalcLink() {
       <p class="calc-disclaimer">
         Расчёт ни к чему не обязывает — точную смету зафиксируем после обсуждения задачи.
       </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
