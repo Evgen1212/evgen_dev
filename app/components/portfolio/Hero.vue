@@ -102,17 +102,12 @@ onMounted(() => {
         <div v-for="n in 2" :key="n" class="marquee-group" :aria-hidden="n === 2 ? 'true' : undefined">
           <span v-for="service in heroServices" :key="service.label" class="marquee-item">
             <span class="marquee-icon" aria-hidden="true">
-              <img
-                v-if="service.icon"
-                class="marquee-icon-img"
-                :src="useAsset(`icons/tech/${service.icon}.svg`)"
-                alt=""
-                width="19"
-                height="19"
-                loading="lazy"
-                decoding="async"
+              <TechIcon
+                v-if="service.icon || service.emoji"
+                :icon="service.icon"
+                :emoji="service.emoji"
+                :size="19"
               />
-              <span v-else-if="service.emoji" class="marquee-emoji">{{ service.emoji }}</span>
               <span v-else class="marquee-badge">{{ service.badge }}</span>
             </span>
             <span class="marquee-label">{{ service.label }}</span>

@@ -17,14 +17,7 @@ const techLabels = ["Инфраструктура", "Frontend", "Backend и да
           <h3 class="tech-label">{{ techLabels[rowIndex] }}</h3>
           <ul class="tech-list">
             <li v-for="item in row" :key="item.label" class="tech-chip">
-              <img
-                v-if="item.icon"
-                :src="useAsset(`icons/tech/${item.icon}.svg`)"
-                alt=""
-                width="18"
-                height="18"
-                loading="lazy"
-              />
+              <TechIcon :icon="item.icon" :emoji="item.emoji" />
               <span>{{ item.label }}</span>
             </li>
           </ul>

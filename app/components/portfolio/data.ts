@@ -106,7 +106,7 @@ export const techRows: TechItem[][] = [
   // Инфраструктура и инструменты
   [
     { label: "Docker", icon: "docker" },
-    { label: "Docker Compose", emoji: "🐳" },
+    { label: "Docker Compose", icon: "dockercompose" },
     { label: "Git", icon: "git" },
     { label: "GitLab", icon: "gitlab" },
     { label: "GitHub", icon: "github" },

@@ -16,20 +16,8 @@ defineProps<{
 <template>
   <Marquee :duration="duration" :reverse="reverse" pause-on-hover>
     <span v-for="item in items" :key="item.label" class="flex items-center">
-      <span class="flex items-center gap-3 whitespace-nowrap">
-        <img
-          v-if="item.icon"
-          :src="useAsset(`icons/tech/${item.icon}.svg`)"
-          alt=""
-          width="26"
-          height="26"
-          class="size-6 sm:size-7 shrink-0"
-          loading="lazy"
-          decoding="async"
-        />
-        <span v-else aria-hidden="true" class="text-xl sm:text-2xl leading-none">
-          {{ item.emoji }}
-        </span>
+      <span v-if="item.icon || item.emoji" class="flex items-center gap-3 whitespace-nowrap">
+        <TechIcon :icon="item.icon" :emoji="item.emoji" :size="26" class="shrink-0" />
         <span class="text-lg sm:text-2xl font-medium text-(--ink-soft)">
           {{ item.label }}
         </span>

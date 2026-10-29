@@ -37,6 +37,7 @@
 
   --header-bg: rgba(255, 255, 255, 0.72);
   --icon-chip: #1d1d1f;
+  --tech-icon-fg: #3f3f46;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 10px 30px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.05), 0 22px 54px rgba(0, 0, 0, 0.09);
@@ -81,6 +82,7 @@
 
   --header-bg: rgba(0, 0, 0, 0.72);
   --icon-chip: #2c2c2e;
+  --tech-icon-fg: #d4d4d8;
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45), 0 12px 32px rgba(0, 0, 0, 0.34);
   --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.5), 0 26px 60px rgba(0, 0, 0, 0.4);
@@ -906,28 +908,27 @@ body .container--narrow {
   color: var(--ink);
 }
 
+.marquee-icon .tech-chip-icon {
+  width: 19px;
+  height: 19px;
+  color: var(--ink);
+}
+
 .marquee-icon-img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: grayscale(1) brightness(0);
-  opacity: 0.9;
 }
 
-[data-theme="dark"] .marquee-icon-img {
-  filter: grayscale(1) brightness(0) invert(1);
-  opacity: 0.92;
+.marquee-icon .tech-chip-icon-mark {
+  width: 19px;
+  height: 19px;
 }
 
 .marquee-emoji {
   font-size: 16px;
   line-height: 1;
-  filter: grayscale(1) brightness(0);
-}
-
-[data-theme="dark"] .marquee-emoji {
-  filter: grayscale(1) brightness(0) invert(1);
 }
 
 .marquee-badge {
@@ -1364,16 +1365,46 @@ body .container--narrow {
   color: var(--ink);
 }
 
-.tech-chip img {
+.tech-chip-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 18px;
   height: 18px;
-  object-fit: contain;
+  flex: none;
+  color: var(--ink-2);
 }
 
-[data-theme="dark"] .tech-chip img {
-  padding: 1px;
-  border-radius: 5px;
-  background: #f5f5f7;
+.tech-chip:hover .tech-chip-icon {
+  color: var(--ink);
+}
+
+/* Tech icons: brand colors via mask (TechIcon) — no theme filter glitches */
+.tech-chip-icon-mark {
+  display: block;
+  flex: none;
+}
+
+.tech-chip-icon-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  flex: none;
+}
+
+.tech-chip-icon-img--native {
+  filter: none;
+  opacity: 1;
+}
+
+.tech-chip:hover .tech-chip-icon-mark {
+  opacity: 0.92;
+}
+
+.tech-chip-emoji {
+  font-size: 15px;
+  line-height: 1;
 }
 
 .process-grid {
