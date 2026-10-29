@@ -18,7 +18,7 @@ export const siteOwner = {
   experienceYears: 5,
 };
 
-/** Публичный e-mail для связи (кнопка «скопировать» в контактах) */
+/** Публичный e-mail (резюме, офферы — в карточках соцсетей при необходимости) */
 export const contactEmail = "evg3nyaevgen@yandex.ru";
 
 export const socials: SocialLink[] = [

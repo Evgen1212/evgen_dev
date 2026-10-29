@@ -355,24 +355,6 @@
     }
   }
 
-  var copyEmailButton = $('[data-copy-email]');
-
-  if (copyEmailButton) {
-    var copyEmailLabel = $('[data-copy-label]', copyEmailButton);
-    var email = copyEmailButton.getAttribute('data-email') || '';
-
-    copyEmailButton.addEventListener('click', function () {
-      copyText(email).then(function (copied) {
-        if (!copyEmailLabel) return;
-
-        copyEmailLabel.textContent = copied ? 'Скопировано' : 'Скопируйте вручную';
-        window.setTimeout(function () {
-          copyEmailLabel.textContent = 'Скопировать e-mail';
-        }, 2400);
-      });
-    });
-  }
-
   var calculator = $('[data-calculator]');
 
   if (calculator) {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowUpRight, Mail, Phone } from "lucide-vue-next";
 import { socials } from "./data";
 
 const descriptions: Record<string, string> = {
@@ -12,29 +11,13 @@ const descriptions: Record<string, string> = {
   VK: "Отвечаю в течение дня",
 };
 
-// primaryNames больше не нужен: все соцсети — primary, вторичный ряд чипов пуст
-// (внизу остаётся только CopyEmailButton).
-const primary = socials;
-const secondary: typeof socials = [];
+const primaryNames = new Set(["Telegram", "Телефон"]);
+const telegram = socials.find((item) => item.name === "Telegram")!;
+const phone = socials.find((item) => item.name === "Телефон")!;
 
-const email = 'evg3nyaevgen@yandex.ru';
-const contactCards = socials.filter((item) => item.name !== 'E-mail');
-
-const copied = ref(false);
-let copyTimer: ReturnType<typeof setTimeout> | undefined;
-
-async function copyEmail() {
-  try {
-    await navigator.clipboard.writeText(email);
-    copied.value = true;
-    clearTimeout(copyTimer);
-    copyTimer = setTimeout(() => (copied.value = false), 2000);
-  } catch {
-    window.location.href = `mailto:${email}`;
-  }
-}
-
-onBeforeUnmount(() => clearTimeout(copyTimer));
+const contactCards = socials.filter(
+  (item) => item.name !== "E-mail" && !primaryNames.has(item.name),
+);
 
 const moscowTime = ref('--:--');
 let clock: ReturnType<typeof setInterval> | undefined;
@@ -68,16 +51,53 @@ onBeforeUnmount(() => clearInterval(clock));
 
       <div class="contact-panel" data-reveal>
         <div class="contact-primary">
-          <p class="contact-eyebrow">Почта</p>
-          <a class="contact-email" :href="`mailto:${email}`">{{ email }}</a>
-          <p class="contact-primary-note">Резюме и офферы — отвечаю в течение дня.</p>
+          <p class="contact-eyebrow">Быстрая связь</p>
+          <div class="contact-primary-links">
+            <a
+              class="contact-primary-link"
+              :href="telegram.href"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="contact-primary-link-icon" aria-hidden="true">
+                <img
+                  :src="useAsset('icons/social/telegram.svg')"
+                  alt=""
+                  width="22"
+                  height="22"
+                  loading="lazy"
+                />
+              </span>
+              <span class="contact-primary-link-copy">
+                <span class="contact-primary-link-label">Telegram</span>
+                <span class="contact-primary-link-value">{{ telegram.handle }}</span>
+              </span>
+            </a>
+            <a class="contact-primary-link" :href="phone.href">
+              <span class="contact-primary-link-icon" aria-hidden="true">
+                <svg class="icon"><use href="#i-phone" /></svg>
+              </span>
+              <span class="contact-primary-link-copy">
+                <span class="contact-primary-link-label">Телефон</span>
+                <span class="contact-primary-link-value">{{ phone.handle }}</span>
+              </span>
+            </a>
+          </div>
+          <p class="contact-primary-note">
+            Отвечаю в течение часа · резюме и офферы — на e-mail ниже
+          </p>
         </div>
         <div class="contact-primary-actions">
-          <button class="btn btn-ghost" type="button" @click="copyEmail">
-            <svg class="icon" aria-hidden="true"><use href="#i-copy" /></svg>
-            {{ copied ? 'E-mail скопирован' : 'Скопировать e-mail' }}
-          </button>
-          <a class="btn btn-primary" href="https://t.me/keyboard_brothers" target="_blank" rel="noopener noreferrer">
+          <a class="btn btn-ghost" :href="phone.href">
+            <svg class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
+            Позвонить
+          </a>
+          <a
+            class="btn btn-primary"
+            :href="telegram.href"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Написать в Telegram
             <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
           </a>

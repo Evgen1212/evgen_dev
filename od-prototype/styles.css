@@ -1961,6 +1961,69 @@ fieldset {
   min-width: 0;
 }
 
+.contact-primary-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.contact-primary-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 0;
+  border-radius: 12px;
+  transition: color 0.2s var(--ease-ui);
+}
+
+.contact-primary-link:hover .contact-primary-link-value {
+  color: var(--accent-text);
+}
+
+.contact-primary-link-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border-radius: 14px;
+  background: var(--icon-chip);
+}
+
+.contact-primary-link-icon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.contact-primary-link-icon .icon {
+  font-size: 21px;
+  color: #fff;
+}
+
+.contact-primary-link-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.contact-primary-link-label {
+  color: var(--ink-2);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.contact-primary-link-value {
+  font-size: clamp(1.15rem, 2.8vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  overflow-wrap: anywhere;
+  transition: color 0.2s var(--ease-ui);
+}
+
 .contact-eyebrow {
   color: var(--ink-2);
   font-size: 12px;
