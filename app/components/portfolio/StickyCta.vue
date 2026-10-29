@@ -113,65 +113,27 @@ onBeforeUnmount(() => {
   }
 });
 </script>
-
 <template>
-  <div
-    :aria-hidden="!show"
-    :inert="!show"
-    :class="cn(
-      'fixed inset-x-0 bottom-0 z-40 transition-transform duration-500 ease-out md:hidden',
-      show ? 'translate-y-0' : 'translate-y-full'
-    )"
-  >
-    <div
-      class="border-t border-(--line-1) bg-(--cta-bar) px-4 pt-3 pb-[calc(0.85rem+env(safe-area-inset-bottom))] backdrop-blur-xl"
-      @mouseenter="paused = true"
-      @mouseleave="paused = false"
-      @focusin="paused = true"
-      @focusout="paused = false"
-    >
-      <div class="mx-auto min-h-11 max-w-2xl">
-        <Transition
-          enter-active-class="transition-all duration-300 ease-out"
-          enter-from-class="opacity-0 translate-x-6"
-          enter-to-class="opacity-100 translate-x-0"
-          leave-active-class="transition-all duration-200 ease-in"
-          leave-from-class="opacity-100 translate-x-0"
-          leave-to-class="opacity-0 -translate-x-6"
-          mode="out-in"
-        >
-          <div :key="active" class="flex items-center gap-3">
-            <div class="min-w-0 flex-1">
-              <p class="font-display text-sm font-bold text-(--ink)">
-                {{ slides[active].title }}
-              </p>
-              <p class="truncate text-[11px] leading-tight text-(--ink-mute)">
-                {{ slides[active].subtitle }}
-              </p>
-            </div>
-
-            <a
-              v-if="active === 0"
-              href="#contact"
-              :tabindex="show ? 0 : -1"
-              class="inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-purple-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-900/40 transition-transform hover:scale-[1.03] active:scale-95"
-            >
-              {{ slides[active].label }}
-              <ArrowUpRight class="size-4" aria-hidden="true" />
-            </a>
-            <button
-              v-else
-              type="button"
-              :tabindex="show ? 0 : -1"
-              class="inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-purple-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-900/40 transition-transform hover:scale-[1.03] active:scale-95"
-              @click="resumeOpen = true"
-            >
-              <FileText class="size-4" aria-hidden="true" />
-              {{ slides[active].label }}
-            </button>
-          </div>
-        </Transition>
+  <div class="sticky-cta" :class="{ 'is-visible': show }" :aria-hidden="!show" :inert="!show">
+    <div class="sticky-cta-inner">
+      <div class="sticky-cta-copy" aria-live="polite">
+        <p class="sticky-cta-title">{{ slides[active].title }}</p>
+        <p class="sticky-cta-sub">{{ slides[active].subtitle }}</p>
       </div>
+      <a
+        v-show="active === 0"
+        class="btn btn-primary btn-sm"
+        href="#contact"
+      >Обсудить</a>
+      <button
+        v-show="active === 1"
+        class="btn btn-primary btn-sm"
+        type="button"
+        @click="resumeOpen = true"
+      >
+        <svg class="icon" aria-hidden="true"><use href="#i-file" /></svg>
+        Нанять на работу
+      </button>
     </div>
   </div>
 </template>

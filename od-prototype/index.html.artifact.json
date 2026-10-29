@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "kind": "html",
+  "title": "od-prototype/index.html",
+  "entry": "od-prototype/index.html",
+  "renderer": "html",
+  "status": "complete",
+  "exports": [
+    "html",
+    "pdf",
+    "zip"
+  ],
+  "createdAt": "2026-10-29T07:58:13.240Z",
+  "updatedAt": "2026-10-29T07:58:13.240Z",
+  "metadata": {
+    "inferred": true,
+    "reconciled": true
+  }
+}

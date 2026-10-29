@@ -16,7 +16,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
   telemetry: false,
 
-  css: ["~/assets/css/main.css"],
+  css: ["~/assets/css/main.css", "~/assets/css/portfolio.css"],
 
   vite: {
     plugins: [tailwindcss()],

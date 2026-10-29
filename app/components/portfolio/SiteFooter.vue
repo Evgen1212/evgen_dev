@@ -12,43 +12,25 @@ const footerNav = [
   { label: "Контакты", href: "#contact" },
 ];
 </script>
-
 <template>
-  <footer class="relative mt-auto border-t border-(--line-1) py-8">
-    <div class="mx-auto max-w-7xl px-5 sm:px-8">
-      <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
-        <a
-          href="#top"
-          class="font-display text-base font-bold transition-opacity hover:opacity-80"
-        >
-          evgen_dev
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-top">
+        <a class="brand" href="#top" aria-label="evgen_dev — на главную">
+          <img
+            class="brand-avatar"
+            :src="useAsset('images/opt/avatar-96.webp')"
+            alt=""
+            width="96"
+            height="96"
+          />
+          <span class="brand-name">evgen_dev</span>
         </a>
-
-        <p class="text-sm text-(--ink-faint)">
-          © {{ year }} Абрамов Евгений. Senior Frontend-разработчик.
-        </p>
-
-        <div class="flex items-center gap-3">
-          <p class="text-sm text-(--ink-faint)">
-            Сделано с
-            <span class="text-fuchsia-400" aria-hidden="true">♥</span>
-            на Nuxt
-          </p>
-        </div>
+        <p class="footer-copy">© {{ year }} Абрамов Евгений. Senior Frontend-разработчик.</p>
+        <p class="footer-note">Москва · GMT+3</p>
       </div>
-
-      <nav
-        aria-label="Навигация в футере"
-        class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-(--line-faint) pt-5 text-sm"
-      >
-        <a
-          v-for="l in footerNav"
-          :key="l.href"
-          :href="l.href"
-          class="link-underline text-(--ink-faint) transition-colors hover:text-(--ink)"
-        >
-          {{ l.label }}
-        </a>
+      <nav class="footer-nav" aria-label="Навигация в футере">
+        <a v-for="link in footerNav" :key="link.href" :href="link.href">{{ link.label }}</a>
       </nav>
     </div>
   </footer>

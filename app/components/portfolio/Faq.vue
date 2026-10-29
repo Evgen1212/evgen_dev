@@ -60,100 +60,55 @@ function onAccAfterLeave(el: Element) {
   (el as HTMLElement).style.height = "";
 }
 </script>
-
 <template>
-  <section id="faq" class="relative scroll-mt-24 py-24 sm:py-32">
-    <div class="relative mx-auto max-w-3xl px-5 sm:px-8">
-      <div data-reveal class="mb-10 text-center sm:mb-14">
-        <SectionKicker>Частые вопросы</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
-          FAQ
-        </h2>
-        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
-          собираю ответы на то, что спрашивают чаще всего
-        </p>
-      </div>
+  <section id="faq" class="section section--surface" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <header class="section-head" data-reveal>
+        <p class="kicker">Частые вопросы</p>
+        <h2 id="faq-title" class="section-title">FAQ</h2>
+        <p class="section-lede">собираю ответы на то, что спрашивают чаще всего</p>
+      </header>
 
-      <div class="space-y-3">
+      <div class="faq-list" data-reveal>
         <div
           v-for="(item, i) in faqs"
           :key="item.q"
-          data-reveal
-          :style="{ '--reveal-delay': `${i * 70}ms` }"
-          :class="
-            cn(
-              'overflow-hidden rounded-2xl border bg-(--surface-1) px-5 transition-colors hover:border-(--line-2)',
-              openKey === `faq-${i}`
-                ? 'border-fuchsia-400/30 bg-(--surface-3)'
-                : 'border-(--line-1)',
-            )
-          "
+          class="faq-item"
+          :class="{ 'is-open': openKey === item.q }"
         >
-          <h3 class="flex">
+          <h3>
             <button
-              :id="`faq-trigger-${i}`"
+              :id="`faq-trigger-${i + 1}`"
+              class="faq-trigger"
               type="button"
-              :aria-expanded="openKey === `faq-${i}`"
-              :aria-controls="`faq-content-${i}`"
-              class="focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-5 text-left font-display text-base font-bold text-(--ink) outline-none transition-all hover:no-underline focus-visible:ring-[3px] sm:text-lg"
-              @click="toggle(`faq-${i}`)"
+              :aria-expanded="openKey === item.q"
+              :aria-controls="`faq-panel-${i + 1}`"
+              @click="toggle(item.q)"
             >
               {{ item.q }}
-              <ChevronDown
-                class="pointer-events-none size-4 shrink-0 translate-y-0.5 text-(--ink-mute) transition-transform duration-200"
-                :class="openKey === `faq-${i}` && 'rotate-180'"
-                aria-hidden="true"
-              />
+              <span class="faq-icon" aria-hidden="true">
+                <svg class="icon"><use href="#i-plus" /></svg>
+              </span>
             </button>
           </h3>
-          <Transition
-            name="faq-acc"
-            @enter="onAccEnter"
-            @after-enter="onAccAfterEnter"
-            @leave="onAccLeave"
-            @after-leave="onAccAfterLeave"
+          <div
+            :id="`faq-panel-${i + 1}`"
+            class="faq-panel"
+            role="region"
+            :aria-labelledby="`faq-trigger-${i + 1}`"
+            :inert="openKey !== item.q"
           >
-            <div
-              v-if="openKey === `faq-${i}`"
-              :id="`faq-content-${i}`"
-              role="region"
-              :aria-labelledby="`faq-trigger-${i}`"
-              class="overflow-hidden"
-            >
-              <div
-                class="pb-5 text-sm leading-relaxed text-(--ink-mute) sm:text-base"
-              >
-                {{ item.a }}
-              </div>
+            <div class="faq-panel-inner">
+              <p>{{ item.a }}</p>
             </div>
-          </Transition>
+          </div>
         </div>
       </div>
 
-      <p
-        data-reveal
-        class="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-(--ink-faint)"
-      >
-        <MessageCircleQuestion
-          class="size-4 text-(--accent-soft)"
-          aria-hidden="true"
-        />
+      <p class="faq-foot" data-reveal>
         Остался вопрос?
-        <a
-          href="#contact"
-          class="font-semibold text-(--ink-soft) underline decoration-fuchsia-400/50 decoration-2 underline-offset-4 transition-colors hover:text-(--ink)"
-        >
-          Напишите мне
-        </a>
-        — отвечаю быстро.
+        <a class="text-link" href="#contact">Напишите мне</a> — отвечаю быстро.
       </p>
     </div>
   </section>
 </template>
-
-<style scoped>
-.faq-acc-enter-active,
-.faq-acc-leave-active {
-  transition: height 0.2s ease;
-}
-</style>

@@ -2,18 +2,11 @@
 import { ChevronDown, ExternalLink, MapPin } from "lucide-vue-next";
 
 /* ─── Мобильный аккордеон: каждая работа — отдельный айтем ─── */
+const isMobile = useMediaQuery('(max-width: 640px)');
 const openJob = ref<number | null>(0);
 const toggleJob = (i: number) => {
-  if (window.innerWidth < 1024) {
-    openJob.value = openJob.value === i ? null : i;
-  }
-};
-/* На мобилке клик по скриншоту раскрывает айтем, на десктопе — ведёт на сайт */
-const onJobShotClick = (e: MouseEvent, i: number) => {
-  if (window.innerWidth < 1024) {
-    e.preventDefault();
-    toggleJob(i);
-  }
+  if (!isMobile.value) return;
+  openJob.value = openJob.value === i ? null : i;
 };
 
 /**
@@ -108,153 +101,84 @@ const jobs: Job[] = [
   },
 ];
 </script>
-
 <template>
-  <section id="experience" class="relative scroll-mt-24 py-24 sm:py-32">
-    <!-- soft glow -->
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-purple-800/15 blur-3xl"
-    />
-
-    <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="mb-12 text-center sm:mb-16">
-        <SectionKicker>Карьерный путь</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-          Опыт работы
-        </h2>
-        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
-          5+ лет коммерческой разработки — от промышленного сектора до финтеха
+  <section id="experience" class="section section--surface" aria-labelledby="experience-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="kicker">Карьерный путь</p>
+        <h2 id="experience-title" class="section-title">Опыт работы</h2>
+        <p class="section-lede">
+          5+ лет коммерческой разработки — от промышленного сектора до финтеха.
         </p>
-      </div>
+      </header>
 
-      <div class="mx-auto flex max-w-5xl flex-col gap-10 sm:gap-14">
+      <div class="jobs">
         <article
           v-for="(job, i) in jobs"
           :key="job.key"
+          class="job"
           data-reveal
-          :style="{ '--reveal-delay': `${Math.min(i, 2) * 60}ms` }"
-          class="group grid overflow-hidden rounded-[28px] border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:border-(--line-2) hover:shadow-2xl lg:grid-cols-2"
+          :style="{ '--reveal-delay': `${i * 60}ms` }"
         >
-          <!-- скриншот сайта работодателя -->
           <a
+            class="job-media"
             :href="job.href"
             target="_blank"
             rel="noopener noreferrer"
-            :class="i % 2 === 1 ? 'lg:order-2' : ''"
             :aria-label="`Сайт ${job.company} (${job.domain}) — открыть в новой вкладке`"
-            class="relative block aspect-[16/10] overflow-hidden lg:aspect-auto"
-            @click="onJobShotClick($event, i)"
           >
-            <SmartImage
-              :name="`work-${job.key}`"
-              :alt="`Скриншот сайта ${job.company} — ${job.domain}`"
-              :width="1200"
-              :height="750"
-              :widths="[480, 720, 960, 1200]"
-              sizes="(min-width: 1280px) 512px, (min-width: 1024px) 50vw, 100vw"
+            <span class="browser-bar browser-bar--compact" aria-hidden="true">
+              <span class="browser-dots"><span /><span /><span /></span>
+              <span class="browser-url">{{ job.domain }}</span>
+            </span>
+            <img
+              :src="useAsset(`images/opt/work-${job.key}-1200.webp`)"
+              :alt="`Скриншот сайта ${job.company}`"
+              width="1200"
+              height="750"
               loading="lazy"
-              fetchpriority="low"
-              class="absolute inset-0"
-              img-class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-[1.04]"
+              decoding="async"
             />
-            <div
-              aria-hidden="true"
-              class="absolute inset-0 bg-gradient-to-t from-(--fade-a) via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-(--fade-b)"
-              :class="i % 2 === 1 ? 'lg:bg-gradient-to-l' : ''"
-            />
-            <!-- браузерная рамка -->
-            <div
-              aria-hidden="true"
-              class="absolute inset-x-0 top-0 flex items-center gap-1.5 bg-black/50 px-4 py-2.5 backdrop-blur-md"
-            >
-              <span class="size-2.5 rounded-full bg-[#ff5f57]" />
-              <span class="size-2.5 rounded-full bg-[#febc2e]" />
-              <span class="size-2.5 rounded-full bg-[#28c840]" />
-              <span class="ml-2 truncate rounded-md bg-white/10 px-2.5 py-0.5 font-mono text-[11px] text-zinc-300">
-                {{ job.domain }}
-              </span>
-            </div>
           </a>
-
-          <!-- контент -->
-          <div class="flex flex-col p-6 sm:p-8" :class="i % 2 === 1 ? 'lg:order-1' : ''">
-            <button
-              type="button"
-              class="flex w-full items-start justify-between gap-3 text-left lg:cursor-default"
-              :aria-expanded="openJob === i"
-              @click="toggleJob(i)"
-            >
-              <div class="flex-1">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="rounded-full bg-white px-3.5 py-1 text-xs font-bold text-black">
-                    {{ job.period }}
-                  </span>
-                  <span class="rounded-full border border-(--line-1) bg-(--surface-3) px-3 py-1 text-xs text-(--ink-mute)">
-                    {{ job.duration }}
-                  </span>
-                  <span class="inline-flex items-center gap-1 text-xs text-(--ink-faint)">
-                    <MapPin class="size-3.5" aria-hidden="true" />
-                    {{ job.city }}
-                  </span>
-                </div>
-
-                <h3 class="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">
-                  {{ job.company }}
-                </h3>
-                <p class="mt-1 text-sm font-semibold text-(--accent-soft)">{{ job.role }}</p>
-              </div>
-
-              <ChevronDown
-                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-transform duration-300 lg:hidden"
-                :class="openJob === i && 'rotate-180'"
-                aria-hidden="true"
-              />
-            </button>
-
+          <div class="job-body">
+            <div class="meta-row">
+              <span class="chip chip--solid">{{ job.period }}</span>
+              <span class="chip">{{ job.duration }}</span>
+              <span class="chip chip--plain">{{ job.city }}</span>
+            </div>
+            <h3 class="job-heading">
+              <button
+                class="job-toggle"
+                type="button"
+                :aria-expanded="openJob === i"
+                :aria-controls="`job-details-${job.key}`"
+                :tabindex="isMobile ? 0 : -1"
+                @click="toggleJob(i)"
+              >
+                <span class="job-toggle-text">
+                  <span class="job-company">{{ job.company }}</span>
+                  <span class="job-role">{{ job.role }}</span>
+                </span>
+                <span class="job-chevron" aria-hidden="true">
+                  <svg class="icon"><use href="#i-chevron-down" /></svg>
+                </span>
+              </button>
+            </h3>
             <div
-              class="grid transition-all duration-500 ease-in-out lg:grid-rows-[1fr] lg:opacity-100"
-              :class="openJob === i ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
+              :id="`job-details-${job.key}`"
+              class="job-details"
+              :class="{ 'is-open': isMobile && openJob === i }"
             >
-              <div class="overflow-hidden">
-                <ul class="mt-4 flex-1 space-y-2.5 text-sm leading-relaxed text-(--ink-mute)">
-                  <li v-for="h in job.highlights" :key="h" class="flex gap-2.5">
-                    <span
-                      aria-hidden="true"
-                      class="mt-[7px] size-1.5 shrink-0 rounded-full bg-gradient-to-br from-fuchsia-400 to-purple-500"
-                    />
-                    <span>{{ h }}</span>
-                  </li>
+              <div class="job-details-inner">
+                <ul class="bullets">
+                  <li v-for="highlight in job.highlights" :key="highlight">{{ highlight }}</li>
                 </ul>
-
-                <p
-                  v-if="job.note"
-                  class="mt-4 border-l-2 border-fuchsia-400/40 pl-3 text-xs italic leading-relaxed text-(--ink-faint)"
-                >
-                  {{ job.note }}
-                </p>
-
-                <div class="mt-5 flex flex-wrap gap-1.5">
-                  <span
-                    v-for="t in job.stack"
-                    :key="t"
-                    class="rounded-full border border-(--line-1) bg-(--surface-3) px-2.5 py-1 text-[11px] font-medium text-(--ink-soft)"
-                  >
-                    {{ t }}
-                  </span>
+                <div class="tag-row">
+                  <span v-for="item in job.stack" :key="item">{{ item }}</span>
                 </div>
-
-                <a
-                  :href="job.href"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-(--ink-soft) transition-colors hover:text-(--ink)"
-                >
+                <a class="text-link" :href="job.href" target="_blank" rel="noopener noreferrer">
                   Открыть сайт — {{ job.domain }}
-                  <ExternalLink
-                    class="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                    aria-hidden="true"
-                  />
+                  <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
                 </a>
               </div>
             </div>

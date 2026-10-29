@@ -93,7 +93,7 @@ export const heroServices: Service[] = [
   { emoji: "🛒", label: "Интернет-магазины" },
   { badge: "API", label: "REST / GraphQL" },
   { emoji: "🚀", label: "Оптимизация Web Vitals" },
-  { emoji: "🤖", label: "Боты и автоматизация" },
+  { emoji: "🤖", label: "Автоматизация" },
 ];
 
 export type TechItem = {
@@ -165,7 +165,7 @@ export const calcProjects: CalcProject[] = [
   { key: "landing", label: "Лендинг", hint: "одностраничный сайт", base: 25000, days: 5 },
   { key: "multipage", label: "Многостраничный сайт", hint: "корпоративный, каталог", base: 50000, days: 10 },
   { key: "webapp", label: "Веб-сервис", hint: "SPA, личные кабинеты", base: 100000, days: 21 },
-  { key: "bot", label: "Бот / автоматизация", hint: "Telegram, парсеры", base: 20000, days: 3 },
+  { key: "bot", label: "ИИ / автоматизация", hint: "AI API, парсеры", base: 20000, days: 3 },
 ];
 
 export type CalcExtraKey =
@@ -266,11 +266,11 @@ const tierDefs: Omit<PriceTier, "price" | "term">[] = [
     ],
   },
   {
-    name: "Боты и автоматизация",
+    name: "Автоматизация",
     calcKey: "bot",
-    description: "Telegram-боты, парсеры и интеграции",
+    description: "AI API, парсеры и интеграции",
     features: [
-      "Telegram / VK боты",
+      "AI API и LLM-интеграции",
       "Парсеры и скрипты",
       "Интеграции с любыми API",
       "Уведомления и отчёты",

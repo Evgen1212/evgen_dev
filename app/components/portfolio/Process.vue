@@ -7,9 +7,11 @@ import {
   Rocket,
 } from 'lucide-vue-next';
 
-const isOpen = ref(false);
-const toggleSection = () => {
-  isOpen.value = !isOpen.value;
+const isMobile = useMediaQuery('(max-width: 640px)');
+const openStep = ref<number | null>(0);
+const toggleStep = (i: number) => {
+  if (!isMobile.value) return;
+  openStep.value = openStep.value === i ? null : i;
 };
 
 const steps = [
@@ -39,134 +41,47 @@ const steps = [
   },
 ];
 </script>
-
 <template>
-  <section id="process" class="relative scroll-mt-24 pb-2">
-    <!-- точечная сетка + мягкое свечение -->
-    <div
-      aria-hidden="true"
-      class="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
-    />
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"
-    />
-    <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div>
-        <button
-          @click="toggleSection"
-          class="group block w-full text-left"
-          :aria-expanded="isOpen"
+  <section id="process" class="section section--surface" aria-labelledby="process-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="kicker">Этапы работы</p>
+        <h2 id="process-title" class="section-title">Как я работаю</h2>
+        <p class="section-lede">прозрачный процесс — вы видите результат на каждом шаге</p>
+      </header>
+
+      <ol class="process-grid stagger">
+        <li
+          v-for="(step, i) in steps"
+          :key="step.num"
+          class="process-step"
+          :class="{ 'is-open': isMobile && openStep === i }"
+          data-reveal
+          :style="{ '--reveal-delay': `${i * 60}ms` }"
         >
-          <div
-            data-reveal
-            :class="
-              cn(
-                'relative overflow-hidden border p-6 transition-all duration-300',
-                isOpen
-                  ? 'rounded-t-3xl rounded-b-none border-b-transparent pb-0  bg-(--surface-2)'
-                  : 'rounded-3xl border-(--line-1) bg-(--surface-1)',
-              )
-            "
-          >
-            <div class="flex items-center justify-between gap-4">
-              <div class="flex flex-col">
-                <SectionKicker plain>Этапы работы</SectionKicker>
-                <h2
-                  class="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
-                >
-                  Как я работаю
-                </h2>
-              </div>
-
-              <div
-                class="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--line-1) bg-(--surface-2) transition-transform duration-300"
-                :class="{ 'rotate-180 border-(--accent-soft)/40': isOpen }"
-              >
-                <ChevronDown class="size-5 text-(--accent-soft)" />
-              </div>
-            </div>
-
-            <p
-              class="mt-4 hidden text-base text-(--ink-mute) md:block sm:text-lg"
+          <h3 class="process-heading">
+            <button
+              class="process-toggle"
+              type="button"
+              :aria-expanded="openStep === i"
+              :aria-controls="`process-details-${i}`"
+              :tabindex="isMobile ? 0 : -1"
+              @click="toggleStep(i)"
             >
-              прозрачный процесс — вы видите результат на каждом шаге
-            </p>
-          </div>
-        </button>
-      </div>
-
-      <div
-        class="grid transition-all duration-500 ease-in-out"
-        :class="
-          isOpen ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
-        "
-        :inert="!isOpen"
-      >
-        <div class="overflow-hidden">
-          <div
-            class="mt-0 rounded-b-3xl rounded-t-none bg-(--surface-2) px-4 pb-4 pt-4 md:px-6 md:pb-6 md:pt-6"
-          >
-            <p class="mb-8 px-2 text-base text-(--ink-mute) md:hidden">
-              прозрачный процесс — вы видите результат на каждом шаге
-            </p>
-
-            <div class="relative pb-4">
-              <ol
-                class="relative grid gap-4 sm:gap-5 md:grid-cols-2 xl:grid-cols-4"
-              >
-                <li
-                  v-for="(step, i) in steps"
-                  :key="step.num"
-                  data-reveal
-                  :style="{ '--reveal-delay': `${i * 110}ms` }"
-                >
-                  <article
-                    class="card-shine group relative h-full overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:bg-(--surface-3) sm:p-7"
-                  >
-                    <!-- большая номерная подложка -->
-                    <span
-                      aria-hidden="true"
-                      class="pointer-events-none absolute -right-3 -top-7 select-none font-display text-[7rem] font-bold leading-none text-(--ghost) transition-colors duration-500 group-hover:text-(--ghost-hover)"
-                    >
-                      {{ step.num }}
-                    </span>
-
-                    <span
-                      class="relative grid size-12 place-items-center rounded-2xl border border-(--line-1) bg-gradient-to-br from-fuchsia-500/20 via-purple-500/15 to-transparent"
-                    >
-                      <component
-                        :is="step.icon"
-                        class="size-5 text-(--accent-soft) transition-transform duration-500 group-hover:scale-110"
-                        aria-hidden="true"
-                      />
-                    </span>
-
-                    <p
-                      class="relative mt-5 text-xs font-bold uppercase tracking-[0.2em] text-(--accent-soft)"
-                    >
-                      Шаг {{ step.num }}
-                    </p>
-                    <h3 class="relative mt-2 font-display text-xl font-bold">
-                      {{ step.title }}
-                    </h3>
-                    <p
-                      class="relative mt-3 text-sm leading-relaxed text-(--ink-mute)"
-                    >
-                      {{ step.text }}
-                    </p>
-                  </article>
-                </li>
-              </ol>
+              <span class="process-num">{{ step.num }}</span>
+              <span class="process-title">{{ step.title }}</span>
+              <span class="process-chevron" aria-hidden="true">
+                <svg class="icon"><use href="#i-chevron-down" /></svg>
+              </span>
+            </button>
+          </h3>
+          <div :id="`process-details-${i}`" class="process-details">
+            <div class="process-details-inner">
+              <p>{{ step.text }}</p>
             </div>
-
-            <div
-              aria-hidden="true"
-              class="max-md:mt-2 max-md:h-px max-md:bg-gradient-to-r max-md:from-transparent max-md:via-[var(--line-15)] max-md:to-transparent"
-            />
           </div>
-        </div>
-      </div>
+        </li>
+      </ol>
     </div>
   </section>
 </template>

@@ -16,98 +16,102 @@ const descriptions: Record<string, string> = {
 // (внизу остаётся только CopyEmailButton).
 const primary = socials;
 const secondary: typeof socials = [];
+
+const email = 'evg3nyaevgen@yandex.ru';
+const contactCards = socials.filter((item) => item.name !== 'E-mail');
+
+const copied = ref(false);
+let copyTimer: ReturnType<typeof setTimeout> | undefined;
+
+async function copyEmail() {
+  try {
+    await navigator.clipboard.writeText(email);
+    copied.value = true;
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => (copied.value = false), 2000);
+  } catch {
+    window.location.href = `mailto:${email}`;
+  }
+}
+
+onBeforeUnmount(() => clearTimeout(copyTimer));
+
+const moscowTime = ref('--:--');
+let clock: ReturnType<typeof setInterval> | undefined;
+
+onMounted(() => {
+  const formatter = new Intl.DateTimeFormat('ru-RU', {
+    hour: '2-digit',
+    minute: '2-digit',
+    timeZone: 'Europe/Moscow',
+  });
+  const tick = () => (moscowTime.value = formatter.format(new Date()));
+  tick();
+  clock = setInterval(tick, 30_000);
+});
+
+onBeforeUnmount(() => clearInterval(clock));
 </script>
-
 <template>
-  <section id="contact" class="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
-    <!-- aurora glow at bottom -->
-    <div aria-hidden="true" class="absolute inset-0 overflow-hidden">
-      <div class="aurora-layer aurora-b opacity-70" />
-      <div
-        class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--vignette-strong)_100%)]"
-      />
-    </div>
-
-    <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="mb-12 text-center sm:mb-16">
-        <SectionKicker>Связь</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
-          Контакты
-        </h2>
-        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
-          выберите удобный способ — отвечаю быстро
+  <section id="contact" class="section" aria-labelledby="contact-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="kicker">Связь</p>
+        <h2 id="contact-title" class="section-title">Контакты</h2>
+        <p class="section-lede">выберите удобный способ — отвечаю быстро</p>
+        <p class="local-time">
+          <span class="status-dot" aria-hidden="true" />
+          Москва · <span class="time-value">{{ moscowTime }}</span>
+          <span class="time-status">на связи</span>
         </p>
-        <LocalTime class="mt-6" />
+      </header>
+
+      <div class="contact-panel" data-reveal>
+        <div class="contact-primary">
+          <p class="contact-eyebrow">Почта</p>
+          <a class="contact-email" :href="`mailto:${email}`">{{ email }}</a>
+          <p class="contact-primary-note">Резюме и офферы — отвечаю в течение дня.</p>
+        </div>
+        <div class="contact-primary-actions">
+          <button class="btn btn-ghost" type="button" @click="copyEmail">
+            <svg class="icon" aria-hidden="true"><use href="#i-copy" /></svg>
+            {{ copied ? 'E-mail скопирован' : 'Скопировать e-mail' }}
+          </button>
+          <a class="btn btn-primary" href="https://t.me/keyboard_brothers" target="_blank" rel="noopener noreferrer">
+            Написать в Telegram
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
+          </a>
+        </div>
       </div>
 
-      <!-- карточки соцсетей: 7 штук, 2–3 в ряд -->
-      <div class="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="contact-grid stagger">
         <a
-          v-for="(s, i) in primary"
-          :key="s.name"
-          :href="s.href"
-          :target="s.href.startsWith('http') ? '_blank' : undefined"
-          :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
+          v-for="(item, i) in contactCards"
+          :key="item.name"
+          class="contact-card"
           data-reveal
-          :style="{ '--reveal-delay': `${i * 90}ms` }"
-          class="card-shine group flex items-center gap-4 rounded-3xl border border-(--line-1) bg-(--surface-2) p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-(--line-25) hover:bg-(--surface-4) sm:p-6"
+          :style="{ '--reveal-delay': `${i * 50}ms` }"
+          :href="item.href"
+          :target="item.href.startsWith('http') ? '_blank' : undefined"
+          :rel="item.href.startsWith('http') ? 'noopener noreferrer' : undefined"
         >
-          <span
-            class="grid size-14 shrink-0 place-items-center rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110"
-            :style="{
-              backgroundColor: `#${s.color}22`,
-              border: `1px solid #${s.color}55`,
-            }"
-          >
-            <!-- telegram рисуется из /icons/social, phone/mail — lucide -->
-            <Phone v-if="s.icon === 'phone'" class="size-[26px]" aria-hidden="true" />
-            <Mail v-else-if="s.icon === 'mail'" class="size-[26px]" aria-hidden="true" />
+          <span class="contact-icon">
+            <svg v-if="item.icon === 'phone'" class="icon" aria-hidden="true"><use href="#i-phone" /></svg>
             <img
               v-else
-              :src="useAsset(`icons/social/${s.icon}.svg`)"
+              :src="useAsset(`icons/social/${item.icon}.svg`)"
               alt=""
-              width="26"
-              height="26"
-              class="social-icon size-[26px]"
+              width="20"
+              height="20"
               loading="lazy"
-              decoding="async"
             />
           </span>
-          <span class="min-w-0 flex-1">
-            <span class="block font-display text-lg font-bold text-(--ink)">{{ s.name }}</span>
-            <span class="block truncate text-sm text-(--ink-mute)">{{
-              descriptions[s.name] ?? s.handle
-            }}</span>
+          <span class="contact-copy">
+            <span class="contact-name">{{ item.name }}</span>
+            <span class="contact-sub">{{ descriptions[item.name] ?? item.handle }}</span>
           </span>
-          <ArrowUpRight
-            class="size-5 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink)"
-            aria-hidden="true"
-          />
+          <svg class="icon contact-arrow" aria-hidden="true"><use href="#i-arrow-up-right" /></svg>
         </a>
-      </div>
-
-      <!-- нижний ряд чипов: только кнопка копирования e-mail -->
-      <div data-reveal class="mt-8 flex flex-wrap items-center justify-center gap-2">
-        <a
-          v-for="s in secondary"
-          :key="s.name"
-          :href="s.href"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-full border border-(--line-1) bg-(--surface-2) px-4 py-2 text-sm font-medium text-(--ink-soft) transition-all hover:border-(--line-25) hover:bg-(--surface-hover) hover:text-(--ink)"
-        >
-          <img
-            :src="useAsset(`icons/social/${s.icon}.svg`)"
-            alt=""
-            width="15"
-            height="15"
-            class="social-icon size-[15px] opacity-80"
-            loading="lazy"
-            decoding="async"
-          />
-          {{ s.name }}
-        </a>
-        <CopyEmailButton />
       </div>
     </div>
   </section>

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { socials, prices, calcProjects } from '~/components/portfolio/data';
 
+const resumeOpen = useState('resume-open', () => false);
+
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ProfessionalService',
@@ -43,39 +45,40 @@ const jsonLd = {
 };
 
 useHead({
+  htmlAttrs: { lang: 'ru' },
+  meta: [{ name: 'theme-color', content: '#ffffff' }],
   script: [
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(jsonLd),
+    },
+    {
+      innerHTML: `(function(){try{var s=localStorage.getItem('theme');var t=(s==='light'||s==='dark')?s:(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t);var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#000000':'#ffffff');}catch(e){}})();`,
     },
   ],
 });
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col bg-(--page) text-(--ink)">
-    <!-- плёночное зерно поверх всего интерфейса -->
-    <div aria-hidden="true" class="noise-overlay" />
+  <div>
+    <a class="skip-link" href="#main">Перейти к содержанию</a>
+    <SvgSprite />
     <SiteHeader />
-    <main class="flex-1">
+    <main id="main" tabindex="-1">
       <Hero />
-      <Hairline />
       <About />
       <Experience />
       <OwnProjects />
       <Skills />
-      <Hairline />
       <Tech />
       <Process />
       <Prices />
-      <Hairline />
       <Faq />
-      <Hairline />
       <Contact />
     </main>
     <SiteFooter />
-    <!-- мобильная липкая CTA-панель -->
     <StickyCta />
+    <ResumeModal v-model:open="resumeOpen" />
     <ToastHost />
   </div>
 </template>

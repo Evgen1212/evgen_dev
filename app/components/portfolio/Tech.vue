@@ -1,31 +1,35 @@
 <script setup lang="ts">
 import { techRows } from "./data";
+
+const techLabels = ["Инфраструктура", "Frontend", "Backend и данные"];
 </script>
-
 <template>
-  <section id="tech" class="relative scroll-mt-24 py-24 sm:py-32">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-1/2 top-1/3 h-80 w-[50rem] max-w-full -translate-x-1/2 rounded-full bg-fuchsia-900/10 blur-3xl"
-    />
-    <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="mb-12 text-center sm:mb-16">
-        <SectionKicker>Стек</SectionKicker>
-        <h2
-          class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
-        >
-          Технологии
-        </h2>
-        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
-          которые я знаю и использую в проектах
-        </p>
-      </div>
-    </div>
+  <section id="tech" class="section" aria-labelledby="tech-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="kicker">Стек</p>
+        <h2 id="tech-title" class="section-title">Технологии</h2>
+        <p class="section-lede">которые я знаю и использую в проектах</p>
+      </header>
 
-    <div data-reveal class="relative space-y-7 sm:space-y-9">
-      <TechRow :items="techRows[0]" :duration="52" />
-      <TechRow :items="techRows[1]" :duration="58" reverse />
-      <TechRow :items="techRows[2]" :duration="55" />
+      <div class="tech-groups" data-reveal>
+        <div v-for="(row, rowIndex) in techRows" :key="rowIndex" class="tech-group">
+          <h3 class="tech-label">{{ techLabels[rowIndex] }}</h3>
+          <ul class="tech-list">
+            <li v-for="item in row" :key="item.label" class="tech-chip">
+              <img
+                v-if="item.icon"
+                :src="useAsset(`icons/tech/${item.icon}.svg`)"
+                alt=""
+                width="18"
+                height="18"
+                loading="lazy"
+              />
+              <span>{{ item.label }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 </template>

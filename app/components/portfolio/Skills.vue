@@ -36,49 +36,27 @@ const competencies: {
   },
 ];
 </script>
-
 <template>
-  <section id="skills" class="relative scroll-mt-24 py-24 sm:py-32">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"
-    />
-    <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="text-center">
-        <SectionKicker>Компетенции</SectionKicker>
-        <h2
-          class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
-        >
-          Что я умею — простыми словами
-        </h2>
-        <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
-          компетенции из резюме без жаргона — что это даёт вашему проекту
-        </p>
-      </div>
-      <ul class="mt-12 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <li
-          v-for="(c, i) in competencies"
-          :key="c.label"
+  <section id="skills" class="section section--surface" aria-labelledby="skills-title">
+    <div class="container">
+      <header class="section-head" data-reveal>
+        <p class="kicker">Компетенции</p>
+        <h2 id="skills-title" class="section-title">Что я умею — простыми словами</h2>
+        <p class="section-lede">компетенции из резюме без жаргона — что это даёт вашему проекту</p>
+      </header>
+
+      <div class="skill-grid stagger">
+        <div
+          v-for="(item, i) in competencies"
+          :key="item.label"
+          class="skill"
           data-reveal
-          :style="{ '--reveal-delay': `${i * 70}ms` }"
-          class="rounded-2xl border border-(--line-1) bg-(--surface-1) p-4 transition-colors duration-300 hover:border-(--line-2)"
+          :style="{ '--reveal-delay': `${i * 55}ms` }"
         >
-          <p class="font-display text-3xl font-bold tracking-tight">
-            <Counter
-              v-if="typeof c.value === 'number'"
-              :value="c.value"
-              :suffix="c.suffix"
-              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
-            />
-            <span
-              v-else
-              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
-              >{{ c.value }}</span
-            >
-          </p>
-          <p class="mt-1.5 text-xs leading-snug text-(--ink-faint)">{{ c.label }}</p>
-        </li>
-      </ul>
+          <p class="skill-value">{{ item.value }}{{ item.suffix ?? '' }}</p>
+          <p class="skill-label">{{ item.label }}</p>
+        </div>
+      </div>
     </div>
   </section>
 </template>
