@@ -748,6 +748,14 @@ body .container--narrow {
   text-align: left;
 }
 
+.hero-visual--text-only {
+  margin-top: clamp(28px, 4vw, 40px);
+}
+
+.hero-visual--text-only .hero-caption {
+  margin-top: 0;
+}
+
 .hero-figure {
   display: block;
   overflow: hidden;
@@ -2629,6 +2637,10 @@ body .container--narrow {
 }
 
 @media (max-width: 980px) {
+  .hero-visual {
+    display: none;
+  }
+
   .nav {
     display: none;
   }

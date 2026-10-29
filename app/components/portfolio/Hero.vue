@@ -2,30 +2,6 @@
 import { heroServices } from './data';
 
 const hireOpen = useState('resume-open', () => false);
-
-const heroFigure = ref<HTMLElement | null>(null);
-
-onMounted(() => {
-  if (!heroFigure.value) return;
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-  if (reduced.matches) return;
-
-  let raf = 0;
-  const update = () => {
-    raf = 0;
-    const rect = heroFigure.value!.getBoundingClientRect();
-    if (rect.bottom < -80 || rect.top > window.innerHeight + 80) return;
-    const offset = Math.min(18, Math.max(0, window.scrollY) * 0.03);
-    heroFigure.value!.style.setProperty('--parallax-y', `${-offset}px`);
-  };
-  const onScroll = () => {
-    if (!raf) raf = window.requestAnimationFrame(update);
-  };
-
-  update();
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onBeforeUnmount(() => window.removeEventListener('scroll', onScroll));
-});
 </script>
 
 <template>
@@ -62,26 +38,7 @@ onMounted(() => {
     </div>
 
     <div class="container">
-      <div class="hero-visual" data-reveal>
-        <a
-          ref="heroFigure"
-          class="hero-figure"
-          href="#experience"
-          aria-label="Авто-Евро — последнее место работы. Перейти к разделу «Опыт»"
-        >
-          <span class="browser-bar" aria-hidden="true">
-            <span class="browser-dots"><span /><span /><span /></span>
-            <span class="browser-url">autoeuro.ru</span>
-          </span>
-          <img
-            :src="useAsset('images/opt/work-autoeuro-1200.webp')"
-            alt="Скриншот сайта Авто-Евро"
-            width="1200"
-            height="750"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </a>
+      <div class="hero-visual hero-visual--text-only" data-reveal>
         <div class="hero-caption">
           <p>
             <span class="hero-caption-label">Последнее место работы</span>
