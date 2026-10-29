@@ -12,10 +12,16 @@ const descriptions: Record<string, string> = {
   VK: "Отвечаю в течение дня",
 };
 
-// primaryNames больше не нужен: все соцсети — primary, вторичный ряд чипов пуст
-// (внизу остаётся только CopyEmailButton).
-const primary = socials;
-const secondary: typeof socials = [];
+const primaryNames = new Set(["Telegram", "Телефон"]);
+const primary = socials.filter((s) => primaryNames.has(s.name));
+const secondary = socials.filter((s) => !primaryNames.has(s.name) && s.name !== "E-mail");
+
+function primaryFrameClass(name: string) {
+  if (name === "Telegram") {
+    return "bg-gradient-to-br from-[#26A5E4]/55 via-[#26A5E4]/20 to-transparent shadow-[0_0_40px_-12px_rgba(38,165,228,0.45)]";
+  }
+  return "bg-gradient-to-br from-emerald-400/55 via-emerald-500/20 to-transparent shadow-[0_0_40px_-12px_rgba(52,211,153,0.4)]";
+}
 </script>
 
 <template>
@@ -40,54 +46,76 @@ const secondary: typeof socials = [];
         <LocalTime class="mt-6" />
       </div>
 
-      <!-- карточки соцсетей: 7 штук, 2–3 в ряд -->
-      <div class="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <a
+      <p
+        data-reveal
+        class="mx-auto mb-4 max-w-3xl text-center text-xs font-semibold uppercase tracking-[0.2em] text-(--ink-faint)"
+      >
+        основной способ связи
+      </p>
+
+      <div class="mx-auto grid max-w-2xl gap-3 sm:grid-cols-2">
+        <div
           v-for="(s, i) in primary"
           :key="s.name"
-          :href="s.href"
-          :target="s.href.startsWith('http') ? '_blank' : undefined"
-          :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
           data-reveal
           :style="{ '--reveal-delay': `${i * 90}ms` }"
-          class="card-shine group flex items-center gap-4 rounded-3xl border border-(--line-1) bg-(--surface-2) p-5 backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:border-(--line-25) hover:bg-(--surface-4) sm:p-6"
+          class="rounded-2xl p-px transition-transform duration-300 hover:-translate-y-0.5"
+          :class="primaryFrameClass(s.name)"
         >
-          <span
-            class="grid size-14 shrink-0 place-items-center rounded-2xl shadow-lg transition-transform duration-300 group-hover:scale-110"
-            :style="{
-              backgroundColor: `#${s.color}22`,
-              border: `1px solid #${s.color}55`,
-            }"
+          <a
+            :href="s.href"
+            :target="s.href.startsWith('http') ? '_blank' : undefined"
+            :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
+            class="card-shine group relative flex h-full items-center gap-3 rounded-[calc(1rem-1px)] border border-(--line-1)/80 bg-(--surface-2) p-4 backdrop-blur-sm transition-all duration-300 hover:bg-(--surface-4) sm:p-4"
           >
-            <!-- telegram рисуется из /icons/social, phone/mail — lucide -->
-            <Phone v-if="s.icon === 'phone'" class="size-[26px]" aria-hidden="true" />
-            <Mail v-else-if="s.icon === 'mail'" class="size-[26px]" aria-hidden="true" />
-            <img
-              v-else
-              :src="useAsset(`icons/social/${s.icon}.svg`)"
-              alt=""
-              width="26"
-              height="26"
-              class="social-icon size-[26px]"
-              loading="lazy"
-              decoding="async"
+            <span
+              class="grid size-12 shrink-0 place-items-center rounded-xl shadow-md ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-105"
+              :style="{
+                backgroundColor: `#${s.color}30`,
+                border: `1px solid #${s.color}77`,
+                boxShadow: `0 6px 18px -8px #${s.color}66`,
+              }"
+            >
+              <Phone
+                v-if="s.icon === 'phone'"
+                class="size-5"
+                :style="{ color: `#${s.color}` }"
+                aria-hidden="true"
+              />
+              <img
+                v-else
+                :src="useAsset(`icons/social/${s.icon}.svg`)"
+                alt=""
+                width="22"
+                height="22"
+                class="social-icon size-5"
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+            <span class="min-w-0 flex-1">
+              <span class="block font-display text-lg font-bold text-(--ink)">{{
+                s.name
+              }}</span>
+              <span class="mt-0.5 block text-xs font-medium text-(--ink-soft)">{{
+                descriptions[s.name] ?? s.handle
+              }}</span>
+              <span class="mt-0.5 block truncate font-mono text-xs text-(--ink-mute)">{{
+                s.handle
+              }}</span>
+            </span>
+            <ArrowUpRight
+              class="size-4 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink)"
+              aria-hidden="true"
             />
-          </span>
-          <span class="min-w-0 flex-1">
-            <span class="block font-display text-lg font-bold text-(--ink)">{{ s.name }}</span>
-            <span class="block truncate text-sm text-(--ink-mute)">{{
-              descriptions[s.name] ?? s.handle
-            }}</span>
-          </span>
-          <ArrowUpRight
-            class="size-5 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink)"
-            aria-hidden="true"
-          />
-        </a>
+          </a>
+        </div>
       </div>
 
-      <!-- нижний ряд чипов: только кнопка копирования e-mail -->
       <div data-reveal class="mt-8 flex flex-wrap items-center justify-center gap-2">
+        <span class="mb-1 w-full text-center text-xs text-(--ink-faint) sm:mb-0 sm:w-auto sm:pr-1">
+          также:
+        </span>
         <a
           v-for="s in secondary"
           :key="s.name"
@@ -96,7 +124,10 @@ const secondary: typeof socials = [];
           rel="noopener noreferrer"
           class="inline-flex items-center gap-2 rounded-full border border-(--line-1) bg-(--surface-2) px-4 py-2 text-sm font-medium text-(--ink-soft) transition-all hover:border-(--line-25) hover:bg-(--surface-hover) hover:text-(--ink)"
         >
+          <Phone v-if="s.icon === 'phone'" class="size-[15px] opacity-80" aria-hidden="true" />
+          <Mail v-else-if="s.icon === 'mail'" class="size-[15px] opacity-80" aria-hidden="true" />
           <img
+            v-else
             :src="useAsset(`icons/social/${s.icon}.svg`)"
             alt=""
             width="15"
@@ -107,7 +138,7 @@ const secondary: typeof socials = [];
           />
           {{ s.name }}
         </a>
-        <CopyEmailButton />
+        <ContactEmail />
       </div>
     </div>
   </section>

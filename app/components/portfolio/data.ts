@@ -18,7 +18,7 @@ export const siteOwner = {
   experienceYears: 5,
 };
 
-/** Публичный e-mail для связи (кнопка «скопировать» в контактах) */
+/** Публичный e-mail (карточка/чип в блоке контактов) */
 export const contactEmail = "evg3nyaevgen@yandex.ru";
 
 export const socials: SocialLink[] = [
@@ -73,6 +73,8 @@ export const socials: SocialLink[] = [
   },
 ];
 
+export const contactPhone = socials.find((s) => s.name === "Телефон")!;
+
 export type Service = {
   badge?: string;
   emoji?: string;
@@ -93,7 +95,7 @@ export const heroServices: Service[] = [
   { emoji: "🛒", label: "Интернет-магазины" },
   { badge: "API", label: "REST / GraphQL" },
   { emoji: "🚀", label: "Оптимизация Web Vitals" },
-  { emoji: "🤖", label: "Боты и автоматизация" },
+  { emoji: "🤖", label: "Автоматизация" },
 ];
 
 export type TechItem = {
@@ -165,7 +167,7 @@ export const calcProjects: CalcProject[] = [
   { key: "landing", label: "Лендинг", hint: "одностраничный сайт", base: 25000, days: 5 },
   { key: "multipage", label: "Многостраничный сайт", hint: "корпоративный, каталог", base: 50000, days: 10 },
   { key: "webapp", label: "Веб-сервис", hint: "SPA, личные кабинеты", base: 100000, days: 21 },
-  { key: "bot", label: "Бот / автоматизация", hint: "Telegram, парсеры", base: 20000, days: 3 },
+  { key: "bot", label: "Автоматизация", hint: "Telegram, парсеры", base: 20000, days: 3 },
 ];
 
 export type CalcExtraKey =
@@ -266,11 +268,11 @@ const tierDefs: Omit<PriceTier, "price" | "term">[] = [
     ],
   },
   {
-    name: "Боты и автоматизация",
+    name: "Автоматизация",
     calcKey: "bot",
     description: "Telegram-боты, парсеры и интеграции",
     features: [
-      "Telegram / VK боты",
+      "AI API",
       "Парсеры и скрипты",
       "Интеграции с любыми API",
       "Уведомления и отчёты",
