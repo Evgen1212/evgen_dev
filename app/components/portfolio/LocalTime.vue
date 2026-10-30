@@ -52,16 +52,21 @@ onBeforeUnmount(() => {
 <template>
   <p
     data-reveal
-    class="mx-auto flex w-fit items-center gap-2.5 rounded-full border border-(--line-1) bg-(--surface-2) px-4 py-2 text-sm text-(--ink-soft) backdrop-blur-sm"
+    class="m3-assist-chip mx-auto w-fit text-sm text-(--ink-soft)"
     title="Моё локальное время — Москва (GMT+3)"
   >
     <span class="relative flex size-2.5" aria-hidden="true">
       <span
         v-if="online"
-        class="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60 motion-reduce:animate-none"
+        class="absolute inline-flex size-full animate-ping rounded-full bg-(--m3-tertiary) opacity-50 motion-reduce:animate-none"
       />
       <span
-        :class="cn('relative inline-flex size-2.5 rounded-full', online ? 'bg-emerald-400' : 'bg-(--ink-faint)')"
+        :class="
+          cn(
+            'relative inline-flex size-2.5 rounded-full',
+            online ? 'bg-(--m3-tertiary)' : 'bg-(--ink-faint)',
+          )
+        "
       />
     </span>
     <span>
@@ -71,7 +76,7 @@ onBeforeUnmount(() => {
       </span>
     </span>
     <span
-      :class="cn('hidden text-xs font-semibold sm:inline', online ? 'text-(--accent-emerald)' : 'text-(--ink-faint)')"
+      :class="cn('hidden text-xs font-semibold sm:inline', online ? 'text-(--m3-tertiary)' : 'text-(--ink-faint)')"
     >
       {{ online ? "на связи" : "ночью — отвечу утром" }}
     </span>

@@ -38,16 +38,12 @@ const competencies: {
 </script>
 
 <template>
-  <section id="skills" class="relative scroll-mt-24 py-24 sm:py-32">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"
-    />
+  <section id="skills" class="m3-section">
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="text-center">
+      <div data-reveal class="text-center max-md:text-left">
         <SectionKicker>Компетенции</SectionKicker>
         <h2
-          class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+          class="m3-headline-lg"
         >
           Что я умею — простыми словами
         </h2>
@@ -61,18 +57,18 @@ const competencies: {
           :key="c.label"
           data-reveal
           :style="{ '--reveal-delay': `${i * 70}ms` }"
-          class="rounded-2xl border border-(--line-1) bg-(--surface-1) p-4 transition-colors duration-300 hover:border-(--line-2)"
+          class="m3-list-item p-4 elevation-1"
         >
-          <p class="font-display text-3xl font-bold tracking-tight">
+          <p class="m3-headline-md text-(--m3-primary)">
             <Counter
               v-if="typeof c.value === 'number'"
               :value="c.value"
               :suffix="c.suffix"
-              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
+              class="text-(--m3-primary)"
             />
             <span
               v-else
-              class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
+              class="text-(--m3-primary)"
               >{{ c.value }}</span
             >
           </p>

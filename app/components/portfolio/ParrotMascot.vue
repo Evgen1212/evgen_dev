@@ -106,12 +106,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    class="pointer-events-none absolute inset-x-0 bottom-2 z-20"
-    :style="{
-      transform: 'translate3d(0, calc(var(--scroll-y, 0) * -0.12px), 0)',
-    }"
-  >
+  <div class="pointer-events-none absolute inset-x-0 bottom-2 z-20 max-md:hidden">
     <button
       type="button"
       aria-label="Попугай-маскот — нажми, и он чирикнет"
@@ -129,15 +124,14 @@ onBeforeUnmount(() => {
           sizes="(min-width: 1536px) 320px, (min-width: 1280px) 256px, (min-width: 768px) 208px, (min-width: 640px) 160px, 112px"
           loading="eager"
           fetchpriority="low"
-          skeleton="glow"
-          color="#d946ef"
+          skeleton="shimmer"
           :class="
             cn(
               'pointer-events-none block w-28 select-none overflow-visible sm:w-40 md:w-52 xl:w-64 2xl:w-80',
               bouncing && 'parrot-bounce',
             )
           "
-          img-class="w-full h-auto select-none drop-shadow-[0_24px_40px_rgba(0,0,0,0.55)]"
+          img-class="w-full h-auto select-none m3-spot-shadow"
           :draggable="false"
         />
       </span>

@@ -1,40 +1,39 @@
 <script setup lang="ts">
-import type { TechItem } from "./data";
+import type { TechItem } from './data';
 
-/**
- * Порт TechRow из tech.tsx (вынесен в отдельный SFC —
- * один SFC = один компонент). Класс fallthrough: className
- * с родителя ложится на корневой Marquee автоматически.
- */
-defineProps<{
-  items: TechItem[];
-  duration: number;
-  reverse?: boolean;
-}>();
+withDefaults(
+  defineProps<{
+    items: TechItem[];
+    duration?: number;
+    reverse?: boolean;
+  }>(),
+  { duration: 52, reverse: false }
+);
 </script>
 
 <template>
-  <Marquee :duration="duration" :reverse="reverse" pause-on-hover>
-    <span v-for="item in items" :key="item.label" class="flex items-center">
-      <span class="flex items-center gap-3 whitespace-nowrap">
-        <img
-          v-if="item.icon"
-          :src="useAsset(`icons/tech/${item.icon}.svg`)"
-          alt=""
-          width="26"
-          height="26"
-          class="size-6 sm:size-7 shrink-0"
-          loading="lazy"
-          decoding="async"
-        />
-        <span v-else aria-hidden="true" class="text-xl sm:text-2xl leading-none">
+  <Marquee
+    :duration="duration"
+    :reverse="reverse"
+    class="px-4 sm:px-8"
+    role="list"
+    aria-label="Технологии"
+  >
+    <span
+      v-for="item in items"
+      :key="item.label"
+      role="listitem"
+      class="mx-2 inline-flex shrink-0 items-center gap-3 whitespace-nowrap rounded-[var(--m3-shape-lg)] bg-(--m3-surface-container-high) py-2 pl-2 pr-4 elevation-1"
+    >
+      <span class="m3-app-icon">
+        <TechIcon v-if="item.icon" :icon="item.icon" />
+        <span v-else aria-hidden="true" class="text-xl leading-none">
           {{ item.emoji }}
         </span>
-        <span class="text-lg sm:text-2xl font-medium text-(--ink-soft)">
-          {{ item.label }}
-        </span>
       </span>
-      <MarqueeDot />
+      <span class="text-base font-medium text-(--ink) sm:text-lg">
+        {{ item.label }}
+      </span>
     </span>
   </Marquee>
 </template>

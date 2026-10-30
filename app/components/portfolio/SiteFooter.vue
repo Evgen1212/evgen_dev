@@ -14,32 +14,44 @@ const footerNav = [
 </script>
 
 <template>
-  <footer class="relative mt-auto border-t border-(--line-1) py-8">
+  <footer
+    class="relative mt-auto border-t border-(--outline-variant) bg-(--m3-surface-container-low) py-6 max-md:border-t-0 max-md:bg-(--m3-surface-container) max-md:py-4"
+  >
     <div class="mx-auto max-w-7xl px-5 sm:px-8">
-      <div class="flex flex-col items-center justify-between gap-4 sm:flex-row">
+      <div
+        class="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:gap-4 sm:text-left"
+      >
         <a
           href="#top"
-          class="font-display text-base font-bold transition-opacity hover:opacity-80"
+          class="font-brand text-base transition-opacity hover:opacity-80 max-md:hidden"
         >
           evgen_dev
         </a>
 
-        <p class="text-sm text-(--ink-faint)">
-          © {{ year }} Абрамов Евгений. Senior Frontend-разработчик.
+        <p class="text-sm text-(--m3-on-surface-variant) max-md:text-xs">
+          © {{ year }} Абрамов Евгений · Senior Frontend
         </p>
 
-        <div class="flex items-center gap-3">
-          <p class="text-sm text-(--ink-faint)">
-            Сделано с
-            <span class="text-fuchsia-400" aria-hidden="true">♥</span>
-            на Nuxt
+        <div class="flex items-center gap-3 max-md:hidden">
+          <p
+            class="inline-flex items-center gap-1.5 text-sm text-(--ink-faint)"
+          >
+            <span class="inline-flex items-center gap-1">
+              Nuxt
+              <TechIcon
+                icon="nuxt"
+                size-class="size-4"
+                :width="16"
+                :height="16"
+              />
+            </span>
           </p>
         </div>
       </div>
 
       <nav
         aria-label="Навигация в футере"
-        class="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-(--line-faint) pt-5 text-sm"
+        class="mt-6 hidden flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-(--line-faint) pt-5 text-sm md:flex"
       >
         <a
           v-for="l in footerNav"

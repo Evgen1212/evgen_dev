@@ -2,7 +2,7 @@ export type SocialLink = {
   name: string;
   handle: string;
   href: string;
-  /** simpleicons slug (рисуется из /icons/social/<icon>.svg) или "phone" | "mail" (lucide) */
+  /** simpleicons slug (рисуется из /icons/social/<icon>.svg) или "phone" | "mail" (Material Symbols) */
   icon: string;
   color: string; // brand color hex
 };

@@ -39,18 +39,13 @@ export default defineNuxtConfig({
         "evgen_dev — Senior Frontend-разработчик (Vue.js / Nuxt.js / TypeScript)",
       meta: [
         { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
-        // тема браузера следует за светлой/тёмной темой сайта
         {
-          name: "theme-color",
-          media: "(prefers-color-scheme: dark)",
-          content: "#0a0a0b",
+          name: "viewport",
+          content:
+            "width=device-width, initial-scale=1, viewport-fit=cover",
         },
-        {
-          name: "theme-color",
-          media: "(prefers-color-scheme: light)",
-          content: "#f6f6f7",
-        },
+        { name: "theme-color", content: "#1C1B1F", id: "theme-color" },
+        { name: "mobile-web-app-capable", content: "yes" },
         {
           name: "description",
           content:
@@ -94,18 +89,12 @@ export default defineNuxtConfig({
       ],
       link: [
         {
-          rel: "preload",
-          as: "font",
-          type: "font/woff2",
-          href: `${baseURL}fonts/comfortaa-cyrillic.woff2`,
-          crossorigin: "anonymous",
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap",
         },
         {
-          rel: "preload",
-          as: "font",
-          type: "font/woff2",
-          href: `${baseURL}fonts/manrope-cyrillic.woff2`,
-          crossorigin: "anonymous",
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap",
         },
         { rel: "icon", type: "image/svg+xml", href: `${baseURL}favicon.svg` },
         { rel: "manifest", href: `${baseURL}manifest.webmanifest` },
@@ -114,7 +103,7 @@ export default defineNuxtConfig({
         {
           // Тема до первой отрисовки: ручной выбор из localStorage. Без выбора
           // тему определяет CSS (prefers-color-scheme) — мигалки (FOUC) нет.
-          innerHTML: `(function(){try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}})();`,
+          innerHTML: `(function(){var D="#1C1B1F",L="#FEF7FF";function isLight(){var t=document.documentElement.getAttribute("data-theme");if(t==="light")return true;if(t==="dark")return false;return window.matchMedia("(prefers-color-scheme: light)").matches}function syncBar(){var m=document.getElementById("theme-color");if(m)m.content=isLight()?L:D}try{var t=localStorage.getItem("theme");if(t==="light"||t==="dark"){document.documentElement.setAttribute("data-theme",t)}}catch(e){}syncBar();try{new MutationObserver(syncBar).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});window.matchMedia("(prefers-color-scheme: light)").addEventListener("change",syncBar)}catch(e){}})();`,
           tagPriority: "critical",
         },
         {

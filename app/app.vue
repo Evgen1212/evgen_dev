@@ -53,11 +53,18 @@ useHead({
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col bg-(--page) text-(--ink)">
-    <!-- плёночное зерно поверх всего интерфейса -->
-    <div aria-hidden="true" class="noise-overlay" />
+  <a
+    href="#top"
+    class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[200] focus:rounded-[var(--m3-shape-sm)] focus:bg-(--m3-primary) focus:px-4 focus:py-2 focus:text-(--m3-on-primary) focus:outline-none"
+  >
+    Перейти к содержимому
+  </a>
+  <div
+    class="android-shell flex min-h-screen flex-col bg-(--m3-surface) text-(--m3-on-surface)"
+  >
+    <AndroidSystemChrome />
     <SiteHeader />
-    <main class="flex-1">
+    <main class="android-main-inset flex-1">
       <Hero />
       <Hairline />
       <About />
@@ -74,6 +81,7 @@ useHead({
       <Contact />
     </main>
     <SiteFooter />
+    <AndroidBottomNav />
     <!-- мобильная липкая CTA-панель -->
     <StickyCta />
     <ToastHost />

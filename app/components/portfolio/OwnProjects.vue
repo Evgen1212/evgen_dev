@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowUpRight, ChevronDown } from "lucide-vue-next";
 
 /* ─── Мобильный аккордеон: каждый проект — отдельный айтем ─── */
 const openProject = ref<number | null>(0);
@@ -39,16 +38,11 @@ const projects = [
 </script>
 
 <template>
-  <section id="projects" class="relative scroll-mt-24 py-24 sm:py-32">
-    <!-- soft glow -->
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-purple-800/15 blur-3xl"
-    />
+  <section id="projects" class="m3-section">
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="mb-12 text-center sm:mb-16">
+      <div data-reveal class="mb-12 text-center max-md:text-left sm:mb-16">
         <SectionKicker>Участие в проектах</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+        <h2 class="m3-headline-lg">
           Заказные проекты
         </h2>
         <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
@@ -62,7 +56,7 @@ const projects = [
           :key="p.key"
           data-reveal
           :style="{ '--reveal-delay': `${i * 90}ms` }"
-          class="group relative flex flex-col overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:shadow-2xl"
+          class="m3-list-item m3-no-zoom-hover group relative flex flex-col overflow-hidden transition-shadow duration-300 elevation-1 hover:elevation-2"
         >
           <!-- ссылка на весь проект (только десктоп) -->
           <a
@@ -92,12 +86,14 @@ const projects = [
             />
             <div
               aria-hidden="true"
-              class="absolute inset-x-0 top-0 flex items-center gap-1.5 bg-black/50 px-4 py-2.5 backdrop-blur-md"
+              class="absolute inset-x-0 top-0 flex h-8 items-center gap-2 border-b border-(--outline-variant) bg-(--m3-surface-container-high)/95 px-3"
             >
-              <span class="size-2.5 rounded-full bg-[#ff5f57]" />
-              <span class="size-2.5 rounded-full bg-[#febc2e]" />
-              <span class="size-2.5 rounded-full bg-[#28c840]" />
-              <span class="ml-2 truncate rounded-md bg-white/10 px-2.5 py-0.5 font-mono text-[11px] text-zinc-300">
+              <span
+                class="grid size-5 shrink-0 place-items-center rounded-[var(--m3-shape-sm)] bg-(--m3-primary)/15 text-[9px] font-bold uppercase text-(--m3-primary)"
+              >
+                {{ p.title.slice(0, 1) }}
+              </span>
+              <span class="truncate text-[11px] tabular-nums text-(--ink-mute)">
                 {{ p.domain }}
               </span>
             </div>
@@ -107,21 +103,22 @@ const projects = [
           <div class="flex flex-1 flex-col p-5 sm:p-6">
             <button
               type="button"
-              class="flex w-full items-start justify-between gap-3 text-left md:cursor-default"
+              class="flex w-full items-start justify-between gap-2 text-left md:pointer-events-none md:cursor-default"
               :aria-expanded="openProject === i"
               @click="toggleProject(i)"
             >
-              <h3 class="font-display text-xl font-bold tracking-tight">{{ p.title }}</h3>
-
-              <ChevronDown
-                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-transform duration-300 md:hidden"
+              <h3 class="m3-title-lg">{{ p.title }}</h3>
+              <span
+                class="own-projects-expand material-symbols-outlined mt-0.5 shrink-0 text-xl text-(--ink-faint) transition-transform duration-300"
                 :class="openProject === i && 'rotate-180'"
                 aria-hidden="true"
-              />
-              <ArrowUpRight
-                class="mt-1 hidden size-5 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink) md:block"
+                >expand_more</span
+              >
+              <span
+                class="own-projects-link-arrow material-symbols-outlined mt-0.5 shrink-0 text-xl text-(--ink-faint)"
                 aria-hidden="true"
-              />
+                >arrow_outward</span
+              >
             </button>
 
             <div
@@ -134,7 +131,7 @@ const projects = [
                   :href="p.href"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="relative z-20 mt-4 inline-flex items-center gap-1.5 self-start text-xs font-semibold text-(--accent-soft) transition-colors hover:text-(--ink)"
+                  class="relative z-20 mt-4 inline-flex items-center gap-1.5 self-start text-xs font-semibold text-(--m3-primary) transition-colors hover:text-(--ink)"
                 >
                   {{ p.domain }}
                 </a>
@@ -150,12 +147,33 @@ const projects = [
           class="group inline-flex items-center gap-2 text-sm font-medium text-(--ink-soft) transition-colors hover:text-(--ink)"
         >
           Есть похожий проект? Напишите мне
-          <ArrowUpRight
-            class="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          <span
+            class="material-symbols-outlined text-base transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden="true"
-          />
+            >arrow_outward</span
+          >
         </a>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.own-projects-expand {
+  display: inline-flex;
+}
+
+.own-projects-link-arrow {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .own-projects-expand {
+    display: none !important;
+  }
+
+  .own-projects-link-arrow {
+    display: inline-flex;
+  }
+}
+</style>

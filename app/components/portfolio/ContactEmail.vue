@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Check, Copy, Mail } from "lucide-vue-next";
 import { contactEmail } from "./data";
 
 const { toast } = useToast();
@@ -30,24 +29,36 @@ onUnmounted(() => {
 
 <template>
   <span
-    class="inline-flex items-center gap-1 rounded-full border border-(--line-1) bg-(--surface-2) py-2 pl-4 pr-2 text-sm font-medium text-(--ink-soft) transition-all hover:border-(--line-25) hover:bg-(--surface-hover) hover:text-(--ink)"
+    class="contact-email-chip m3-filter-chip m3-state-layer inline-flex min-h-8 items-center gap-0.5 py-2 pl-4 pr-1 text-sm font-medium text-(--ink-soft) hover:bg-(--m3-surface-container-high) hover:text-(--ink)"
   >
     <a
       :href="`mailto:${contactEmail}`"
       class="inline-flex items-center gap-2 transition-colors"
       :title="contactEmail"
     >
-      <Mail class="size-[15px] opacity-80" aria-hidden="true" />
+      <span class="material-symbols-outlined text-base opacity-80" aria-hidden="true"
+        >mail</span
+      >
       E-mail
     </a>
     <button
       type="button"
-      class="inline-flex size-7 shrink-0 items-center justify-center rounded-full text-(--ink-mute) transition-all hover:bg-(--surface-3) hover:text-(--ink) active:scale-[0.98]"
+      class="contact-email-copy m3-state-layer android-ripple grid size-6 shrink-0 place-items-center rounded-full text-(--ink-mute) hover:text-(--ink)"
       :title="`Скопировать ${contactEmail}`"
       @click="copyEmail"
     >
-      <Check v-if="copied" class="size-[15px]" aria-hidden="true" />
-      <Copy v-else class="size-[15px] opacity-80" aria-hidden="true" />
+      <span
+        v-if="copied"
+        class="material-symbols-outlined contact-email-copy__icon"
+        aria-hidden="true"
+        >check</span
+      >
+      <span
+        v-else
+        class="material-symbols-outlined contact-email-copy__icon opacity-80"
+        aria-hidden="true"
+        >content_copy</span
+      >
       <span class="sr-only">{{ copied ? "Скопировано" : "Скопировать" }}</span>
     </button>
   </span>

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ChevronDown, ExternalLink, MapPin } from "lucide-vue-next";
-
 /* ─── Мобильный аккордеон: каждая работа — отдельный айтем ─── */
 const openJob = ref<number | null>(0);
 const toggleJob = (i: number) => {
@@ -110,17 +108,11 @@ const jobs: Job[] = [
 </script>
 
 <template>
-  <section id="experience" class="relative scroll-mt-24 py-24 sm:py-32">
-    <!-- soft glow -->
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-1/2 top-0 h-72 w-[42rem] max-w-full -translate-x-1/2 rounded-full bg-purple-800/15 blur-3xl"
-    />
-
+  <section id="experience" class="m3-section">
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="mb-12 text-center sm:mb-16">
+      <div data-reveal class="mb-12 text-center max-md:text-left sm:mb-16">
         <SectionKicker>Карьерный путь</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+        <h2 class="m3-headline-lg">
           Опыт работы
         </h2>
         <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
@@ -128,13 +120,18 @@ const jobs: Job[] = [
         </p>
       </div>
 
-      <div class="mx-auto flex max-w-5xl flex-col gap-10 sm:gap-14">
+      <div
+        class="mx-auto flex max-w-5xl flex-col gap-10 sm:gap-14 max-md:gap-0 md:gap-10"
+      >
+        <div
+          class="max-md:m3-card max-md:divide-y max-md:divide-(--outline-variant) max-md:overflow-hidden max-md:p-0 max-md:elevation-1 lg:contents"
+        >
         <article
           v-for="(job, i) in jobs"
           :key="job.key"
           data-reveal
           :style="{ '--reveal-delay': `${Math.min(i, 2) * 60}ms` }"
-          class="group grid overflow-hidden rounded-[28px] border border-(--line-1) bg-(--surface-1) shadow-xl shadow-black/30 transition-all duration-500 hover:border-(--line-2) hover:shadow-2xl lg:grid-cols-2"
+          class="m3-no-zoom-hover group grid overflow-hidden max-md:border-0 max-md:shadow-none md:m3-list-item md:elevation-1 md:hover:elevation-2 lg:grid-cols-2"
         >
           <!-- скриншот сайта работодателя -->
           <a
@@ -160,18 +157,13 @@ const jobs: Job[] = [
             />
             <div
               aria-hidden="true"
-              class="absolute inset-0 bg-gradient-to-t from-(--fade-a) via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-(--fade-b)"
-              :class="i % 2 === 1 ? 'lg:bg-gradient-to-l' : ''"
+              class="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-(--m3-surface-container) to-transparent lg:hidden"
             />
-            <!-- браузерная рамка -->
             <div
               aria-hidden="true"
-              class="absolute inset-x-0 top-0 flex items-center gap-1.5 bg-black/50 px-4 py-2.5 backdrop-blur-md"
+              class="absolute inset-x-0 top-0 flex h-8 items-center border-b border-(--outline-variant) bg-(--m3-surface-container-high)/90 px-4"
             >
-              <span class="size-2.5 rounded-full bg-[#ff5f57]" />
-              <span class="size-2.5 rounded-full bg-[#febc2e]" />
-              <span class="size-2.5 rounded-full bg-[#28c840]" />
-              <span class="ml-2 truncate rounded-md bg-white/10 px-2.5 py-0.5 font-mono text-[11px] text-zinc-300">
+              <span class="truncate text-[11px] tabular-nums text-(--ink-mute)">
                 {{ job.domain }}
               </span>
             </div>
@@ -187,29 +179,34 @@ const jobs: Job[] = [
             >
               <div class="flex-1">
                 <div class="flex flex-wrap items-center gap-2">
-                  <span class="rounded-full bg-white px-3.5 py-1 text-xs font-bold text-black">
+                  <span class="m3-assist-chip text-xs text-(--ink-soft)">
                     {{ job.period }}
                   </span>
-                  <span class="rounded-full border border-(--line-1) bg-(--surface-3) px-3 py-1 text-xs text-(--ink-mute)">
+                  <span class="m3-assist-chip text-xs text-(--ink-mute)">
                     {{ job.duration }}
                   </span>
                   <span class="inline-flex items-center gap-1 text-xs text-(--ink-faint)">
-                    <MapPin class="size-3.5" aria-hidden="true" />
+                    <span
+                      class="material-symbols-outlined text-sm leading-none"
+                      aria-hidden="true"
+                      >location_on</span
+                    >
                     {{ job.city }}
                   </span>
                 </div>
 
-                <h3 class="mt-4 font-display text-2xl font-bold tracking-tight sm:text-3xl">
+                <h3 class="m3-headline-md mt-4">
                   {{ job.company }}
                 </h3>
-                <p class="mt-1 text-sm font-semibold text-(--accent-soft)">{{ job.role }}</p>
+                <p class="mt-1 text-sm font-medium text-(--m3-primary)">{{ job.role }}</p>
               </div>
 
-              <ChevronDown
-                class="mt-1 size-5 shrink-0 text-(--ink-faint) transition-transform duration-300 lg:hidden"
+              <span
+                class="experience-job-expand material-symbols-outlined mt-1 shrink-0 text-xl text-(--ink-faint) transition-transform duration-300"
                 :class="openJob === i && 'rotate-180'"
                 aria-hidden="true"
-              />
+                >expand_more</span
+              >
             </button>
 
             <div
@@ -218,18 +215,14 @@ const jobs: Job[] = [
             >
               <div class="overflow-hidden">
                 <ul class="mt-4 flex-1 space-y-2.5 text-sm leading-relaxed text-(--ink-mute)">
-                  <li v-for="h in job.highlights" :key="h" class="flex gap-2.5">
-                    <span
-                      aria-hidden="true"
-                      class="mt-[7px] size-1.5 shrink-0 rounded-full bg-gradient-to-br from-fuchsia-400 to-purple-500"
-                    />
-                    <span>{{ h }}</span>
+                  <li v-for="h in job.highlights" :key="h">
+                    {{ h }}
                   </li>
                 </ul>
 
                 <p
                   v-if="job.note"
-                  class="mt-4 border-l-2 border-fuchsia-400/40 pl-3 text-xs italic leading-relaxed text-(--ink-faint)"
+                  class="mt-4 border-l-2 border-(--m3-primary)/40 pl-3 text-xs italic leading-relaxed text-(--ink-faint)"
                 >
                   {{ job.note }}
                 </p>
@@ -238,7 +231,7 @@ const jobs: Job[] = [
                   <span
                     v-for="t in job.stack"
                     :key="t"
-                    class="rounded-full border border-(--line-1) bg-(--surface-3) px-2.5 py-1 text-[11px] font-medium text-(--ink-soft)"
+                    class="m3-filter-chip px-2.5 py-1 text-[11px] font-medium text-(--ink-soft)"
                   >
                     {{ t }}
                   </span>
@@ -251,16 +244,27 @@ const jobs: Job[] = [
                   class="mt-6 inline-flex items-center gap-2 self-start text-sm font-semibold text-(--ink-soft) transition-colors hover:text-(--ink)"
                 >
                   Открыть сайт — {{ job.domain }}
-                  <ExternalLink
-                    class="size-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  <span
+                    class="material-symbols-outlined text-base transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                     aria-hidden="true"
-                  />
+                    >open_in_new</span
+                  >
                 </a>
               </div>
             </div>
           </div>
         </article>
+        </div>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Аккордеон только < lg; на desktop стрелка не нужна */
+@media (min-width: 1024px) {
+  .experience-job-expand {
+    display: none !important;
+  }
+}
+</style>

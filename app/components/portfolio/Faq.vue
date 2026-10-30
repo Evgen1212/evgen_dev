@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ChevronDown, MessageCircleQuestion } from "lucide-vue-next";
-
 const faqs = [
   {
     q: "Что понадобится от меня на старте?",
@@ -62,11 +60,11 @@ function onAccAfterLeave(el: Element) {
 </script>
 
 <template>
-  <section id="faq" class="relative scroll-mt-24 py-24 sm:py-32">
+  <section id="faq" class="m3-section">
     <div class="relative mx-auto max-w-3xl px-5 sm:px-8">
-      <div data-reveal class="mb-10 text-center sm:mb-14">
+      <div data-reveal class="mb-10 text-center max-md:text-left sm:mb-14">
         <SectionKicker>Частые вопросы</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-5xl">
+        <h2 class="m3-headline-lg">
           FAQ
         </h2>
         <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
@@ -74,7 +72,7 @@ function onAccAfterLeave(el: Element) {
         </p>
       </div>
 
-      <div class="space-y-3">
+      <div class="m3-card divide-y divide-(--outline-variant) overflow-hidden p-0 elevation-1">
         <div
           v-for="(item, i) in faqs"
           :key="item.q"
@@ -82,28 +80,27 @@ function onAccAfterLeave(el: Element) {
           :style="{ '--reveal-delay': `${i * 70}ms` }"
           :class="
             cn(
-              'overflow-hidden rounded-2xl border bg-(--surface-1) px-5 transition-colors hover:border-(--line-2)',
-              openKey === `faq-${i}`
-                ? 'border-fuchsia-400/30 bg-(--surface-3)'
-                : 'border-(--line-1)',
+              'faq-item',
+              openKey === `faq-${i}` && 'faq-item--open',
             )
           "
         >
-          <h3 class="flex">
+          <h3 class="m-0 flex">
             <button
               :id="`faq-trigger-${i}`"
               type="button"
               :aria-expanded="openKey === `faq-${i}`"
               :aria-controls="`faq-content-${i}`"
-              class="focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-5 text-left font-display text-base font-bold text-(--ink) outline-none transition-all hover:no-underline focus-visible:ring-[3px] sm:text-lg"
+              class="faq-item__trigger flex min-h-14 w-full flex-1 items-start justify-between gap-4 px-5 py-5 text-left text-base font-medium text-(--ink) sm:text-lg"
               @click="toggle(`faq-${i}`)"
             >
               {{ item.q }}
-              <ChevronDown
-                class="pointer-events-none size-4 shrink-0 translate-y-0.5 text-(--ink-mute) transition-transform duration-200"
+              <span
+                class="material-symbols-outlined pointer-events-none shrink-0 text-2xl text-(--ink-mute) transition-transform duration-200"
                 :class="openKey === `faq-${i}` && 'rotate-180'"
                 aria-hidden="true"
-              />
+                >expand_more</span
+              >
             </button>
           </h3>
           <Transition
@@ -121,7 +118,7 @@ function onAccAfterLeave(el: Element) {
               class="overflow-hidden"
             >
               <div
-                class="pb-5 text-sm leading-relaxed text-(--ink-mute) sm:text-base"
+                class="faq-item__answer px-5 pb-5 text-sm leading-relaxed text-(--ink-mute) sm:text-base"
               >
                 {{ item.a }}
               </div>
@@ -134,14 +131,15 @@ function onAccAfterLeave(el: Element) {
         data-reveal
         class="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-(--ink-faint)"
       >
-        <MessageCircleQuestion
-          class="size-4 text-(--accent-soft)"
+        <span
+          class="material-symbols-outlined text-lg text-(--m3-primary)"
           aria-hidden="true"
-        />
+          >help</span
+        >
         Остался вопрос?
         <a
           href="#contact"
-          class="font-semibold text-(--ink-soft) underline decoration-fuchsia-400/50 decoration-2 underline-offset-4 transition-colors hover:text-(--ink)"
+          class="font-semibold text-(--m3-primary) underline decoration-(--m3-primary)/40 decoration-2 underline-offset-4 transition-colors hover:opacity-80"
         >
           Напишите мне
         </a>
@@ -152,6 +150,51 @@ function onAccAfterLeave(el: Element) {
 </template>
 
 <style scoped>
+/* M3 expansion list: hover на всю строку, без «пятна» на скруглённой кнопке */
+.faq-item {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.faq-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--m3-on-surface);
+  opacity: 0;
+  transition: opacity 0.15s cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.faq-item:hover::before {
+  opacity: 0.08;
+}
+
+.faq-item:active::before {
+  opacity: 0.12;
+}
+
+.faq-item--open {
+  background: var(--m3-surface-container-high);
+}
+
+.faq-item__trigger {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.faq-item__answer {
+  position: relative;
+  z-index: 1;
+}
+
 .faq-acc-enter-active,
 .faq-acc-leave-active {
   transition: height 0.2s ease;

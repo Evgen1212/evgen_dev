@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import {
-  ChevronDown,
-  MessagesSquare,
-  PenTool,
-  Code2,
-  Rocket,
-} from 'lucide-vue-next';
-
 const isOpen = ref(false);
 const toggleSection = () => {
   isOpen.value = !isOpen.value;
@@ -15,25 +7,25 @@ const toggleSection = () => {
 const steps = [
   {
     num: '01',
-    icon: MessagesSquare,
+    symbol: 'forum',
     title: 'Знакомство и ТЗ',
     text: 'Обсуждаем задачу в мессенджере или созвоне. Собираю требования, предлагаю решения, фиксирую смету и сроки.',
   },
   {
     num: '02',
-    icon: PenTool,
+    symbol: 'design_services',
     title: 'Дизайн-концепт',
     text: 'Рисую макет ключевых экранов. Стиль согласуем до полного «да» — вносим правки, пока не понравится.',
   },
   {
     num: '03',
-    icon: Code2,
+    symbol: 'code',
     title: 'Разработка',
     text: 'Верстаю и программирую, показываю промежуточные версии, тестирую на всех устройствах и браузерах.',
   },
   {
     num: '04',
-    icon: Rocket,
+    symbol: 'rocket_launch',
     title: 'Запуск и поддержка',
     text: 'Деплой, SEO-база, аналитика и обучение по админке. Две недели бесплатных правок после релиза.',
   },
@@ -41,16 +33,7 @@ const steps = [
 </script>
 
 <template>
-  <section id="process" class="relative scroll-mt-24 pb-2">
-    <!-- точечная сетка + мягкое свечение -->
-    <div
-      aria-hidden="true"
-      class="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[28rem]"
-    />
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute left-0 top-1/4 size-96 rounded-full bg-purple-900/10 blur-3xl"
-    />
+  <section id="process" class="m3-section max-md:pb-0 md:pb-2">
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
       <div>
         <button
@@ -62,28 +45,33 @@ const steps = [
             data-reveal
             :class="
               cn(
-                'relative overflow-hidden border p-6 transition-all duration-300',
+                'relative overflow-hidden border p-6 transition-all duration-300 max-md:duration-500',
                 isOpen
-                  ? 'rounded-t-3xl rounded-b-none border-b-transparent pb-0  bg-(--surface-2)'
-                  : 'rounded-3xl border-(--line-1) bg-(--surface-1)',
+                  ? cn(
+                      'm3-accordion-merge-head is-open rounded-t-[var(--m3-shape-md)] rounded-b-none border-(--outline-variant) border-b-transparent pb-0',
+                      'max-md:shadow-none md:bg-(--m3-surface-container-high)',
+                    )
+                  : 'rounded-[var(--m3-shape-md)] border-(--outline-variant) bg-(--m3-surface-container)',
               )
             "
           >
             <div class="flex items-center justify-between gap-4">
               <div class="flex flex-col">
                 <SectionKicker plain>Этапы работы</SectionKicker>
-                <h2
-                  class="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl"
-                >
+                <h2 class="m3-headline-lg mt-2">
                   Как я работаю
                 </h2>
               </div>
 
               <div
-                class="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--line-1) bg-(--surface-2) transition-transform duration-300"
-                :class="{ 'rotate-180 border-(--accent-soft)/40': isOpen }"
+                class="m3-icon-btn m3-state-layer flex size-10 shrink-0 border border-(--outline-variant) bg-(--m3-surface-container-high) transition-transform duration-300"
+                :class="{ 'rotate-180 border-(--m3-primary)/40': isOpen }"
               >
-                <ChevronDown class="size-5 text-(--accent-soft)" />
+                <span
+                  class="material-symbols-outlined text-xl text-(--m3-primary)"
+                  aria-hidden="true"
+                  >expand_more</span
+                >
               </div>
             </div>
 
@@ -105,7 +93,7 @@ const steps = [
       >
         <div class="overflow-hidden">
           <div
-            class="mt-0 rounded-b-3xl rounded-t-none bg-(--surface-2) px-4 pb-4 pt-4 md:px-6 md:pb-6 md:pt-6"
+            class="m3-accordion-merge-body mt-0 rounded-b-[var(--m3-shape-md)] rounded-t-none border border-t-0 border-(--outline-variant) bg-(--m3-surface-container) px-4 pb-4 pt-2 max-md:pt-3 md:px-6 md:pb-6 md:pt-6 md:bg-(--m3-surface-container)"
           >
             <p class="mb-8 px-2 text-base text-(--ink-mute) md:hidden">
               прозрачный процесс — вы видите результат на каждом шаге
@@ -122,32 +110,31 @@ const steps = [
                   :style="{ '--reveal-delay': `${i * 110}ms` }"
                 >
                   <article
-                    class="card-shine group relative h-full overflow-hidden rounded-3xl border border-(--line-1) bg-(--surface-1) p-6 transition-all duration-500 hover:-translate-y-1.5 hover:border-(--line-25) hover:bg-(--surface-3) sm:p-7"
+                    class="m3-card-hover-lift group relative h-full overflow-hidden rounded-[var(--m3-shape-md)] border border-(--outline-variant) bg-(--m3-surface-container) p-6 transition-all duration-300 hover:bg-(--m3-surface-container-high) sm:p-7 elevation-1"
                   >
-                    <!-- большая номерная подложка -->
                     <span
                       aria-hidden="true"
-                      class="pointer-events-none absolute -right-3 -top-7 select-none font-display text-[7rem] font-bold leading-none text-(--ghost) transition-colors duration-500 group-hover:text-(--ghost-hover)"
+                      class="absolute right-4 top-4 grid size-8 place-items-center rounded-full bg-(--m3-primary-container) text-xs font-medium tabular-nums text-(--m3-on-primary-container)"
                     >
                       {{ step.num }}
                     </span>
 
                     <span
-                      class="relative grid size-12 place-items-center rounded-2xl border border-(--line-1) bg-gradient-to-br from-fuchsia-500/20 via-purple-500/15 to-transparent"
+                      class="m3-icon-tile relative size-12 bg-(--m3-primary)/12"
                     >
-                      <component
-                        :is="step.icon"
-                        class="size-5 text-(--accent-soft) transition-transform duration-500 group-hover:scale-110"
+                      <span
+                        class="material-symbols-outlined text-xl text-(--m3-primary) transition-transform duration-500 group-hover:scale-110"
                         aria-hidden="true"
-                      />
+                        >{{ step.symbol }}</span
+                      >
                     </span>
 
                     <p
-                      class="relative mt-5 text-xs font-bold uppercase tracking-[0.2em] text-(--accent-soft)"
+                      class="m3-label relative mt-5"
                     >
                       Шаг {{ step.num }}
                     </p>
-                    <h3 class="relative mt-2 font-display text-xl font-bold">
+                    <h3 class="relative mt-2 m3-title-lg text-(--ink)">
                       {{ step.title }}
                     </h3>
                     <p
@@ -162,7 +149,7 @@ const steps = [
 
             <div
               aria-hidden="true"
-              class="max-md:mt-2 max-md:h-px max-md:bg-gradient-to-r max-md:from-transparent max-md:via-[var(--line-15)] max-md:to-transparent"
+              class="max-md:mt-2 max-md:h-px max-md:bg-(--outline-variant) max-md:opacity-85"
             />
           </div>
         </div>

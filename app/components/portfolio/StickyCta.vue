@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ArrowUpRight, FileText } from "lucide-vue-next";
-
 /**
  * Мобильная липкая CTA-панель (конверсия):
  * - появляется, когда hero уехал наверх;
@@ -118,13 +116,16 @@ onBeforeUnmount(() => {
   <div
     :aria-hidden="!show"
     :inert="!show"
-    :class="cn(
-      'fixed inset-x-0 bottom-0 z-40 transition-transform duration-500 ease-out md:hidden',
-      show ? 'translate-y-0' : 'translate-y-full'
-    )"
+    :class="
+      cn(
+        'fixed inset-x-0 z-40 px-3 transition-transform duration-500 ease-out md:hidden',
+        'bottom-[calc(var(--m3-bottom-nav-h)+env(safe-area-inset-bottom,0px))]',
+        show ? 'translate-y-0' : 'translate-y-[calc(100%+0.5rem)]',
+      )
+    "
   >
     <div
-      class="border-t border-(--line-1) bg-(--cta-bar) px-4 pt-3 pb-[calc(0.85rem+env(safe-area-inset-bottom))] backdrop-blur-xl"
+      class="android-sticky-snackbar px-4 py-3"
       @mouseenter="paused = true"
       @mouseleave="paused = false"
       @focusin="paused = true"
@@ -142,7 +143,7 @@ onBeforeUnmount(() => {
         >
           <div :key="active" class="flex items-center gap-3">
             <div class="min-w-0 flex-1">
-              <p class="font-display text-sm font-bold text-(--ink)">
+              <p class="text-sm font-medium text-(--ink)">
                 {{ slides[active].title }}
               </p>
               <p class="truncate text-[11px] leading-tight text-(--ink-mute)">
@@ -154,19 +155,23 @@ onBeforeUnmount(() => {
               v-if="active === 0"
               href="#contact"
               :tabindex="show ? 0 : -1"
-              class="inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-purple-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-900/40 transition-transform hover:scale-[1.03] active:scale-95"
+              class="m3-filled-btn shrink-0 px-5 py-2.5 text-sm"
             >
               {{ slides[active].label }}
-              <ArrowUpRight class="size-4" aria-hidden="true" />
+              <span class="material-symbols-outlined text-lg" aria-hidden="true"
+                >arrow_forward</span
+              >
             </a>
             <button
               v-else
               type="button"
               :tabindex="show ? 0 : -1"
-              class="inline-flex shrink-0 items-center gap-1.5 rounded-2xl bg-gradient-to-r from-fuchsia-600 to-purple-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-fuchsia-900/40 transition-transform hover:scale-[1.03] active:scale-95"
+              class="m3-filled-btn shrink-0 px-5 py-2.5 text-sm"
               @click="resumeOpen = true"
             >
-              <FileText class="size-4" aria-hidden="true" />
+              <span class="material-symbols-outlined text-lg" aria-hidden="true"
+                >description</span
+              >
               {{ slides[active].label }}
             </button>
           </div>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { BadgeCheck, Check, Flame, ChevronDown } from "lucide-vue-next";
 import { prices } from "./data";
 
 const isOpen = ref(false);
@@ -11,11 +10,7 @@ const toggleSection = () => {
 </script>
 
 <template>
-  <section id="prices" class="relative scroll-mt-24 py-24 pt-2 sm:py-32">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute right-0 top-24 size-96 rounded-full bg-purple-900/10 blur-3xl"
-    />
+  <section id="prices" class="m3-section max-md:pt-0 md:pt-2">
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
       <div class="mb-8 md:mb-16" :class="isOpen ? 'max-md:mb-0' : ''">
         <button
@@ -27,27 +22,32 @@ const toggleSection = () => {
             data-reveal
             :class="
               cn(
-                'relative overflow-hidden border p-6 transition-all duration-300 md:border-0 md:bg-transparent md:p-0',
+                'relative overflow-hidden border p-6 transition-all duration-300 max-md:duration-500 md:border-0 md:bg-transparent md:p-0',
                 isOpen
-                  ? 'max-md:rounded-t-3xl max-md:rounded-b-none max-md:border-b-transparent max-md:pb-0 border-(--accent-soft)/30 bg-(--surface-2)'
-                  : 'rounded-3xl border-(--line-1) bg-(--surface-1)',
+                  ? cn(
+                      'm3-accordion-merge-head is-open max-md:rounded-t-[var(--m3-shape-md)] max-md:rounded-b-none max-md:border-(--outline-variant) max-md:border-b-transparent max-md:pb-0 max-md:shadow-none',
+                    )
+                  : 'rounded-[var(--m3-shape-md)] border-(--outline-variant) bg-(--m3-surface-container)',
               )
             "
           >
             <div class="flex items-center justify-between gap-4 md:block">
               <div class="flex flex-col md:items-center">
                 <SectionKicker plain>Тарифы</SectionKicker>
-                <h2
-                  class="mt-2 font-display text-3xl font-bold tracking-tight sm:text-4xl md:mt-4 md:text-5xl lg:text-6xl"
-                >
+                <h2 class="m3-headline-lg mt-2 md:mt-4">
                   Цены
                 </h2>
               </div>
               
-              <div class="flex size-10 shrink-0 items-center justify-center rounded-full border border-(--line-1) bg-(--surface-2) transition-transform duration-300 md:hidden"
-                :class="{ 'rotate-180 border-(--accent-soft)/40': isOpen }"
+              <div
+                class="prices-section-expand m3-icon-btn m3-state-layer flex size-10 shrink-0 border border-(--outline-variant) bg-(--m3-surface-container-high) transition-transform duration-300"
+                :class="{ 'rotate-180 border-(--m3-primary)/40': isOpen }"
               >
-                <ChevronDown class="size-5 text-(--accent-soft)" />
+                <span
+                  class="material-symbols-outlined text-xl text-(--m3-primary)"
+                  aria-hidden="true"
+                  >expand_more</span
+                >
               </div>
             </div>
 
@@ -64,7 +64,7 @@ const toggleSection = () => {
       >
         <div class="overflow-hidden md:overflow-visible">
           <div
-            class="max-md:mt-0 max-md:rounded-b-3xl max-md:rounded-t-none max-md:bg-(--surface-2) max-md:px-4 max-md:pb-4 max-md:pt-4"
+            class="m3-accordion-merge-body max-md:mt-0 max-md:rounded-b-[var(--m3-shape-md)] max-md:rounded-t-none max-md:border-x max-md:border-b max-md:border-(--outline-variant) max-md:px-4 max-md:pb-4 max-md:pt-2"
           >
             <p class="mb-8 px-2 text-base text-(--ink-mute) md:hidden">
               прозрачные условия — вы платите за результат, без скрытых платежей
@@ -80,48 +80,34 @@ const toggleSection = () => {
             >
               <span
                 v-if="tier.featured"
-                class="absolute -top-3.5 left-6 z-20 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-fuchsia-600 to-purple-600 px-3.5 py-1.5 text-xs font-bold text-white shadow-lg"
+                class="absolute -top-3.5 left-6 z-20 inline-flex items-center gap-1.5 rounded-[var(--m3-shape-sm)] bg-(--m3-primary) px-3.5 py-1.5 text-xs font-medium text-(--m3-on-primary) elevation-1"
               >
-                <Flame class="size-3.5" aria-hidden="true" />
+                <span
+                  class="material-symbols-outlined text-sm"
+                  aria-hidden="true"
+                  >local_fire_department</span
+                >
                 Популярный выбор
               </span>
               <div
                 :class="
                   cn(
-                    'card-shine group relative flex h-full flex-col rounded-3xl border p-6 transition-all duration-500 hover:-translate-y-1.5 sm:p-7',
-                    tier.featured
-                      ? 'glow-featured border-white bg-white text-black'
-                      : 'border-(--line-1) bg-(--surface-1) hover:border-(--line-25) hover:bg-(--surface-3)',
+                    'm3-card group relative flex h-full flex-col p-6 transition-shadow duration-300 hover:elevation-2 sm:p-7',
+                    tier.featured && 'm3-card-featured border-(--m3-primary)',
                   )
                 "
               >
-                <h3
-                  :class="
-                    cn(
-                      'font-display text-xl font-bold',
-                      tier.featured ? 'text-black' : 'text-(--ink)',
-                    )
-                  "
-                >
+                <h3 class="m3-title-lg text-(--ink)">
                   {{ tier.name }}
                 </h3>
-                <div
-                  :class="
-                    cn(
-                      'mt-3 font-display text-3xl font-bold tracking-tight',
-                      tier.featured
-                        ? 'text-black'
-                        : 'bg-gradient-to-r from-fuchsia-400 to-purple-400 bg-clip-text text-transparent',
-                    )
-                  "
-                >
+                <div class="mt-3 m3-headline-md text-(--m3-primary)">
                   {{ tier.price }}
                 </div>
                 <p
                   :class="
                     cn(
                       'mt-2 text-sm',
-                      tier.featured ? 'text-black/60' : 'text-(--ink-mute)',
+                      'text-(--ink-mute)',
                     )
                   "
                 >
@@ -134,16 +120,17 @@ const toggleSection = () => {
                     :key="f"
                     class="flex items-start gap-2.5 text-sm"
                   >
-                    <Check
+                    <span
                       :class="
                         cn(
-                          'mt-0.5 size-4 shrink-0',
-                          tier.featured ? 'text-black' : 'text-fuchsia-400',
+                          'material-symbols-outlined mt-0.5 shrink-0 text-lg',
+                          'text-(--m3-primary)',
                         )
                       "
                       aria-hidden="true"
-                    />
-                    <span :class="tier.featured ? 'text-black/80' : 'text-(--ink-soft)'">{{
+                      >check</span
+                    >
+                    <span class="text-(--ink-soft)">{{
                       f
                     }}</span>
                   </li>
@@ -153,28 +140,21 @@ const toggleSection = () => {
                   :class="
                     cn(
                       'mt-6 flex items-center justify-between border-t pt-4',
-                      tier.featured ? 'border-black/10' : 'border-(--line-1)',
+                      'border-(--outline-variant)',
                     )
                   "
                 >
-                  <span
-                    :class="
-                      cn(
-                        'text-xs font-semibold uppercase tracking-wider',
-                        tier.featured ? 'text-black/50' : 'text-(--ink-faint)',
-                      )
-                    "
-                  >
+                  <span class="m3-label normal-case tracking-normal text-(--ink-faint)">
                     Срок {{ tier.term }}
                   </span>
                   <a
                     href="#contact"
                     :class="
                       cn(
-                        'rounded-xl px-4 py-2 text-sm font-bold transition-all hover:scale-105 active:scale-95',
+                        'm3-state-layer px-4 py-2 text-sm',
                         tier.featured
-                          ? 'bg-black text-white hover:bg-zinc-800'
-                          : 'bg-(--surface-hover) text-(--ink) hover:bg-(--ink) hover:text-(--page)',
+                          ? 'm3-filled-btn min-h-9 py-2'
+                          : 'm3-outlined-btn min-h-9 py-2',
                       )
                     "
                   >
@@ -191,10 +171,11 @@ const toggleSection = () => {
             data-reveal
             class="mt-8 flex flex-wrap items-center justify-center gap-2 text-center text-sm text-(--ink-mute)"
           >
-            <BadgeCheck
-              class="size-4 shrink-0 text-(--accent-emerald)"
+            <span
+              class="material-symbols-outlined shrink-0 text-lg text-(--m3-primary)"
               aria-hidden="true"
-            />
+              >verified</span
+            >
             Работаю официально как самозанятый (самозанятые.рф) — чек из «Мой
             налог» и договор по запросу.
           </p>
@@ -206,7 +187,7 @@ const toggleSection = () => {
 
             <div
               aria-hidden="true"
-              class="max-md:mt-4 max-md:h-px max-md:bg-gradient-to-r max-md:from-transparent max-md:via-[var(--line-15)] max-md:to-transparent"
+              class="max-md:mt-4 max-md:h-px max-md:bg-(--outline-variant) max-md:opacity-85"
             />
           </div>
         </div>
@@ -214,3 +195,11 @@ const toggleSection = () => {
     </div>
   </section>
 </template>
+
+<style scoped>
+@media (min-width: 768px) {
+  .prices-section-expand {
+    display: none !important;
+  }
+}
+</style>

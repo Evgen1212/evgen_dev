@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ArrowDownRight } from "lucide-vue-next";
-
 /** Статистика из реального резюме (замена React-версии) */
 const stats = [
   { value: 5, suffix: "+", label: "лет в коммерческой разработке" },
@@ -13,11 +11,7 @@ const stats = [
 </script>
 
 <template>
-  <section id="about" class="relative scroll-mt-24 py-24 sm:py-32">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute right-0 top-1/3 size-96 rounded-full bg-indigo-900/10 blur-3xl"
-    />
+  <section id="about" class="m3-section">
     <div
       class="mx-auto grid max-w-7xl items-center gap-14 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:gap-10"
     >
@@ -25,7 +19,7 @@ const stats = [
       <div data-reveal>
         <SectionKicker>Кто я</SectionKicker>
         <h2
-          class="font-display text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl"
+          class="m3-headline-lg"
         >
           Обо мне
         </h2>
@@ -51,13 +45,12 @@ const stats = [
           <div
             v-for="s in stats"
             :key="s.label"
-            class="rounded-2xl border border-(--line-1) bg-(--surface-1) p-4 transition-colors hover:border-(--line-2)"
+            class="m3-list-item p-4"
           >
-            <dd class="font-display text-3xl font-bold tracking-tight">
+            <dd class="m3-headline-md text-(--m3-primary)">
               <Counter
                 :value="s.value"
                 :suffix="s.suffix"
-                class="bg-gradient-to-r from-fuchsia-300 to-purple-300 bg-clip-text text-transparent"
               />
             </dd>
             <dt class="mt-1.5 text-xs leading-snug text-(--ink-faint)">
@@ -67,29 +60,20 @@ const stats = [
         </dl>
       </div>
 
-      <!-- Polaroid photo -->
+      <!-- Profile card (M3) — на mobile фото в Hero -->
       <div
-        class="relative mx-auto w-full max-w-sm"
+        class="relative mx-auto hidden w-full max-w-sm lg:block"
         data-reveal
         :style="{ '--reveal-delay': '150ms' }"
       >
-        <p class="mb-3 flex items-center justify-end gap-1.5 pr-4 text-sm text-(--ink-soft)">
+        <p class="mb-3 flex items-center justify-end gap-1.5 pr-1 text-sm text-(--ink-soft)">
           Это я
-          <ArrowDownRight class="size-4" aria-hidden="true" />
+          <span class="material-symbols-outlined text-base" aria-hidden="true"
+            >south_east</span
+          >
         </p>
-        <div
-          class="group relative rotate-[4deg] rounded-2xl bg-white p-3 pb-16 shadow-2xl shadow-black/60 transition-transform duration-500 hover:rotate-1"
-        >
-          <!-- скотч-полоски -->
-          <span
-            aria-hidden="true"
-            class="absolute -top-3 left-7 z-10 h-7 w-24 -rotate-6 rounded-[2px] bg-white/30 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
-          />
-          <span
-            aria-hidden="true"
-            class="absolute -top-2 right-9 z-10 h-7 w-20 rotate-[5deg] rounded-[2px] bg-white/25 shadow-[0_2px_6px_rgba(0,0,0,0.25)] backdrop-blur-[1px]"
-          />
-          <div class="overflow-hidden rounded-xl bg-zinc-800">
+        <figure class="m3-card overflow-hidden p-0">
+          <div class="overflow-hidden bg-(--m3-surface-container-high)">
             <SmartImage
               name="me"
               alt="Евгений Абрамов — фотография"
@@ -100,15 +84,18 @@ const stats = [
               loading="lazy"
               fetchpriority="low"
               class="w-full"
-              img-class="aspect-[4/5] w-full scale-[1.04] object-cover blur-[0.5px] transition-all duration-700 group-hover:blur-0"
+              img-class="aspect-[4/5] w-full object-cover"
             />
           </div>
-          <p
-            class="absolute inset-x-0 bottom-4 text-center font-display text-base font-medium text-zinc-500"
-          >
-            Евгений · frontend-разработчик
-          </p>
-        </div>
+          <figcaption class="border-t border-(--outline-variant) px-5 py-4">
+            <p class="m3-title-md text-(--ink)">
+              Евгений Абрамов
+            </p>
+            <p class="mt-0.5 text-sm text-(--ink-mute)">
+              Senior Frontend · Vue / Nuxt / TypeScript
+            </p>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </section>

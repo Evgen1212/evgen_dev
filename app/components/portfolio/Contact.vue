@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ArrowUpRight, Mail, Phone } from "lucide-vue-next";
 import { socials } from "./data";
 
 const descriptions: Record<string, string> = {
@@ -16,72 +15,53 @@ const primaryNames = new Set(["Telegram", "Телефон"]);
 const primary = socials.filter((s) => primaryNames.has(s.name));
 const secondary = socials.filter((s) => !primaryNames.has(s.name) && s.name !== "E-mail");
 
-function primaryFrameClass(name: string) {
-  if (name === "Telegram") {
-    return "bg-gradient-to-br from-[#26A5E4]/55 via-[#26A5E4]/20 to-transparent shadow-[0_0_40px_-12px_rgba(38,165,228,0.45)]";
-  }
-  return "bg-gradient-to-br from-emerald-400/55 via-emerald-500/20 to-transparent shadow-[0_0_40px_-12px_rgba(52,211,153,0.4)]";
-}
 </script>
 
 <template>
-  <section id="contact" class="relative scroll-mt-24 overflow-hidden py-24 sm:py-32">
-    <!-- aurora glow at bottom -->
-    <div aria-hidden="true" class="absolute inset-0 overflow-hidden">
-      <div class="aurora-layer aurora-b opacity-70" />
-      <div
-        class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,var(--vignette-strong)_100%)]"
-      />
-    </div>
-
+  <section id="contact" class="m3-section">
     <div class="relative mx-auto max-w-7xl px-5 sm:px-8">
-      <div data-reveal class="mb-12 text-center sm:mb-16">
+      <div data-reveal class="mb-12 text-center max-md:text-left sm:mb-16">
         <SectionKicker>Связь</SectionKicker>
-        <h2 class="font-display text-4xl font-bold tracking-tight sm:text-6xl lg:text-7xl">
+        <h2 class="m3-headline-lg">
           Контакты
         </h2>
         <p class="mt-4 text-base text-(--ink-mute) sm:text-lg">
           выберите удобный способ — отвечаю быстро
         </p>
-        <LocalTime class="mt-6" />
+        <LocalTime class="mt-6 max-md:mx-0" />
       </div>
 
       <p
         data-reveal
-        class="mx-auto mb-4 max-w-3xl text-center text-xs font-semibold uppercase tracking-[0.2em] text-(--ink-faint)"
+        class="m3-label mx-auto mb-4 block max-w-3xl text-center max-md:text-left"
       >
         основной способ связи
       </p>
 
-      <div class="mx-auto grid max-w-2xl gap-3 sm:grid-cols-2">
+      <div class="mx-auto max-w-2xl">
         <div
-          v-for="(s, i) in primary"
-          :key="s.name"
-          data-reveal
-          :style="{ '--reveal-delay': `${i * 90}ms` }"
-          class="rounded-2xl p-px transition-transform duration-300 hover:-translate-y-0.5"
-          :class="primaryFrameClass(s.name)"
+          class="m3-card divide-y divide-(--outline-variant) overflow-hidden p-0 elevation-1"
         >
+        <template v-for="(s, i) in primary" :key="s.name">
           <a
+            data-reveal
+            :style="{ '--reveal-delay': `${i * 90}ms` }"
             :href="s.href"
             :target="s.href.startsWith('http') ? '_blank' : undefined"
             :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
-            class="card-shine group relative flex h-full items-center gap-3 rounded-[calc(1rem-1px)] border border-(--line-1)/80 bg-(--surface-2) p-4 backdrop-blur-sm transition-all duration-300 hover:bg-(--surface-4) sm:p-4"
+            class="m3-state-layer android-ripple group relative flex min-h-14 items-center gap-3 p-4"
           >
             <span
-              class="grid size-12 shrink-0 place-items-center rounded-xl shadow-md ring-1 ring-white/10 transition-transform duration-300 group-hover:scale-105"
-              :style="{
-                backgroundColor: `#${s.color}30`,
-                border: `1px solid #${s.color}77`,
-                boxShadow: `0 6px 18px -8px #${s.color}66`,
-              }"
+              class="m3-icon-tile size-12 shrink-0"
+              :style="{ color: `#${s.color}` }"
             >
-              <Phone
+              <span
                 v-if="s.icon === 'phone'"
-                class="size-5"
+                class="material-symbols-outlined text-xl"
                 :style="{ color: `#${s.color}` }"
                 aria-hidden="true"
-              />
+                >call</span
+              >
               <img
                 v-else
                 :src="useAsset(`icons/social/${s.icon}.svg`)"
@@ -94,21 +74,22 @@ function primaryFrameClass(name: string) {
               />
             </span>
             <span class="min-w-0 flex-1">
-              <span class="block font-display text-lg font-bold text-(--ink)">{{
-                s.name
-              }}</span>
+              <span class="block m3-title-md text-(--ink)">{{ s.name }}</span>
               <span class="mt-0.5 block text-xs font-medium text-(--ink-soft)">{{
                 descriptions[s.name] ?? s.handle
               }}</span>
-              <span class="mt-0.5 block truncate font-mono text-xs text-(--ink-mute)">{{
-                s.handle
-              }}</span>
+              <span
+                class="mt-0.5 block truncate text-xs tabular-nums text-(--ink-mute)"
+                >{{ s.handle }}</span
+              >
             </span>
-            <ArrowUpRight
-              class="size-4 shrink-0 text-(--ink-faint) transition-all group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-(--ink)"
+            <span
+              class="material-symbols-outlined shrink-0 text-2xl text-(--m3-on-surface-variant)"
               aria-hidden="true"
-            />
+              >chevron_right</span
+            >
           </a>
+        </template>
         </div>
       </div>
 
@@ -122,10 +103,20 @@ function primaryFrameClass(name: string) {
           :href="s.href"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-full border border-(--line-1) bg-(--surface-2) px-4 py-2 text-sm font-medium text-(--ink-soft) transition-all hover:border-(--line-25) hover:bg-(--surface-hover) hover:text-(--ink)"
+          class="m3-filter-chip m3-state-layer android-ripple inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-(--ink-soft) transition-colors hover:bg-(--m3-surface-container-high) hover:text-(--ink)"
         >
-          <Phone v-if="s.icon === 'phone'" class="size-[15px] opacity-80" aria-hidden="true" />
-          <Mail v-else-if="s.icon === 'mail'" class="size-[15px] opacity-80" aria-hidden="true" />
+          <span
+            v-if="s.icon === 'phone'"
+            class="material-symbols-outlined text-base opacity-80"
+            aria-hidden="true"
+            >call</span
+          >
+          <span
+            v-else-if="s.icon === 'mail'"
+            class="material-symbols-outlined text-base opacity-80"
+            aria-hidden="true"
+            >mail</span
+          >
           <img
             v-else
             :src="useAsset(`icons/social/${s.icon}.svg`)"

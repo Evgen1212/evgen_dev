@@ -1,7 +1,7 @@
 <script setup lang="ts">
-// Тонкая градиентная линия-разделитель между секциями (чисто декор)
+// M3 divider между секциями
 </script>
 
 <template>
-  <div aria-hidden="true" data-reveal class="section-hairline" />
+  <div aria-hidden="true" class="section-hairline" />
 </template>

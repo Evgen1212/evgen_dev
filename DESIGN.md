@@ -16,7 +16,7 @@
 |------|------------|
 | Framework | **Nuxt 4**, Vue 3, TypeScript |
 | Стили | **Tailwind CSS 4** (`@tailwindcss/vite`), токены в `app/assets/css/main.css` |
-| Иконки | **lucide-vue-next** (stroke 1.5–2, размеры как у Material Symbols) |
+| Иконки | **Material Symbols Outlined** (Google Fonts), 20–24px в списках и app bar |
 | Классы | `clsx` + `tailwind-merge` где уже принято в компонентах |
 | Пакеты | **Bun** — `bun install`, `bun run dev` |
 | Деплой | GitHub Pages — `nuxt generate`, `NUXT_APP_BASE_URL` в CI |
@@ -51,7 +51,11 @@ bun run dev
 | — | `Hairline` | — | divider |
 | 10 | `Contact` | `#contact` | **Contact sheet** — форма + actions |
 | — | `SiteFooter` | — | **Footer bar** (links, legal) |
-| — | `StickyCta` | — | **Bottom bar** (mobile only, FAB optional) |
+| — | `StickyCta` | — | **Snackbar-style CTA** над bottom nav (mobile) |
+| — | `AndroidSystemChrome` | — | **Status bar + home indicator** (mobile) |
+| — | `AndroidBottomNav` | — | **Navigation bar** (mobile) |
+| — | `AndroidNavDrawer` | — | **Navigation drawer** (mobile, из app bar) |
+| — | `ContactFab` | — | **Extended FAB** Telegram (mobile) |
 
 ## Design direction: Material 3 / Android shell
 
@@ -59,8 +63,8 @@ bun run dev
 
 1. **Плоские поверхности + elevation**, не неон и не «aurora». Тени — мягкие, уровни 1–3 (см. ниже).
 2. **Системная тема:** `prefers-color-scheme` + ручной toggle (`data-theme` на `<html>`, `localStorage` key `theme`) — как сейчас, но палитра M3.
-3. **Формы:** скругления **12px** (cards, sheets), **28px** (FAB / large buttons), **full** для chips — не `rounded-2xl` «iOS pill» без причины.
-4. **Типографика:** шкала M3 (Roboto / system-ui). Пока в CSS — Manrope (body) + Comfortaa (display logo). **Новые блоки** — Manrope; логотип `evgen_dev` можно оставить display-шрифтом, но **заголовки секций** — `text-2xl`/`text-3xl`, **не** гигантский viewport hero.
+3. **Формы:** скругления **12px** (cards, sheets), **28px** (FAB / large buttons), **8px** для filter/assist chips (`--m3-shape-sm`) — не «full pill» для chips.
+4. **Типографика:** шкала M3 — **Roboto** (Google Fonts) + system-ui fallback. Классы `.m3-display`, `.m3-headline-lg`, `.m3-title-md` и т.д. в `main.css`. **Заголовки секций** — через M3-шкалу, **не** гигантский viewport hero.
 5. **Motion:** короткие easing **emphasized decelerate** (~300ms), `prefers-reduced-motion` — отключать декор (уже есть в CSS).
 6. **Доступность:** контраст текста ≥ **4.5:1** на surface; focus — **2px outline** primary (заменить fuchsia focus на primary).
 
@@ -78,7 +82,7 @@ bun run dev
 |---------|---------------|----------------|------------|
 | **primary** | `#A8C7FA` on `#062E6F` | `#0B57D0` on `#FFFFFF` | CTA, links, focus |
 | **on-primary** | `#062E6F` | `#FFFFFF` | текст на кнопке |
-| **surface** | `#121212` | `#FEF7FF` | фон страницы ≈ `--page` |
+| **surface** | `#1C1B1F` | `#FEF7FF` | фон страницы (`--m3-surface`) |
 | **surface-container** | `#1E1E1E` | `#F3EDF7` | карточки ≈ `--panel` |
 | **surface-container-high** | `#2B2B2B` | `#ECE6F0` | hover |
 | **on-surface** | `#E3E3E3` | `#1D1B20` | основной текст ≈ `--ink` |
@@ -110,8 +114,8 @@ Light theme — тени с меньшей opacity (`0.08–0.12`).
 | **Outlined button** | border `outline`, прозрачный фон |
 | **Text button** | только текст primary |
 | **Card** | `surface-container`, rounded-xl (12px), elevation-1, padding 16–24 |
-| **Chip** | filter / status — height 32, rounded-sm (8px) |
-| **Top app bar** | height 64, title medium, actions icon 24px, scroll → `surface-container` + elevation-1 |
+| **Chip** | filter / status — height 32, **8px** radius (`--m3-shape-sm`) |
+| **Top app bar** | height **64dp**, title medium, actions icon **24px**, scroll → `surface-container` + elevation-1 |
 | **Bottom bar (mobile)** | `StickyCta` → bar height 80 + safe-area, 1–2 actions |
 | **FAB** | optional на mobile: primary, 56px, icon only «Написать» |
 | **List item** | min-height 56, leading icon optional, trailing chevron |
@@ -130,7 +134,7 @@ Light theme — тени с меньшей opacity (`0.08–0.12`).
 
 ### Иконки
 
-- Lucide: **24px** в app bar, **20px** в list, stroke **2**.
+- Material Symbols Outlined: **24px** в app bar и bottom nav, **20px** в list; filled — через `.android-bottom-nav__symbol--filled`.
 - Tech stack — SVG в `public/icons/tech/` без перекраски в неон.
 
 ### Breakpoints
@@ -141,18 +145,21 @@ Light theme — тени с меньшей opacity (`0.08–0.12`).
 
 ## Migration checklist (agents)
 
-При задаче «привести к Android» делай **по секциям**, не big-bang:
+M3 token pass (2026-03-29, OD audit): shadcn `--primary` → `--m3-primary`, полные роли surface/secondary/error, top bar 64dp, icon 48dp, motion ~280ms, flat surfaces.
 
-1. Обновить CSS variables (M3 table) + `theme-color` в `nuxt.config.ts`.
-2. `SiteHeader` → top app bar.
-3. `Hero` — убрать aurora/parallax; card + primary CTA.
-4. Заменить `Hairline` на divider token.
-5. Cards (`Prices`, `OwnProjects`) — elevation + surface-container.
-6. `Faq` — expansion panels styling.
-7. `StickyCta` — bottom app bar.
-8. Удалить или выключить `.noise-overlay`, `.text-shine`, fuchsia focus/scroll.
+При доработках — **по секциям**:
 
-После каждого шага: `bun run dev`, проверка light/dark, mobile 375px.
+1. ✅ CSS variables M3 + shadcn mapped to `--m3-*` + `theme-color` / inline sync в `nuxt.config.ts`.
+2. ✅ `SiteHeader` → top app bar (64dp mobile) + `AndroidNavDrawer`.
+3. ✅ `Hero` — flat `m3-surface`, M3 кнопки, без aurora gradient.
+4. ✅ `Hairline` → `.section-hairline` (скрыт на mobile, чередование surface).
+5. ✅ Cards — elevated `.m3-card` (без border+shadow mix); featured → `primary-container`.
+6. ✅ `Faq` — expansion list в одной card.
+7. ✅ `StickyCta` + `ContactFab` + `AndroidBottomNav` + `AndroidSystemChrome`.
+8. ✅ Focus → `--m3-primary`; reveal **~280ms** (не 900ms); parrot/marquee — decorative, off in reduced-motion.
+9. ⏳ Компоненты: list 56dp, scroll behavior app bar — проверять в `.vue` при правках.
+
+После правок: `bun run generate`, light/dark, mobile **375px** (Chrome device mode).
 
 ## Constraints (always)
 
@@ -177,6 +184,10 @@ app/
   assets/css/main.css  # tokens + global
   components/portfolio/
     SiteHeader.vue
+    AndroidSystemChrome.vue
+    AndroidBottomNav.vue
+    AndroidNavDrawer.vue
+    ContactFab.vue
     Hero.vue
     About.vue
     Experience.vue

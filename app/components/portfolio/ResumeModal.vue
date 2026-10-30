@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { Download, ExternalLink, FileText, X } from "lucide-vue-next";
-
 const props = defineProps<{ open: boolean }>();
 const emit = defineEmits<{ (e: "update:open", v: boolean): void }>();
 
@@ -41,77 +39,99 @@ onBeforeUnmount(() => {
     >
       <div
         v-if="open"
-        class="fixed inset-0 z-[90] bg-black/60 backdrop-blur-sm"
+        class="fixed inset-0 z-[90] bg-(--scrim)"
         @click.self="close"
       >
         <div
           role="dialog"
           aria-modal="true"
           aria-label="Резюме Абрамова Евгения"
-          class="fixed left-1/2 top-1/2 flex max-h-[92vh] w-[calc(100vw-1.5rem)] max-w-3xl -translate-x-1/2 -translate-y-1/2 flex-col overflow-hidden rounded-3xl border border-(--line-1) bg-(--panel) shadow-2xl shadow-black/60"
+          class="m3-bottom-sheet-dialog flex flex-col overflow-hidden border border-(--outline-variant) bg-(--m3-surface-container) elevation-3"
         >
+          <div class="m3-bottom-sheet-handle md:hidden" aria-hidden="true" />
+
           <!-- header -->
-          <div class="flex items-start justify-between gap-4 border-b border-(--line-1) p-5 sm:p-6">
+          <div
+            class="flex items-start justify-between gap-4 border-b border-(--outline-variant) p-5 sm:p-6"
+          >
             <div class="flex items-center gap-3.5">
               <span
-                class="grid size-11 shrink-0 place-items-center rounded-2xl border border-fuchsia-400/30 bg-fuchsia-500/15"
+                class="m3-icon-tile size-11 shrink-0 bg-(--m3-primary)/12"
                 aria-hidden="true"
               >
-                <FileText class="size-5 text-(--accent-soft)" />
+                <span
+                  class="material-symbols-outlined text-xl text-(--m3-primary)"
+                  aria-hidden="true"
+                  >description</span
+                >
               </span>
               <div>
-                <h2 class="font-display text-lg font-bold leading-tight sm:text-xl">
+                <h2
+                  class="m3-title-lg leading-tight text-(--ink)"
+                >
                   Резюме — Абрамов Евгений
                 </h2>
                 <p class="mt-0.5 text-xs text-(--ink-mute) sm:text-sm">
-                  Senior Frontend-разработчик · Vue 3 / Nuxt / TypeScript · React / Next.js
+                  Senior Frontend-разработчик · Vue 3 / Nuxt / TypeScript · React
+                  / Next.js
                 </p>
               </div>
             </div>
             <button
               type="button"
-              class="grid size-9 shrink-0 place-items-center rounded-xl border border-(--line-1) bg-(--surface-2) text-(--ink-mute) transition-colors hover:bg-(--surface-hover) hover:text-(--ink)"
+              class="m3-icon-btn m3-state-layer shrink-0 text-(--ink-mute) hover:text-(--ink)"
               aria-label="Закрыть"
               @click="close"
             >
-              <X class="size-4.5" aria-hidden="true" />
+              <span class="material-symbols-outlined text-xl" aria-hidden="true"
+                >close</span
+              >
             </button>
           </div>
 
           <!-- pdf preview -->
-          <div class="min-h-0 flex-1 overflow-y-auto bg-zinc-200">
+          <div
+            class="min-h-0 flex-1 overflow-y-auto bg-(--m3-surface-container-high)"
+          >
             <object
               :data="`${useAsset('resume.pdf')}#view=FitH`"
               type="application/pdf"
-              class="h-[58vh] w-full"
+              class="h-[52vh] w-full md:h-[58vh]"
               aria-label="Превью резюме PDF"
             >
-              <!-- фолбэк для браузеров без встроенного PDF-просмотрщика -->
               <iframe
                 :src="`${useAsset('resume.pdf')}#view=FitH`"
-                class="h-[58vh] w-full"
+                class="h-[52vh] w-full md:h-[58vh]"
                 title="Резюме PDF"
               ></iframe>
             </object>
           </div>
 
           <!-- actions -->
-          <div class="flex flex-col gap-3 border-t border-(--line-1) p-5 sm:flex-row sm:p-6">
+          <div
+            class="flex flex-col gap-3 border-t border-(--outline-variant) p-5 sm:flex-row sm:p-6"
+          >
             <a
               :href="useAsset('resume.pdf')"
               download="Abramov-Evgeniy-resume.pdf"
-              class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-(--line-1) bg-white px-6 py-3.5 text-sm font-bold text-black transition-all hover:scale-[1.02] active:scale-95"
+              class="m3-filled-btn flex-1 px-6 py-3.5 text-sm"
             >
-              <Download class="size-4" aria-hidden="true" />
+              <span class="material-symbols-outlined text-lg" aria-hidden="true"
+                >download</span
+              >
               Скачать резюме
             </a>
             <a
               :href="HH_RESUME_URL"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex flex-1 items-center justify-center gap-2 rounded-2xl border border-(--line-15) bg-(--surface-2) px-6 py-3.5 text-sm font-semibold text-(--ink-soft) transition-all hover:border-fuchsia-400/40 hover:bg-fuchsia-500/10 hover:text-(--ink) active:scale-95"
+              class="m3-outlined-btn flex-1 px-6 py-3.5 text-sm"
             >
-              <ExternalLink class="size-4 opacity-80" aria-hidden="true" />
+              <span
+                class="material-symbols-outlined text-lg opacity-80"
+                aria-hidden="true"
+                >open_in_new</span
+              >
               Смотреть на hh.ru
             </a>
           </div>

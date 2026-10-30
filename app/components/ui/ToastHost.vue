@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { X } from "lucide-vue-next";
 import { cn } from "~/utils/cn";
 import { useToast } from "~/composables/use-toast";
 
@@ -13,7 +12,7 @@ const { toasts, dismiss } = useToast();
     aria-relevant="additions text"
     role="region"
     aria-label="Уведомления"
-    class="pointer-events-none fixed top-0 z-[120] flex max-h-screen w-full flex-col-reverse gap-2 p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]"
+    class="toast-host pointer-events-none fixed z-[120] flex max-h-screen w-full flex-col gap-2 p-4 max-md:bottom-[calc(var(--m3-bottom-nav-h)+0.75rem+env(safe-area-inset-bottom))] max-md:top-auto max-md:px-3 md:bottom-0 md:right-0 md:top-auto md:max-w-[420px] max-md:transition-[bottom] max-md:duration-400"
   >
     <TransitionGroup name="toast">
       <div
@@ -22,10 +21,10 @@ const { toasts, dismiss } = useToast();
         role="status"
         :class="
           cn(
-            'pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-2xl border p-4 pr-10 shadow-2xl backdrop-blur-md',
+            'm3-snackbar pointer-events-auto relative flex w-full items-start gap-3 overflow-hidden rounded-[var(--m3-shape-sm)] p-4 pr-10 md:border md:elevation-3',
             t.variant === 'destructive'
-              ? 'border-red-500/40 bg-[#1c1013]/95 text-red-50'
-              : 'border-(--line-1) bg-(--toast) text-(--ink)'
+              ? 'md:border-red-400/50 bg-(--m3-inverse-surface) text-(--m3-inverse-on-surface) md:bg-(--m3-surface-container-high) md:text-red-100'
+              : 'md:border-(--outline-variant) bg-(--m3-inverse-surface) text-(--m3-inverse-on-surface) md:bg-(--m3-surface-container-high) md:text-(--ink)'
           )
         "
       >
@@ -35,7 +34,7 @@ const { toasts, dismiss } = useToast();
           </p>
           <p
             v-if="t.description"
-            class="mt-1 break-words text-sm text-(--ink-mute)"
+            class="mt-1 break-words text-sm text-(--m3-inverse-on-surface)/75 md:text-(--ink-mute)"
           >
             {{ t.description }}
           </p>
@@ -43,10 +42,10 @@ const { toasts, dismiss } = useToast();
         <button
           type="button"
           aria-label="Закрыть уведомление"
-          class="absolute right-3 top-3 rounded-md p-1 text-(--ink-faint) transition-colors hover:bg-(--surface-hover) hover:text-(--ink)"
+          class="m3-icon-btn m3-state-layer absolute right-2 top-2 text-(--ink-faint) hover:text-(--ink)"
           @click="dismiss(t.id)"
         >
-          <X class="size-4" aria-hidden="true" />
+          <span class="material-symbols-outlined text-xl" aria-hidden="true">close</span>
         </button>
       </div>
     </TransitionGroup>
