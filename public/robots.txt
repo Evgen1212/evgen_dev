@@ -1,3 +1,4 @@
+# Локальная копия для dev. В прод-сборке перезаписывается scripts/write-seo-files.mjs
 User-agent: *
 Allow: /
 
