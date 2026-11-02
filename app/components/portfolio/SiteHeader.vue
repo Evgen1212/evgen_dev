@@ -174,8 +174,14 @@ onBeforeUnmount(() => {
         </nav>
       </div>
 
-      <!-- right cluster: theme toggle + socials + burger -->
+      <!-- right cluster: design variant + theme toggle + socials + burger -->
       <div class="flex items-center gap-2">
+        <DesignVariantSwitcher
+          layout="desktop"
+          appearance="classic"
+          :pill-class="pill"
+          class="hidden lg:block"
+        />
         <button
           type="button"
           :aria-label="
@@ -272,7 +278,8 @@ onBeforeUnmount(() => {
       "
     >
       <div :class="cn(pill, 'p-3')">
-        <nav class="grid gap-1" aria-label="Мобильная навигация">
+        <DesignVariantSwitcher layout="mobile" appearance="classic" :pill-class="pill" />
+        <nav class="grid gap-1 mt-3" aria-label="Мобильная навигация">
           <a
             v-for="link in navLinks"
             :key="link.href"
