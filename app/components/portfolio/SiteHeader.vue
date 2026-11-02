@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { Mail, Menu, Moon, Phone, Sun, X } from 'lucide-vue-next';
+import SocialComboTrigger from './SocialComboTrigger.vue';
 import { socials } from './data';
 
 const navLinks = [
@@ -16,6 +17,33 @@ const pill =
 const open = ref(false);
 const scrolled = ref(false);
 const activeSection = ref('');
+
+/** Desktop (main): сжатый pill соцсетей → по клику разъезжается */
+const socialsRailOpen = ref(false);
+const socialRailRef = ref<HTMLElement | null>(null);
+
+function toggleSocialsRail() {
+  socialsRailOpen.value = !socialsRailOpen.value;
+}
+
+function onSocialLinkClick(e: MouseEvent) {
+  if (!socialsRailOpen.value) {
+    e.preventDefault();
+    socialsRailOpen.value = true;
+  }
+}
+
+function onDocumentPointerDown(e: PointerEvent) {
+  if (!socialsRailOpen.value) return;
+  const el = socialRailRef.value;
+  if (el && !el.contains(e.target as Node)) {
+    socialsRailOpen.value = false;
+  }
+}
+
+function onDocumentKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') socialsRailOpen.value = false;
+}
 
 /** Буквы логотипа: по одной появляются при первом заходе (класс .brand-intro) */
 const brandLetters = [...'evgen_dev'];
@@ -82,12 +110,17 @@ onMounted(() => {
     { rootMargin: '-35% 0px -55% 0px' },
   );
   sections.forEach((s) => io!.observe(s));
+
+  document.addEventListener('pointerdown', onDocumentPointerDown);
+  document.addEventListener('keydown', onDocumentKeydown);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', onScroll);
   schemeMq?.removeEventListener('change', onSchemeChange);
   io?.disconnect();
+  document.removeEventListener('pointerdown', onDocumentPointerDown);
+  document.removeEventListener('keydown', onDocumentKeydown);
 });
 </script>
 
@@ -177,45 +210,65 @@ onBeforeUnmount(() => {
       <!-- right cluster: socials + theme + design (desktop) + burger -->
       <div class="flex shrink-0 items-center gap-2">
         <div
+          ref="socialRailRef"
           :class="
             cn(
-              'bg-(--chrome) backdrop-blur-xl rounded-2xl shadow-lg shadow-black/30',
-              'hidden md:flex items-center h-14 gap-0.5 px-3',
+              pill,
+              'classic-social-rail hidden h-14 md:flex',
+              socialsRailOpen && 'classic-social-rail--open',
             )
           "
-          aria-label="Социальные сети"
+          :aria-expanded="socialsRailOpen"
         >
-          <a
-            v-for="s in socials"
-            :key="s.name"
-            :href="s.href"
-            :target="s.href.startsWith('http') ? '_blank' : undefined"
-            :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
-            :title="s.name"
-            :aria-label="s.name"
-            class="grid size-12 place-items-center rounded-lg transition-all hover:bg-(--surface-hover) hover:scale-110"
+          <button
+            type="button"
+            class="classic-social-rail__trigger grid size-14 shrink-0 place-items-center text-(--ink-soft) transition-colors hover:text-(--ink)"
+            :aria-label="
+              socialsRailOpen ? 'Свернуть соцсети' : 'Развернуть соцсети'
+            "
+            :title="socialsRailOpen ? 'Свернуть' : 'Контакты и соцсети'"
+            @click="toggleSocialsRail"
           >
-            <Phone
-              v-if="s.icon === 'phone'"
-              class="size-8 opacity-80 hover:opacity-100"
-              aria-hidden="true"
-            />
-            <Mail
-              v-else-if="s.icon === 'mail'"
-              class="size-8 opacity-80 hover:opacity-100"
-              aria-hidden="true"
-            />
-            <img
-              v-else
-              :src="useAsset(`icons/social/${s.icon}.svg`)"
-              alt=""
-              width="16"
-              height="16"
-              class="social-icon size-8 opacity-80 hover:opacity-100"
-              loading="eager"
-              decoding="async"
-            />
-          </a>
+            <SocialComboTrigger />
+          </button>
+          <div
+            class="classic-social-rail__track flex min-w-0 items-center"
+            aria-label="Социальные сети"
+          >
+            <a
+              v-for="(s, i) in socials"
+              :key="s.name"
+              :href="s.href"
+              :target="s.href.startsWith('http') ? '_blank' : undefined"
+              :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
+              :title="s.name"
+              :aria-label="s.name"
+              :style="{ '--social-i': i }"
+              class="classic-social-rail__link grid size-12 shrink-0 place-items-center rounded-lg transition-[transform,opacity,margin] hover:bg-(--surface-hover) hover:scale-110"
+              @click="onSocialLinkClick"
+            >
+              <Phone
+                v-if="s.icon === 'phone'"
+                class="classic-social-rail__icon size-8 opacity-80 hover:opacity-100"
+                aria-hidden="true"
+              />
+              <Mail
+                v-else-if="s.icon === 'mail'"
+                class="classic-social-rail__icon size-8 opacity-80 hover:opacity-100"
+                aria-hidden="true"
+              />
+              <img
+                v-else
+                :src="useAsset(`icons/social/${s.icon}.svg`)"
+                alt=""
+                width="16"
+                height="16"
+                class="classic-social-rail__icon social-icon size-8 opacity-80 hover:opacity-100"
+                loading="eager"
+                decoding="async"
+              />
+            </a>
+          </div>
         </div>
 
         <button
@@ -379,3 +432,64 @@ onBeforeUnmount(() => {
     />
   </header>
 </template>
+
+<style scoped>
+/* main / classic: сжатый rail → разъезд по клику (desktop md+) */
+.classic-social-rail {
+  align-items: center;
+  overflow: hidden;
+  max-width: 3.5rem;
+  padding-right: 0;
+  transition:
+    max-width 0.4s cubic-bezier(0.2, 0, 0, 1),
+    padding 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.classic-social-rail--open {
+  max-width: min(42rem, calc(100vw - 12rem));
+  padding-right: 0.5rem;
+}
+
+.classic-social-rail__track {
+  gap: 0;
+  opacity: 0.85;
+  transition: gap 0.4s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.classic-social-rail--open .classic-social-rail__track {
+  gap: 0.125rem;
+  opacity: 1;
+}
+
+.classic-social-rail__link {
+  margin-left: -0.65rem;
+  transform: scale(0.52) rotate(10deg);
+  transform-origin: center;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0, 0, 1),
+    margin 0.4s cubic-bezier(0.2, 0, 0, 1),
+    opacity 0.3s ease;
+}
+
+.classic-social-rail__link:first-child {
+  margin-left: 0;
+}
+
+.classic-social-rail--open .classic-social-rail__link {
+  margin-left: 0;
+  transform: scale(1) rotate(-10deg);
+  transition-delay: calc(var(--social-i, 0) * 25ms);
+}
+
+.classic-social-rail__trigger {
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0, 0, 1),
+    opacity 0.3s ease;
+  transform: rotate(10deg);
+}
+
+.classic-social-rail--open .classic-social-rail__trigger {
+  transform: rotate(-10deg) scale(0.92);
+  opacity: 0.65;
+}
+</style>
