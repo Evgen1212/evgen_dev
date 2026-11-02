@@ -93,7 +93,7 @@ onBeforeUnmount(() => {
 
 <template>
   <header class="fixed inset-x-0 top-0 z-50 px-3 sm:px-5 lg:px-8 pt-3 sm:pt-4 lg:pt-6">
-    <div class="mx-auto flex max-w-7xl items-start justify-between gap-2">
+    <div class="mx-auto flex w-full max-w-[92rem] items-start justify-between gap-4 xl:gap-8">
       <!-- left cluster: logo + nav -->
       <div class="flex items-center gap-2">
         <a
@@ -174,43 +174,8 @@ onBeforeUnmount(() => {
         </nav>
       </div>
 
-      <!-- right cluster: design variant + theme toggle + socials + burger -->
-      <div class="flex items-center gap-2">
-        <DesignVariantSwitcher
-          layout="desktop"
-          appearance="classic"
-          :pill-class="pill"
-          class="hidden lg:block"
-        />
-        <button
-          type="button"
-          :aria-label="
-            resolvedTheme === 'dark'
-              ? 'Включить светлую тему'
-              : 'Включить тёмную тему'
-          "
-          :title="resolvedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема'"
-          :class="
-            cn(
-              pill,
-              'grid size-14 place-items-center text-(--ink) transition-transform hover:scale-105',
-            )
-          "
-          @click="toggleTheme"
-        >
-          <ClientOnly>
-            <Sun
-              v-if="resolvedTheme === 'dark'"
-              class="size-5"
-              aria-hidden="true"
-            />
-            <Moon v-else class="size-5" aria-hidden="true" />
-            <template #fallback>
-              <Sun class="size-5" aria-hidden="true" />
-            </template>
-          </ClientOnly>
-        </button>
-
+      <!-- right cluster: socials + theme + design (desktop) + burger -->
+      <div class="flex shrink-0 items-center gap-2">
         <div
           :class="
             cn(
@@ -255,6 +220,71 @@ onBeforeUnmount(() => {
 
         <button
           type="button"
+          :aria-label="
+            resolvedTheme === 'dark'
+              ? 'Включить светлую тему'
+              : 'Включить тёмную тему'
+          "
+          :title="resolvedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема'"
+          :class="
+            cn(
+              pill,
+              'hidden md:grid size-14 place-items-center text-(--ink) transition-transform hover:scale-105',
+            )
+          "
+          @click="toggleTheme"
+        >
+          <ClientOnly>
+            <Sun
+              v-if="resolvedTheme === 'dark'"
+              class="size-5"
+              aria-hidden="true"
+            />
+            <Moon v-else class="size-5" aria-hidden="true" />
+            <template #fallback>
+              <Sun class="size-5" aria-hidden="true" />
+            </template>
+          </ClientOnly>
+        </button>
+
+        <button
+          type="button"
+          :aria-label="
+            resolvedTheme === 'dark'
+              ? 'Включить светлую тему'
+              : 'Включить тёмную тему'
+          "
+          :title="resolvedTheme === 'dark' ? 'Светлая тема' : 'Тёмная тема'"
+          :class="
+            cn(
+              pill,
+              'grid size-14 place-items-center text-(--ink) transition-transform hover:scale-105 md:hidden',
+            )
+          "
+          @click="toggleTheme"
+        >
+          <ClientOnly>
+            <Sun
+              v-if="resolvedTheme === 'dark'"
+              class="size-5"
+              aria-hidden="true"
+            />
+            <Moon v-else class="size-5" aria-hidden="true" />
+            <template #fallback>
+              <Sun class="size-5" aria-hidden="true" />
+            </template>
+          </ClientOnly>
+        </button>
+
+        <DesignVariantSwitcher
+          layout="desktop"
+          appearance="classic"
+          :pill-class="pill"
+          class="hidden lg:block"
+        />
+
+        <button
+          type="button"
           :aria-expanded="open"
           :aria-label="open ? 'Закрыть меню' : 'Открыть меню'"
           :class="
@@ -272,12 +302,12 @@ onBeforeUnmount(() => {
     <div
       :class="
         cn(
-          'mx-auto mt-2 max-w-7xl overflow-hidden rounded-2xl bg-(--chrome) transition-[max-height] duration-300 ease-out lg:hidden',
-          open ? 'max-h-96' : 'pointer-events-none max-h-0',
+          'mx-auto mt-2 w-full max-w-[92rem] overflow-hidden rounded-2xl bg-(--chrome) transition-[max-height] duration-300 ease-out lg:hidden',
+          open ? 'max-h-[min(85vh,32rem)] overflow-y-auto' : 'pointer-events-none max-h-0',
         )
       "
     >
-      <div :class="cn(pill, 'p-3')">
+      <div :class="cn(pill, 'flex flex-col p-3')">
         <DesignVariantSwitcher layout="mobile" appearance="classic" :pill-class="pill" />
         <nav class="grid gap-1 mt-3" aria-label="Мобильная навигация">
           <a
@@ -298,25 +328,28 @@ onBeforeUnmount(() => {
             {{ link.label }}
           </a>
         </nav>
-        <div class="mt-2 flex flex-wrap gap-1 border-t border-(--line-1) pt-3">
+        <div
+          class="mt-4 flex flex-wrap items-center justify-center gap-1 border-t border-(--line-1) pt-4 lg:hidden"
+          aria-label="Социальные сети"
+        >
           <a
             v-for="s in socials"
-            :key="s.name"
+            :key="`menu-social-${s.name}`"
             :href="s.href"
             :target="s.href.startsWith('http') ? '_blank' : undefined"
             :rel="s.href.startsWith('http') ? 'noopener noreferrer' : undefined"
             :title="s.name"
             :aria-label="s.name"
-            class="grid size-10 place-items-center rounded-xl transition-colors hover:bg-(--surface-hover)"
+            class="grid size-11 place-items-center rounded-xl transition-colors hover:bg-(--surface-hover)"
           >
             <Phone
               v-if="s.icon === 'phone'"
-              class="size-8 opacity-80"
+              class="size-7 opacity-90"
               aria-hidden="true"
             />
             <Mail
               v-else-if="s.icon === 'mail'"
-              class="size-8 opacity-80"
+              class="size-7 opacity-90"
               aria-hidden="true"
             />
             <img
@@ -325,7 +358,7 @@ onBeforeUnmount(() => {
               alt=""
               width="16"
               height="16"
-              class="social-icon size-8 opacity-80"
+              class="social-icon size-7 opacity-90"
               loading="lazy"
               decoding="async"
             />

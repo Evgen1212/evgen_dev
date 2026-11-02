@@ -45,9 +45,9 @@ export function useDesignVariant() {
     id: DesignVariant;
     label: string;
   }[] = [
-    { id: 'main', label: 'Классический (попугай)' },
-    { id: 'android', label: 'Material · Android' },
-    { id: 'ios', label: 'Стиль iOS' },
+    { id: 'main', label: 'Классический (Custom)' },
+    { id: 'android', label: 'Android (Material)' },
+    { id: 'ios', label: 'iOS (HIG)' },
   ];
 
   return { currentVariant, navigateToVariant, variants };

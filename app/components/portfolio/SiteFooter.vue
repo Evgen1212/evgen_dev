@@ -28,13 +28,21 @@ const footerNav = [
           © {{ year }} Абрамов Евгений. Senior Frontend-разработчик.
         </p>
 
-        <div class="flex items-center gap-3">
-          <p class="text-sm text-(--ink-faint)">
-            Сделано с
-            <span class="text-fuchsia-400" aria-hidden="true">♥</span>
-            на Nuxt
-          </p>
-        </div>
+        <p
+          class="flex items-center gap-1.5 text-sm text-(--ink-faint) max-md:hidden"
+        >
+          <span>Сделано на Nuxt</span>
+          <img
+            :src="useAsset('icons/tech/nuxt.svg')"
+            alt=""
+            width="16"
+            height="16"
+            class="size-4 shrink-0 opacity-90"
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="sr-only">Nuxt</span>
+        </p>
       </div>
 
       <nav
