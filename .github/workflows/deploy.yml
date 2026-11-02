@@ -2,26 +2,30 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, ios, android]
   workflow_dispatch:
 
-# Нужно для деплоя через official GitHub Pages actions
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Не запускать два деплоя параллельно
 concurrency:
   group: pages
   cancel-in-progress: true
+
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+  PAGES_OWNER: ${{ github.repository_owner }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout all branches
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v7
@@ -33,15 +37,41 @@ jobs:
         with:
           bun-version: 1.4.3
 
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
+      - name: Build main → site root
+        run: |
+          git checkout main
+          bun install --frozen-lockfile
+          export NUXT_APP_BASE_URL="/${REPO_NAME}/"
+          export NUXT_PUBLIC_SITE_URL="https://${PAGES_OWNER}.github.io/${REPO_NAME}"
+          bun run build
+          mkdir -p _site
+          cp -a .output/public/. _site/
 
-      - name: Generate static site
-        run: bun run build
-        env:
-          # Project-сайт на GitHub Pages живёт по адресу /<repo>/
-          NUXT_APP_BASE_URL: /${{ github.event.repository.name }}/
-          NUXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      - name: Build ios → site/ios
+        run: |
+          git checkout ios
+          bun install --frozen-lockfile
+          export NUXT_APP_BASE_URL="/${REPO_NAME}/ios/"
+          export NUXT_PUBLIC_SITE_URL="https://${PAGES_OWNER}.github.io/${REPO_NAME}/ios"
+          bun run build
+          mkdir -p _site/ios
+          cp -a .output/public/. _site/ios/
+
+      - name: Build android → site/android
+        run: |
+          git checkout android
+          bun install --frozen-lockfile
+          export NUXT_APP_BASE_URL="/${REPO_NAME}/android/"
+          export NUXT_PUBLIC_SITE_URL="https://${PAGES_OWNER}.github.io/${REPO_NAME}/android"
+          bun run build
+          mkdir -p _site/android
+          cp -a .output/public/. _site/android/
+
+      - name: Prepare Pages root
+        run: |
+          touch _site/.nojekyll
+          ls -la _site
+          ls -la _site/ios _site/android
 
       - name: Setup Pages
         uses: actions/configure-pages@v6
@@ -49,7 +79,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
         with:
-          path: .output/public
+          path: _site
 
   deploy:
     needs: build

@@ -7,8 +7,8 @@
   },
   "scripts": {
     "dev": "nuxt dev 2>&1 | tee dev.log",
-    "build": "nuxt generate",
-    "generate": "nuxt generate",
+    "build": "nuxt generate && node scripts/write-seo-files.mjs",
+    "generate": "nuxt generate && node scripts/write-seo-files.mjs",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "og": "node scripts/generate-og.mjs",
