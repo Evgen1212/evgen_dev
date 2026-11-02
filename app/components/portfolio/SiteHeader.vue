@@ -134,17 +134,6 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="header-actions">
-        <DesignVariantSwitcher layout="desktop" appearance="ios" />
-        <button
-          class="icon-btn theme-toggle"
-          type="button"
-          aria-label="Переключить тему"
-          title="Переключить тему"
-          @click="toggleTheme"
-        >
-          <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun" /></svg>
-          <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon" /></svg>
-        </button>
         <nav class="header-socials" aria-label="Соцсети">
           <a
             v-for="item in headerSocials"
@@ -165,6 +154,17 @@ onBeforeUnmount(() => {
             />
           </a>
         </nav>
+        <button
+          class="icon-btn theme-toggle"
+          type="button"
+          aria-label="Переключить тему"
+          title="Переключить тему"
+          @click="toggleTheme"
+        >
+          <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun" /></svg>
+          <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon" /></svg>
+        </button>
+        <DesignVariantSwitcher layout="desktop" appearance="ios" />
         <button
           class="icon-btn menu-btn"
           type="button"

@@ -47,7 +47,9 @@ const triggerClass = computed(() => {
     );
   }
   if (props.appearance === 'ios') {
-    return cn('design-variant-trigger design-variant-trigger--ios icon-btn');
+    return cn(
+      'design-variant-trigger design-variant-trigger--ios icon-btn grid place-items-center p-0',
+    );
   }
   return cn(
     props.pillClass,
@@ -150,21 +152,11 @@ const mobileLabelClass = computed(() => {
     >
       <DesignVariantIcon :variant="currentVariant" :size="22" />
       <ChevronDown
-        v-if="appearance !== 'm3'"
-        class="size-4 shrink-0 opacity-70 transition-transform duration-200"
-        :class="[
-          appearance === 'ios' ? 'design-variant-chevron' : 'text-(--ink-soft)',
-          menuOpen && 'rotate-180',
-        ]"
-        aria-hidden="true"
-      />
-      <span
-        v-else
-        class="material-symbols-outlined text-[20px] transition-transform duration-200"
+        v-if="appearance === 'classic'"
+        class="size-4 shrink-0 opacity-70 transition-transform duration-200 text-(--ink-soft)"
         :class="menuOpen && 'rotate-180'"
         aria-hidden="true"
-        >expand_more</span
-      >
+      />
     </button>
 
     <div
