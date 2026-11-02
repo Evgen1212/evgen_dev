@@ -213,8 +213,48 @@ const barClass =
           </nav>
         </div>
 
-        <div class="hidden shrink-0 items-center gap-1 lg:flex">
-          <DesignVariantSwitcher layout="desktop" appearance="m3" />
+        <div class="hidden shrink-0 items-center gap-1.5 lg:flex">
+          <div
+            class="android-header-socials"
+            aria-label="Социальные сети"
+          >
+            <a
+              v-for="s in socials"
+              :key="s.name"
+              :href="s.href"
+              :target="s.href.startsWith('http') ? '_blank' : undefined"
+              :rel="
+                s.href.startsWith('http') ? 'noopener noreferrer' : undefined
+              "
+              :title="s.name"
+              :aria-label="s.name"
+              class="m3-icon-btn m3-icon-btn--compact m3-state-layer text-(--m3-on-surface-variant) hover:text-(--m3-on-surface)"
+            >
+              <span
+                v-if="s.icon === 'phone'"
+                class="material-symbols-outlined text-[18px] opacity-90"
+                aria-hidden="true"
+                >call</span
+              >
+              <span
+                v-else-if="s.icon === 'mail'"
+                class="material-symbols-outlined text-[18px] opacity-90"
+                aria-hidden="true"
+                >mail</span
+              >
+              <img
+                v-else
+                :src="useAsset(`icons/social/${s.icon}.svg`)"
+                alt=""
+                width="18"
+                height="18"
+                class="social-icon size-[18px] opacity-90"
+                loading="eager"
+                decoding="async"
+              />
+            </a>
+          </div>
+
           <button
             type="button"
             :aria-label="
@@ -241,43 +281,7 @@ const barClass =
             </ClientOnly>
           </button>
 
-          <div class="flex items-center" aria-label="Социальные сети">
-            <a
-              v-for="s in socials"
-              :key="s.name"
-              :href="s.href"
-              :target="s.href.startsWith('http') ? '_blank' : undefined"
-              :rel="
-                s.href.startsWith('http') ? 'noopener noreferrer' : undefined
-              "
-              :title="s.name"
-              :aria-label="s.name"
-              class="m3-icon-btn m3-state-layer text-(--ink-soft) hover:text-(--ink)"
-            >
-              <span
-                v-if="s.icon === 'phone'"
-                class="material-symbols-outlined text-[20px] opacity-90"
-                aria-hidden="true"
-                >call</span
-              >
-              <span
-                v-else-if="s.icon === 'mail'"
-                class="material-symbols-outlined text-[20px] opacity-90"
-                aria-hidden="true"
-                >mail</span
-              >
-              <img
-                v-else
-                :src="useAsset(`icons/social/${s.icon}.svg`)"
-                alt=""
-                width="20"
-                height="20"
-                class="social-icon size-5 opacity-90"
-                loading="eager"
-                decoding="async"
-              />
-            </a>
-          </div>
+          <DesignVariantSwitcher layout="desktop" appearance="m3" />
         </div>
       </div>
     </div>

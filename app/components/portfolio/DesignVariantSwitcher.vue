@@ -43,7 +43,7 @@ const currentLabel = computed(
 const triggerClass = computed(() => {
   if (props.appearance === 'm3') {
     return cn(
-      'm3-icon-btn m3-state-layer flex h-12 min-w-12 items-center gap-0.5 px-2 text-(--ink-soft) hover:text-(--ink)',
+      'm3-icon-btn m3-state-layer grid size-12 shrink-0 place-items-center p-0 text-(--ink-soft) hover:text-(--ink)',
     );
   }
   if (props.appearance === 'ios') {
@@ -158,13 +158,6 @@ const mobileLabelClass = computed(() => {
         ]"
         aria-hidden="true"
       />
-      <span
-        v-else
-        class="material-symbols-outlined text-[20px] transition-transform duration-200"
-        :class="menuOpen && 'rotate-180'"
-        aria-hidden="true"
-        >expand_more</span
-      >
     </button>
 
     <div

@@ -827,6 +827,23 @@ body {
   transition: color 0.2s cubic-bezier(0.2, 0, 0, 1);
 }
 
+/* Dense toolbar row (Android app bar socials) */
+.m3-icon-btn--compact {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.android-header-socials {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 0;
+  padding: 0.125rem 0.125rem;
+  border-radius: var(--m3-shape-full);
+  background: var(--m3-surface-container-high);
+  border: 1px solid color-mix(in srgb, var(--m3-outline-variant) 55%, transparent);
+}
+
 .m3-state-layer {
   position: relative;
   overflow: hidden;
