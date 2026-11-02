@@ -263,6 +263,9 @@
 :root[data-theme='light'] .social-icon {
   filter: invert(1);
 }
+:root[data-theme='dark'] .design-variant-icon--apple {
+  filter: invert(1);
+}
 :root[data-theme='light'] ::selection {
   background: color-mix(in srgb, var(--m3-primary) 35%, transparent);
   color: #18181b;

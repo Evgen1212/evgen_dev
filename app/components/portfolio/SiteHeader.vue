@@ -214,6 +214,7 @@ const barClass =
         </div>
 
         <div class="hidden shrink-0 items-center gap-1 lg:flex">
+          <DesignVariantSwitcher layout="desktop" appearance="m3" />
           <button
             type="button"
             :aria-label="

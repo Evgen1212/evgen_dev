@@ -159,7 +159,8 @@ onBeforeUnmount(() => {
         <div
           class="mt-auto shrink-0 border-t border-(--outline-variant) px-3 py-3"
         >
-          <p class="m3-label px-4 pb-2">
+          <DesignVariantSwitcher layout="mobile" appearance="m3" />
+          <p class="m3-label px-4 pb-2 pt-1">
             Настройки
           </p>
           <button
