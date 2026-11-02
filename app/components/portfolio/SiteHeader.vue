@@ -134,6 +134,7 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="header-actions">
+        <DesignVariantSwitcher layout="desktop" appearance="ios" />
         <button
           class="icon-btn theme-toggle"
           type="button"
@@ -179,6 +180,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div id="mobile-menu" class="mobile-menu" :class="{ 'is-open': open }" :inert="!open">
+      <DesignVariantSwitcher layout="mobile" appearance="ios" />
       <nav class="mobile-nav" aria-label="Мобильная навигация">
         <a
           v-for="link in navLinks"

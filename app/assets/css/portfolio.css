@@ -3249,3 +3249,106 @@ html.is-locked body {
     display: grid;
   }
 }
+
+/* ─── Переключатель версий сайта (iOS chrome) ─── */
+.design-variant-trigger--ios {
+  width: 44px;
+  height: 44px;
+  gap: 2px;
+  padding: 0 6px;
+}
+
+.design-variant-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--ink-soft);
+}
+
+.design-variant-menu--ios {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 60;
+  min-width: 15.5rem;
+  padding: 6px;
+  border-radius: 14px;
+  border: 1px solid var(--line-strong);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  box-shadow: 0 12px 40px rgb(0 0 0 / 0.22);
+}
+
+.design-variant-option--ios {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-ui);
+}
+
+.design-variant-option--ios:hover {
+  background: var(--surface-hover);
+}
+
+.design-variant-option--ios-selected {
+  background: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  color: var(--ink);
+}
+
+.design-variant-mobile--ios {
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid var(--line-1);
+}
+
+.design-variant-mobile-label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.design-variant-mobile-row {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border-radius: 12px;
+  background: var(--surface-hover);
+}
+
+.design-variant-mobile-btn--ios {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  min-height: 44px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s var(--ease-ui), transform 0.15s var(--ease-ui);
+}
+
+.design-variant-mobile-btn--ios:active {
+  transform: scale(0.96);
+}
+
+.design-variant-mobile-btn--ios-selected {
+  background: var(--surface);
+  box-shadow: 0 1px 4px rgb(0 0 0 / 0.12);
+}
+
+:root[data-theme='dark'] .design-variant-icon--apple {
+  filter: invert(1);
+}
+
