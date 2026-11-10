@@ -1,6 +1,6 @@
 # evgen_dev — portfolio / landing (Nuxt 4)
 
-> **Контракт для OpenDesign, OpenCode (MCP) и ручных правок.**  
+> **Контракт UI для ручных правок и опционально Open Design.** Интеграция с редактором/агентом настраивается локально, в репозиторий не входит.  
 > Перед изменением UI прочитай этот файл. Целевой визуальный язык: **Android / Material Design 3** (оболочка системы, не «космический» лендинг).
 
 ## Product
@@ -24,9 +24,8 @@
 ## Local dev
 
 ```bash
-cd ~/Desktop/frontend-dev/apps/evgen_dev
+bun install
 bun run dev
-# http://127.0.0.1:3000
 ```
 
 ## Information architecture (страница)
@@ -169,12 +168,13 @@ M3 token pass (2026-03-29, OD audit): shadcn `--primary` → `--m3-primary`, п�
 - Новые стили — через **tokens** в `main.css` или Tailwind `@theme`, не inline hex в Vue (кроме одноразовых прототипов).
 - **Web Vitals:** без тяжёлых blur/filter; анимации GPU-friendly (`transform`, `opacity`).
 
-## OpenDesign
+## Open Design (опционально)
 
-- Репозиторий на диске: `~/Desktop/frontend-dev/apps/evgen_dev`
-- **Git branch для работы:** `main` (актуальный контракт — этот файл).
-- Если проект в OpenDesign привязан к другой ветке/имени — **re-import folder** или обнови brief в UI, указав путь к репо.
-- MCP: `open-design` в OpenCode; правки кода на живом **http://127.0.0.1:3000** (dev поднимает пользователь).
+Репозиторий — обычный Nuxt-проект; связка с Open Design / Cursor / другим агентом **не зашита в git**.
+
+- **Контракт визуала** — этот файл; при импорте папки в OD укажи путь к репо и ветку **`main`**.
+- **MCP / IDE:** настрой на своей машине (например **Open Design → Settings → MCP** и скопируй блок для Cursor в `.cursor/mcp.json`, шаблон — [`.cursor/mcp.json.example`](.cursor/mcp.json.example)). Файл `.cursor/mcp.json` в gitignore.
+- **Превью кода:** `bun run dev` (порт — из вывода терминала).
 
 ## Files map (UI)
 
