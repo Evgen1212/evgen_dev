@@ -14,9 +14,8 @@ Personal portfolio and client landing for Evgeny Abramov (frontend, Vue/Nuxt). P
 ## Local dev
 
 ```bash
-cd ~/Desktop/frontend-dev/apps/evgen_dev
+bun install
 bun run dev
-# http://127.0.0.1:3000
 ```
 
 ## Design constraints (when changing UI)
@@ -26,6 +25,10 @@ bun run dev
 - Lucide icons via `lucide-vue-next`; use `clsx` + `tailwind-merge` for class lists.
 - Do not break GitHub Pages static export (`nuxt generate`) paths under `public/`.
 
-## OpenDesign
+## Open Design (опционально)
 
-Linked folder project in OpenDesign: **evgen_dev · od_test** (`import-folder` → same directory as this repo).
+Репозиторий — обычный Nuxt-проект; связка с Open Design / Cursor / другим агентом **не зашита в git**.
+
+- **Контракт визуала** — этот файл; при импорте папки в OD укажи путь к репо и ветку **`ios`**.
+- **MCP / IDE:** настрой на своей машине (например **Open Design → Settings → MCP** и скопируй блок для Cursor в `.cursor/mcp.json`, шаблон — [`.cursor/mcp.json.example`](.cursor/mcp.json.example)). Файл `.cursor/mcp.json` в gitignore.
+- **Превью кода:** `bun run dev` (порт — из вывода терминала).

@@ -65,3 +65,8 @@ dist
 .zscripts/
 tool-results/
 worklog.md
+
+# Cursor / Open Design — локально на каждой машине (см. .cursor/mcp.json.example)
+.cursor/*
+!.cursor/mcp.json.example
+scripts/od-mcp.sh
